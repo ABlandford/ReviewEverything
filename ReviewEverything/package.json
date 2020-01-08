@@ -1,0 +1,26 @@
+{
+  "name": "ReviewEverything",
+  "version": "1.0.0",
+  "description": "The big bad dumb freaking project for full stack development that gives me a ton of anxiety.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ABlandford/ReviewEverything.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ABlandford/ReviewEverything/issues"
+  },
+  "homepage": "https://github.com/ABlandford/ReviewEverything#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^4.13.20"
+  }
+}
