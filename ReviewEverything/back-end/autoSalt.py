@@ -1,8 +1,10 @@
 from pymongo import MongoClient
+import bcrypt
 
 client = MongoClient('localhost', 27017)
 
 users = client.data.users
 
-keganstuff = users.find_one({'fname' : 'Kegan'})
-print(keganstuff)
+# for user in users.find({}, {"_id": 0, "password" : 1}):
+#     print(user)
+
