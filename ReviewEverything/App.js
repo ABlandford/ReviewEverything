@@ -1,12 +1,20 @@
 const Express = require("express");
 const BodyParser = require("body-parser");
-const Mongoose = require("mongoose");
 const Bcrypt = require("bcryptjs");
 
-var app = Express();
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
 
-app.use(BodyParser.json());
-app.use(BodyParser.urlencoded({ extend: true })); 
+const filter = {};
 
-
-
+MongoClient.connect(
+  'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false',
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  function(connectErr, client) {
+    assert.equal(null, connectErr);
+    const coll = client.db('Users').collection('User_Profiles');
+    coll.find(filter, (cmdErr, result) => {
+      assert.equal(null, cmdErr);
+    });
+    client.close();
+  });
