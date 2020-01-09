@@ -11,13 +11,13 @@ for user in users.find({}, {"_id" :0, 'password' : ''}):
     global hashed
     # print(user['password'])
     
-    salt = bcrypt.gensalt()
+    
     hashed = bcrypt.hashpw(user['password'].encode('utf8'), bcrypt.gensalt())
-    print(salt)
-    print(hashed)
- 
+    # print(hashed)
+    users.update_one(user['password'], hashed)
 
- 
+for x in users.find({}, {"_id" :0, 'password' : ''}):
+  print(x)
 
 # keganstuff = users.find_one({'fname' : 'Kegan'})
 # print(keganstuff)
