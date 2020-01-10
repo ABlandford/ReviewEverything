@@ -5,19 +5,16 @@ client = MongoClient('localhost', 27017)
 
 users = client.Users.User_Profiles
 
-
-for user in users.find({}, {"_id" :0, 'password' : ''}):
-    global salt 
-    global hashed
+for user in users.find({}, {"_id": 0, "password" : 1}):
     # print(user['password'])
-    
-    
     hashed = bcrypt.hashpw(user['password'].encode('utf8'), bcrypt.gensalt())
-    # print(hashed)
-    users.update_one(user['password'], hashed)
+    # print(f'Hashed Password: {hashed}')
+    query = {"password" : f"{user['password']}"}
+    newPass = {"$set" : {"password" : f"{hashed}"}}
+    users.update_one(query, newPass) 
 
-for x in users.find({}, {"_id" :0, 'password' : ''}):
-  print(x)
+# password = users.find_one({'password' : 'y]ed17gqv5'}, {"_id" : 0, "password" : 1})
+# print(password)
 
-# keganstuff = users.find_one({'fname' : 'Kegan'})
-# print(keganstuff)
+# hashed = bcrypt.hashpw(password['password'].encode('utf8'), bcrypt.gensalt())
+# print(hashed)
