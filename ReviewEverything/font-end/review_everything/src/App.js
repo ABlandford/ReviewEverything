@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+
+
+
+class App extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = { apiResponse: "" };
+  }
+  
+  callAPI() {
+    fetch("http://localhost:9000/test")
+        .then(res => res.text())
+        .then(res => this.setState({ apiResponse: res }));
+  }
+  
+  componentWillMount() {
+    this.callAPI();
+  }
+
+  render(){
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        {/* <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -17,10 +37,13 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
-        </a>
+        </a> */}
       </header>
+      <h1>BRUH</h1>
+      <p className="App-intro">{this.state.apiResponse}</p>
     </div>
   );
+}
 }
 
 export default App;
