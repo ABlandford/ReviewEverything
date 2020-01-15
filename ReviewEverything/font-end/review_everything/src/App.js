@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 
-
-
-
 class App extends React.Component {
   
   constructor(props) {
@@ -12,9 +9,14 @@ class App extends React.Component {
   }
   
   callAPI() {
-    fetch("http://localhost:9000/test")
-        .then(res => res.text())
-        .then(res => this.setState({ apiResponse: res }));
+    fetch("http://localhost:9000/test", {
+      method: 'GET'
+    })
+      .then(response => response.text())
+      .then(text => {
+        console.log(text)
+        this.setState({ apiResponse: text });
+      })
   }
   
   componentWillMount() {
@@ -34,7 +36,7 @@ class App extends React.Component {
         </form>
       </header>
       <h1>BRUH</h1>
-      <p className="App-intro">{this.state.apiResponse}</p>
+      {/* <p className="App-intro">{this.state.apiResponse}</p> */}
     </div>
   );
 }
