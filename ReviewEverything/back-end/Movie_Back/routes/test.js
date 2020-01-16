@@ -40,12 +40,18 @@ router.get('/', function(req, res) {
         let userCollection = {};
 
         users.forEach((user) => {
-            console.log(user);
+            // console.log(user);
             userCollection[user._id] = user;
         });
         
         res.send(userCollection);
     });
+});
+
+router.post('/submitReview', function(req, res) {
+    console.log('\nSubmitting data...\n');
+    console.log('Review submitted: ' + req.body.review);
+    console.log('Rating submitted: ' + req.body.rating);
 });
 
 module.exports = router;
