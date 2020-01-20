@@ -30,22 +30,22 @@ const userSchema = mongoose.Schema({
 
 // const Review = mongoose.model('reviews', reviewSchema)
 
-const User = mongoose.model('users', userSchema);
+// const User = mongoose.model('users', userSchema);
 
-router.get('/', function(req, res) {
-    console.log('WE ARE HERE!!!')
-    User.find((err, users) => {
-        if (err) console.log(err);
+// router.get('/', function(req, res) {
+//     console.log('WE ARE HERE!!!')
+//     User.find((err, users) => {
+//         if (err) console.log(err);
         
-        let userCollection = {};
+//         let userCollection = {};
 
-        users.forEach((user) => {
-            console.log(user);
-            userCollection[user._id] = user;
-        });
+//         users.forEach((user) => {
+//             console.log(user);
+//             userCollection[user._id] = user;
+//         });
         
-        res.send(userCollection);
-    });
-});
+//         res.send(userCollection);
+//     });
+// });
 
 module.exports = MongoClient; 
