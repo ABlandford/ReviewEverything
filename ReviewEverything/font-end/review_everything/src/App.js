@@ -58,12 +58,11 @@ class App extends React.Component {
           <p>REVIEW OUR MOVIES!!!</p>
           <p>¯\_(ツ)_/¯</p>
           <form onSubmit={this.submitReview}>
-            <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
-            <label>What do rate movie? </label><input type='number' value={this.state.valueRating} onChange={this.changeRating}></input><br/>
+            <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview} class="in"></input><br/>
+            <label>What do rate movie? </label><input type='number' value={this.state.valueRating} onChange={this.changeRating}class='in'></input><br/>
             <input type='submit' value='Submit'></input>
           </form>
         </header>
-        <h1>BRUH</h1>
         {/* <p className="App-intro">{this.state.apiResponse}</p> */}
       </div>
     );
