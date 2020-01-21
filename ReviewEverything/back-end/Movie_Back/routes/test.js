@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose')
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/Users');
+mongoose.connect('mongodb://localhost/data');
 
 let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -28,27 +28,27 @@ const userSchema = mongoose.Schema({
     zip_code: String
 })
 
-const RR = mongoose.model('reviewratings', reviewSchema)
+const RR = mongoose.model('reviews', reviewSchema)
 
-const User = mongoose.model('User_Profiles', userSchema);
+const User = mongoose.model('users', userSchema);
 
-// router.get('/', function(req, res) {
-// //     console.log('WE ARE HERE!!!')
-//     User.find((err, User_Profiles) => {
-//         console.log("BRUH")
-//         console.log(User_Profiles.city)
-//         if (err) console.log(err);
-//         let userCollection = {};
-  
-//           User_Profiles.forEach((user) => {
-//               console.log(user);
-//            userCollection[user._id] = user;
-//           });
-          
-//       res.send(userCollection);
-        
-//     });
-//  });
+router.get('/', function(req, res) {
+    console.log('WE ARE HERE!!!')
+    User.find((err, users) => {
+        // console.log("BRUH")
+        // console.log(User_Profiles.city)
+        if (err) console.log(err);
+        let userCollection = {};
+
+        users.forEach((user) => {
+            console.log(user);
+         userCollection[user._id] = user;
+        });
+      
+    res.send(userCollection);
+    
+   });
+});
 
 router.post('/submitReview', function(req, res) {
     console.log('\nSubmitting data...\n');
