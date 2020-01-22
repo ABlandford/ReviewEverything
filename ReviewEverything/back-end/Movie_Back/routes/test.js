@@ -30,7 +30,19 @@ const userSchema = mongoose.Schema({
 
 const RR = mongoose.model('reviewratings', reviewSchema)
 
-const User = mongoose.model('User_Profiles', userSchema);
+router.post('/submitReview', function(req, res) {
+    console.log('\nSubmitting data...\n');
+    console.log('Review submitted: ' + req.body.review);
+    console.log('Rating submitted: ' + req.body.rating);
+    var r = new RR({review: req.body.review, rating: req.body.rating})
+    r.save(function(err){
+        if(err)
+            throw err;
+        else  
+            console.log('saved!')
+    })
+});
+// const User = mongoose.model('User_Profiles', userSchema);
 
 // router.get('/', function(req, res) {
 // //     console.log('WE ARE HERE!!!')
@@ -49,20 +61,5 @@ const User = mongoose.model('User_Profiles', userSchema);
         
 //     });
 //  });
-
-router.post('/submitReview', function(req, res) {
-    console.log('\nSubmitting data...\n');
-    console.log('Review submitted: ' + req.body.review);
-    console.log('Rating submitted: ' + req.body.rating);
-    var r = new RR({review: req.body.review, rating: req.body.rating})
-    r.save(function(err){
-        if(err)
-            throw err;
-        else  
-            console.log('saved!')
-    })
-});
-
-
 module.exports = router;
 

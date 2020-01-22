@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import StarRatingComponent from 'react-star-rating-component';
 
 class App extends React.Component {
   
@@ -33,12 +34,14 @@ class App extends React.Component {
   changeRating(event) {
     this.setState({valueRating : event.target.value})
   }
+
+  onStarClick(nextValue, prevValue, name) {
+    this.setState({valueRating: nextValue});
+  }
   
   submitReview(event) {
     alert('Your review stuff is this: ' + this.state.valueReview + " " + this.state.valueRating);
     event.preventDefault();
-    // const form = event.target;
-    // const reviewData = new FormData(form);
 
     const data = { review: this.state.valueReview, rating: this.state.valueRating }
     
@@ -59,11 +62,18 @@ class App extends React.Component {
           <p>¯\_(ツ)_/¯</p>
           <form onSubmit={this.submitReview}>
             <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview} class="in"></input><br/>
-            <label>What do rate movie? </label><input type='number' value={this.state.valueRating} onChange={this.changeRating}class='in'></input><br/>
+            <label>What do rate movie? </label>
+            <StarRatingComponent 
+                  name="starSystem" 
+                  id="stars"
+                  value={this.state.valueRating}
+                  starCount={5}
+                  onStarClick={this.onStarClick.bind(this)}
+                  onChange = {this.changeRating}
+            />
             <input type='submit' value='Submit'></input>
           </form>
         </header>
-        {/* <p className="App-intro">{this.state.apiResponse}</p> */}
       </div>
     );
 }
