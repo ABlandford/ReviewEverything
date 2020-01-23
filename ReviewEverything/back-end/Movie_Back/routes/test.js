@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const saltRounds = 10;
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/data');
@@ -12,6 +14,8 @@ mdb.once('open', (callback) => {
 });
 
 const reviewSchema = mongoose.Schema({
+    user_id: String,
+    username: String,
     review: String,
     rating: Number
 })
@@ -63,6 +67,72 @@ router.post('/submitReview', function(req, res) {
     })
 });
 
+router.post('/login', function(req, res) {
+    // if(req.body.email != null && req.body.password != null) {
+    //     status = true
+    // } else {
+    //     status = false
+    // }
+    console.log('\nChecking data...\n');
+    console.log('Email submitted: ' + req.body.email);
+    console.log('Password submitted(unhashed): ' + req.body.password);
+    if(req.body.email != null && req.body.password != null) {
+        let status = false;
+        User.findOne({'email': req.body.email}, function(err, user) {
+            if(!user) {
+                let statusMessage = 'The EMAIL you entered was incorrect.'
+                res.send({status, statusMessage});
+            }
+            else if(user) {
+                bcrypt.hash(req.body.password, saltRounds).then((hash) => {
+                    console.log("\nHashed password: " + hash + ".\n");
+                })
+                bcrypt.compare(req.body.password, user.password).then((res2) => {
+                    if(res2 == true) {
+                        status = !status;
+                        res.send({status, user});
+                    } else {
+                        let statusMessage = 'The PASSWORD you entered was incorrect.'
+                        res.send({status, statusMessage})
+                    }
+                });
+            }
+        });
+    } else {
+        let status = false;
+        res.send(status);
+    }
+});
+
+router.get('/hash', (req, res) => {
+    console.log(req.body.message)
+    User.find((err, users) => {
+        if (err) console.log(err);
+        users.forEach((user) => {
+            bcrypt.hash(user.password, saltRounds).then((hash) => {
+                User.findById(user._id, (err, currentUser) => {
+                    if (err) return console.log(err);
+                    currentUser.fname = user.fname,
+                    currentUser.lname = user.lname,
+                    currentUser.street = user.street,
+                    currentUser.city = user.city,
+                    currentUser.state = user.state,
+                    currentUser.zip_code = user.zip_code,
+                    currentUser.email = user.email,
+                    currentUser.password = hash,
+                    currentUser.phone = user.phone
+
+                    currentUser.save((err, user) => {
+                        if(err) return console.log(err);
+                        console.log('\n' + user.fname + ' ' + user.lname + "'s password is now: " + hash + '.\n');
+                    });
+                });
+            });
+        });
+        let message = 'The deed is done.';
+        res.send(message);
+   });
+});
 
 module.exports = router;
 
