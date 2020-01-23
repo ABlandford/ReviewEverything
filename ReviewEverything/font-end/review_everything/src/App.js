@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import StarRatingComponent from 'react-star-rating-component';
+import Movies from './movies'; 
 
 class App extends React.Component {
   
@@ -13,7 +14,7 @@ class App extends React.Component {
   }
   
   callAPI() {
-    fetch("http://localhost:9000/test", {
+    fetch("http://localhost:9000/home", {
       method: 'GET'
     })
       .then(response => response.text())
@@ -45,7 +46,7 @@ class App extends React.Component {
 
     const data = { review: this.state.valueReview, rating: this.state.valueRating }
     
-    fetch('http://localhost:9000/test/submitReview', {
+    fetch('http://localhost:9000/home/submitReview', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,25 +59,21 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
+          <Movies></Movies>
           <p>REVIEW OUR MOVIES!!!</p>
           <p>¯\_(ツ)_/¯</p>
           <form onSubmit={this.submitReview}>
             <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview} class="in"></input><br/>
             <label>What do rate movie? </label>
-            <StarRatingComponent 
-                  name="starSystem" 
-                  id="stars"
+            <StarRatingComponent name="starSystem" id="stars" starCount={5}
                   value={this.state.valueRating}
-                  starCount={5}
                   onStarClick={this.onStarClick.bind(this)}
-                  onChange = {this.changeRating}
-            />
+                  onChange = {this.changeRating}/>
             <input type='submit' value='Submit'></input>
           </form>
         </header>
       </div>
     );
+  }
 }
-}
-
 export default App;
