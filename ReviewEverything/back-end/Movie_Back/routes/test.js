@@ -35,7 +35,11 @@ const userSchema = mongoose.Schema({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const Review = mongoose.model('reviews', reviewSchema)
+=======
+const RR = mongoose.model('reviews', reviewSchema)
+>>>>>>> parent of 50b8595... Stars
 =======
 const RR = mongoose.model('reviews', reviewSchema)
 >>>>>>> parent of 50b8595... Stars
@@ -76,6 +80,7 @@ router.post('/submitReview', function(req, res) {
     })
 });
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 router.post('/submitReview', function(req, res) {
     console.log('\nSubmitting data...\n');
@@ -89,6 +94,8 @@ router.post('/submitReview', function(req, res) {
             console.log(r.userfname + "'s review saved!");
     })
 });
+=======
+>>>>>>> parent of 50b8595... Stars
 =======
 >>>>>>> parent of 50b8595... Stars
 
@@ -151,9 +158,12 @@ router.get('/hash', (req, res) => {
                     currentUser.phone = user.phone
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     console.log("HELLO?")
                     currentUser.save((err, User_Profiles) => {
 =======
+=======
+>>>>>>> parent of 50b8595... Stars
 =======
 >>>>>>> parent of 50b8595... Stars
 
