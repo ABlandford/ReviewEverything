@@ -100,39 +100,40 @@ router.post('/login', function(req, res) {
         });
     } else {
         let status = false;
-        res.send(status);
+        let statusMessage = "You're submitting nothing. Please enter something into the text boxes before submitting."
+        res.send({status, statusMessage});
     }
 });
 
-router.get('/hash', (req, res) => {
-    console.log(req.body.message)
-    User.find((err, users) => {
-        if (err) console.log(err);
-        users.forEach((user) => {
-            bcrypt.hash(user.password, saltRounds).then((hash) => {
-                User.findById(user._id, (err, currentUser) => {
-                    if (err) return console.log(err);
-                    currentUser.fname = user.fname,
-                    currentUser.lname = user.lname,
-                    currentUser.street = user.street,
-                    currentUser.city = user.city,
-                    currentUser.state = user.state,
-                    currentUser.zip_code = user.zip_code,
-                    currentUser.email = user.email,
-                    currentUser.password = hash,
-                    currentUser.phone = user.phone
+// router.get('/hash', (req, res) => {
+//     console.log(req.body.message)
+//     User.find((err, users) => {
+//         if (err) console.log(err);
+//         users.forEach((user) => {
+//             bcrypt.hash(user.password, saltRounds).then((hash) => {
+//                 User.findById(user._id, (err, currentUser) => {
+//                     if (err) return console.log(err);
+//                     currentUser.fname = user.fname,
+//                     currentUser.lname = user.lname,
+//                     currentUser.street = user.street,
+//                     currentUser.city = user.city,
+//                     currentUser.state = user.state,
+//                     currentUser.zip_code = user.zip_code,
+//                     currentUser.email = user.email,
+//                     currentUser.password = hash,
+//                     currentUser.phone = user.phone
 
-                    currentUser.save((err, user) => {
-                        if(err) return console.log(err);
-                        console.log('\n' + user.fname + ' ' + user.lname + "'s password is now: " + hash + '.\n');
-                    });
-                });
-            });
-        });
-        let message = 'The deed is done.';
-        res.send(message);
-   });
-});
+//                     currentUser.save((err, user) => {
+//                         if(err) return console.log(err);
+//                         console.log('\n' + user.fname + ' ' + user.lname + "'s password is now: " + hash + '.\n');
+//                     });
+//                 });
+//             });
+//         });
+//         let message = 'The deed is done.';
+//         res.send(message);
+//    });
+// });
 
 module.exports = router;
 
