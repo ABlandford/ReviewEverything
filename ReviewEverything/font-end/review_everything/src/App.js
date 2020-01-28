@@ -96,20 +96,6 @@ class App extends React.Component {
         }
       })
   }
-<<<<<<< HEAD
-    
-  render() {
-    if(this.state.redirect) { 
-      return <Redirect to={ this.state.redirect }/> 
-    }
-    return(
-      <div>
-        <h1>Sign In</h1>
-          <form onSubmit={this.checkLogin}>
-            <label>Email: </label><input type='text' value={this.state.email} onChange={this.emailUpdate}></input><br/>
-            <label>Password: </label><input type='password' value={this.state.password} onChange={this.passcodeUpdate}></input><br/>
-            <input type='submit' value='Log In'></input>
-=======
   
   render(){
     return (
@@ -129,88 +115,10 @@ class App extends React.Component {
                   onChange = {this.changeRating}
             />
             <input type='submit' value='Submit'></input>
->>>>>>> parent of a24bc8b... API
           </form>
+          </header>
       </div>
-    );
-}
-<<<<<<< HEAD
-
-// export default Login;
-
-class Home extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = { valueReview: "", valueRating: 0, loggedin: true, user: {} };
-    this.submitReview = this.submitReview.bind(this);
-    this.changeRating = this.changeRating.bind(this);
-    this.changeReview = this.changeReview.bind(this);
-    this.logout = this.logout.bind(this);
-  }
-
-  changeReview(event) {
-    this.setState({valueReview : event.target.value})
-  }
-
-  changeRating(event) {
-    this.setState({valueRating : event.target.value})
-  }
+    )}}
   
-  submitReview(event) {
-    event.preventDefault();
-
-    const data = { userId: this.state.user.userId, userfname: this.state.user.fname, userlname: this.state.user.lname, review: this.state.valueReview, rating: this.state.valueRating }
-    
-    fetch('http://localhost:9000/test/hash', {
-      method: 'GET',
-    })
-      .then(response => response.text())
-      .then(text => {
-        console.log(text);
-      })
-  }
-  
-  logout() {
-    cookies.remove('currentUser');
-    this.setState({ loggedin: false })
-  }
-  
-  componentDidMount() {
-    let currentUser = cookies.get('currentUser');
-    this.setState({ user: { fname: currentUser.fname, lname: currentUser.lname, userId: currentUser._id } });
-  }
-  
-  render() {
-    if(this.state.loggedin === false) {
-      return <Redirect to='/'/>
-    }
-    return(
-      <div>
-        <h1>Home</h1>
-          <p>Welcome home {this.state.user.fname}!</p>
-        <section>
-          <p>REVIEW OUR MOVIES!!!</p>
-          <p>¯\_(ツ)_/¯</p>
-            <form onSubmit={this.submitReview}>
-              <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
-              <label>What do rate movie? </label><input type='number' value={this.state.valueRating} onChange={this.changeRating}></input><br/>
-              <input type='submit' value='Submit'></input>
-            </form>
-        </section>
-        <section>
-          <button onClick = {() => {
-            this.logout();
-          }}>Logout</button>
-        </section>
-        </div>
-  );
-
-        }
-      }
-=======
-}
->>>>>>> parent of a24bc8b... API
 
 export default App;
-        

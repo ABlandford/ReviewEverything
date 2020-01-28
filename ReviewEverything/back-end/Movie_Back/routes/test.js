@@ -30,10 +30,21 @@ const userSchema = mongoose.Schema({
     zip_code: String
 })
 
-<<<<<<< HEAD
 
 const RR = mongoose.model('reviews', reviewSchema)
 
+
+const User = mongoose.model('users', userSchema);
+
+router.get('/', function(req, res) {
+    console.log('WE ARE HERE!!!')
+    User.find((err, users) => {
+        // console.log("BRUH")
+        // console.log(User_Profiles.city)
+        if (err) console.log(err);
+        let userCollection = {};
+    });
+const RR = mongoose.model('reviews', reviewSchema)
 
 const User = mongoose.model('users', userSchema);
 
@@ -58,23 +69,19 @@ router.get('/', function(req, res) {
 const RR = mongoose.model('reviewratings', reviewSchema)
 
 
-=======
-const RR = mongoose.model('reviewratings', reviewSchema)
+// router.post('/submitReview', function(req, res) {
+//     console.log('\nSubmitting data...\n');
+//     console.log('Review submitted: ' + req.body.review);
+//     console.log('Rating submitted: ' + req.body.rating);
+//     var r = new RR({review: req.body.review, rating: req.body.rating})
+//     r.save(function(err){
+//         if(err)
+//             throw err;
+//         else  
+//             console.log('saved!')
+//     })
+// });
 
->>>>>>> parent of a24bc8b... API
-router.post('/submitReview', function(req, res) {
-    console.log('\nSubmitting data...\n');
-    console.log('Review submitted: ' + req.body.review);
-    console.log('Rating submitted: ' + req.body.rating);
-    var r = new RR({review: req.body.review, rating: req.body.rating})
-    r.save(function(err){
-        if(err)
-            throw err;
-        else  
-            console.log('saved!')
-    })
-});
-<<<<<<< HEAD
 
 
 router.post('/submitReview', function(req, res) {
@@ -89,6 +96,7 @@ router.post('/submitReview', function(req, res) {
             console.log(r.userfname + "'s review saved!");
     })
 });
+
 
 
 router.post('/login', function(req, res) {
@@ -149,11 +157,6 @@ router.get('/hash', (req, res) => {
                     currentUser.password = hash,
                     currentUser.phone = user.phone
 
-                    console.log("HELLO?")
-                    currentUser.save((err, User_Profiles) => {
-
-
-
                     currentUser.save((err, user) => {
 
                         if(err) return console.log(err);
@@ -168,9 +171,6 @@ router.get('/hash', (req, res) => {
 });
 });
 
-
-=======
->>>>>>> parent of a24bc8b... API
 // const User = mongoose.model('User_Profiles', userSchema);
 
 // router.get('/', function(req, res) {
