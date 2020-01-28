@@ -2,6 +2,7 @@ import React, { Component, useImperativeHandle } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import StarRatingComponent from 'react-star-rating-component';
+import cookies from 'universal-cookie'
 
 class App extends React.Component {
   
@@ -14,7 +15,7 @@ class App extends React.Component {
     this.emailUpdate = this.emailUpdate.bind(this);
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
-    this.hashPasswords = this.hashPasswords.bind(this);
+    // this.hashPasswords = this.hashPasswords.bind(this);
   }
   
   callAPI() {
@@ -96,7 +97,7 @@ class App extends React.Component {
         }
       })
   }
-  
+
   render(){
     return (
       <div className="App">
