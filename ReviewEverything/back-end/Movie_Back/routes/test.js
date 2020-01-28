@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/data');
+mongoose.connect('mongodb://localhost:27017/Users');
 
 let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -32,40 +32,27 @@ const userSchema = mongoose.Schema({
     zip_code: String
 })
 
-const RR = mongoose.model('reviews', reviewSchema)
+// const RR = mongoose.model('reviewratings', reviewSchema)
 
-const User = mongoose.model('users', userSchema);
+const User = mongoose.model('User_Profiles', userSchema);
 
-router.get('/', function(req, res) {
-    console.log('WE ARE HERE!!!')
-    User.find((err, users) => {
-        // console.log("BRUH")
-        // console.log(User_Profiles.city)
-        if (err) console.log(err);
-        let userCollection = {};
+// router.get('/', function(req, res) {
+//     console.log('WE ARE HERE!!!')
+//     User.find((err, User_Profiles) => {
+//         // console.log("BRUH")
+//         // console.log(User_Profiles.city)
+//         if (err) console.log(err);
+//         let userCollection = {};
 
-        users.forEach((user) => {
-            console.log(user);
-         userCollection[user._id] = user;
-        });
+//         User_Profiles.forEach((user) => {
+//             console.log(user);
+//          userCollection[user._id] = user;
+//         });
       
-    res.send(userCollection);
+//     res.send(userCollection);
     
-   });
-});
-
-router.post('/submitReview', function(req, res) {
-    console.log('\nSubmitting data...\n');
-    console.log('Review submitted: ' + req.body.review);
-    console.log('Rating submitted: ' + req.body.rating);
-    var r = new RR({review: req.body.review, rating: req.body.rating})
-    r.save(function(err){
-        if(err)
-            throw err;
-        else  
-            console.log('saved!')
-    })
-});
+//    });
+// });
 
 router.post('/login', function(req, res) {
     // if(req.body.email != null && req.body.password != null) {
@@ -106,12 +93,12 @@ router.post('/login', function(req, res) {
 
 router.get('/hash', (req, res) => {
     console.log(req.body.message)
-    User.find((err, users) => {
+    User.find((err, User_Profiles) => {
         if (err) console.log(err);
-        users.forEach((user) => {
+        User_Profiles.forEach((user) => {
             bcrypt.hash(user.password, saltRounds).then((hash) => {
                 User.findById(user._id, (err, currentUser) => {
-                    if (err) return console.log(err);
+                    if (err) return console.log(err); 
                     currentUser.fname = user.fname,
                     currentUser.lname = user.lname,
                     currentUser.street = user.street,
@@ -121,7 +108,6 @@ router.get('/hash', (req, res) => {
                     currentUser.email = user.email,
                     currentUser.password = hash,
                     currentUser.phone = user.phone
-
                     currentUser.save((err, user) => {
                         if(err) return console.log(err);
                         console.log('\n' + user.fname + ' ' + user.lname + "'s password is now: " + hash + '.\n');
@@ -135,4 +121,3 @@ router.get('/hash', (req, res) => {
 });
 
 module.exports = router;
-

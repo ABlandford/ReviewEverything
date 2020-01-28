@@ -29,7 +29,6 @@ const userSchema = mongoose.Schema({
 })
 
 
-
 const RR = mongoose.model('reviewratings', reviewSchema)
 
 router.post('/submitReview', function(req, res) {
@@ -44,7 +43,7 @@ router.post('/submitReview', function(req, res) {
         else  
             console.log('saved!')
     })
-
+    
 });
 
 
