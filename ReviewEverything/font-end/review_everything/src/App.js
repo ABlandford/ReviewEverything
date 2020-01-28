@@ -96,6 +96,7 @@ class App extends React.Component {
         }
       })
   }
+<<<<<<< HEAD
     
   render() {
     if(this.state.redirect) { 
@@ -108,11 +109,32 @@ class App extends React.Component {
             <label>Email: </label><input type='text' value={this.state.email} onChange={this.emailUpdate}></input><br/>
             <label>Password: </label><input type='password' value={this.state.password} onChange={this.passcodeUpdate}></input><br/>
             <input type='submit' value='Log In'></input>
+=======
+  
+  render(){
+    return (
+      <div className="App">
+        <header className="App-header">
+          <p>REVIEW OUR MOVIES!!!</p>
+          <p>¯\_(ツ)_/¯</p>
+          <form onSubmit={this.submitReview}>
+            <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview} class="in"></input><br/>
+            <label>What do rate movie? </label>
+            <StarRatingComponent 
+                  name="starSystem" 
+                  id="stars"
+                  value={this.state.valueRating}
+                  starCount={5}
+                  onStarClick={this.onStarClick.bind(this)}
+                  onChange = {this.changeRating}
+            />
+            <input type='submit' value='Submit'></input>
+>>>>>>> parent of a24bc8b... API
           </form>
       </div>
     );
-  }
 }
+<<<<<<< HEAD
 
 // export default Login;
 
@@ -186,6 +208,9 @@ class Home extends React.Component {
 
         }
       }
+=======
+}
+>>>>>>> parent of a24bc8b... API
 
 export default App;
         

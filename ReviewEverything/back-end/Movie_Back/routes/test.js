@@ -30,6 +30,7 @@ const userSchema = mongoose.Schema({
     zip_code: String
 })
 
+<<<<<<< HEAD
 
 const RR = mongoose.model('reviews', reviewSchema)
 
@@ -57,6 +58,10 @@ router.get('/', function(req, res) {
 const RR = mongoose.model('reviewratings', reviewSchema)
 
 
+=======
+const RR = mongoose.model('reviewratings', reviewSchema)
+
+>>>>>>> parent of a24bc8b... API
 router.post('/submitReview', function(req, res) {
     console.log('\nSubmitting data...\n');
     console.log('Review submitted: ' + req.body.review);
@@ -69,6 +74,7 @@ router.post('/submitReview', function(req, res) {
             console.log('saved!')
     })
 });
+<<<<<<< HEAD
 
 
 router.post('/submitReview', function(req, res) {
@@ -163,6 +169,8 @@ router.get('/hash', (req, res) => {
 });
 
 
+=======
+>>>>>>> parent of a24bc8b... API
 // const User = mongoose.model('User_Profiles', userSchema);
 
 // router.get('/', function(req, res) {
