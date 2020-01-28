@@ -14,9 +14,6 @@ mdb.once('open', (callback) => {
 });
 
 const reviewSchema = mongoose.Schema({
-    user_id: String,
-    userfname: String,
-    userlname: String,
     review: String,
     rating: Number
 })
@@ -33,19 +30,9 @@ const userSchema = mongoose.Schema({
     zip_code: String
 })
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-const Review = mongoose.model('reviews', reviewSchema)
-=======
+
 const RR = mongoose.model('reviews', reviewSchema)
->>>>>>> parent of 50b8595... Stars
-=======
-const RR = mongoose.model('reviews', reviewSchema)
->>>>>>> parent of 50b8595... Stars
-=======
-const RR = mongoose.model('reviews', reviewSchema)
->>>>>>> parent of 50b8595... Stars
+
 
 const User = mongoose.model('users', userSchema);
 
@@ -67,6 +54,9 @@ router.get('/', function(req, res) {
    });
 });
 
+const RR = mongoose.model('reviewratings', reviewSchema)
+
+
 router.post('/submitReview', function(req, res) {
     console.log('\nSubmitting data...\n');
     console.log('Review submitted: ' + req.body.review);
@@ -79,8 +69,7 @@ router.post('/submitReview', function(req, res) {
             console.log('saved!')
     })
 });
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 router.post('/submitReview', function(req, res) {
     console.log('\nSubmitting data...\n');
@@ -94,10 +83,7 @@ router.post('/submitReview', function(req, res) {
             console.log(r.userfname + "'s review saved!");
     })
 });
-=======
->>>>>>> parent of 50b8595... Stars
-=======
->>>>>>> parent of 50b8595... Stars
+
 
 router.post('/login', function(req, res) {
     // if(req.body.email != null && req.body.password != null) {
@@ -156,19 +142,14 @@ router.get('/hash', (req, res) => {
                     currentUser.email = user.email,
                     currentUser.password = hash,
                     currentUser.phone = user.phone
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
                     console.log("HELLO?")
                     currentUser.save((err, User_Profiles) => {
-=======
-=======
->>>>>>> parent of 50b8595... Stars
-=======
->>>>>>> parent of 50b8595... Stars
+
+
 
                     currentUser.save((err, user) => {
->>>>>>> parent of 50b8595... Stars
+
                         if(err) return console.log(err);
                         console.log('\n' + User_Profiles.fname + ' ' + User_Profiles.lname + "'s password is now: " + hash + '.\n');
                     });
@@ -179,6 +160,27 @@ router.get('/hash', (req, res) => {
         res.send(message);
    });
 });
+});
+
+
+// const User = mongoose.model('User_Profiles', userSchema);
+
+// router.get('/', function(req, res) {
+// //     console.log('WE ARE HERE!!!')
+//     User.find((err, User_Profiles) => {
+//         console.log("BRUH")
+//         console.log(User_Profiles.city)
+//         if (err) console.log(err);
+//         let userCollection = {};
+  
+//           User_Profiles.forEach((user) => {
+//               console.log(user);
+//            userCollection[user._id] = user;
+//           });
+          
+//       res.send(userCollection);
+        
+//     });
+//  });
 
 module.exports = router;
-

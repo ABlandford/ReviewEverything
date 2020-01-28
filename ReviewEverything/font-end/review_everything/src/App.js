@@ -1,9 +1,7 @@
 import React, { Component, useImperativeHandle } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
+import StarRatingComponent from 'react-star-rating-component';
 
 class App extends React.Component {
   
@@ -76,8 +74,7 @@ class App extends React.Component {
 
     const data = { email: this.state.email, password: this.state.password }
     
-    //fetch('http://localhost:9000/home/submitReview', {
-    fetch('http://localhost:9000/test/login', {
+    fetch('http://localhost:9000/test/submitReview', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -184,8 +181,11 @@ class Home extends React.Component {
             this.logout();
           }}>Logout</button>
         </section>
-      </div>
-    );
-  }
-}
+        </div>
+  );
+
+        }
+      }
+
 export default App;
+        
