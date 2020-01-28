@@ -18,7 +18,7 @@ class App extends React.Component {
   }
   
   callAPI() {
-    fetch("http://localhost:9000/home", {
+    fetch("http://localhost:9000/test", {
       method: 'GET'
     })
       .then(response => response.text())

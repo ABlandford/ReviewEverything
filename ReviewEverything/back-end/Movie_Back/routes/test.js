@@ -63,21 +63,23 @@ router.post('/login', function(req, res) {
     console.log('\nChecking data...\n');
     console.log('Email submitted: ' + req.body.email);
     console.log('Password submitted(unhashed): ' + req.body.password);
+    console.log(req.body.message)
+   
     if(req.body.email != null && req.body.password != null) {
         let status = false;
-        User.findOne({'email': req.body.email}, function(err, user) {
-            if(!user) {
+        User.findOne({'email': req.body.email}, function(err, User_Profiles) {
+            if(!User_Profiles) {
                 let statusMessage = 'The EMAIL you entered was incorrect.'
                 res.send({status, statusMessage});
             }
-            else if(user) {
+            else if(User_Profiles) {
                 bcrypt.hash(req.body.password, saltRounds).then((hash) => {
                     console.log("\nHashed password: " + hash + ".\n");
                 })
-                bcrypt.compare(req.body.password, user.password).then((res2) => {
+                bcrypt.compare(req.body.password, User.password).then((res2) => {
                     if(res2 == true) {
                         status = !status;
-                        res.send({status, user});
+                        res.send({status, User_Profiles});
                     } else {
                         let statusMessage = 'The PASSWORD you entered was incorrect.'
                         res.send({status, statusMessage})
@@ -87,7 +89,8 @@ router.post('/login', function(req, res) {
         });
     } else {
         let status = false;
-        res.send(status);
+        let statusMessage = "You're submitting nothing. Please enter something into the text boxes before submitting."
+        res.send({status, statusMessage});
     }
 });
 
@@ -98,7 +101,7 @@ router.get('/hash', (req, res) => {
         User_Profiles.forEach((user) => {
             bcrypt.hash(user.password, saltRounds).then((hash) => {
                 User.findById(user._id, (err, currentUser) => {
-                    if (err) return console.log(err); 
+                    if (err) return console.log(err);
                     currentUser.fname = user.fname,
                     currentUser.lname = user.lname,
                     currentUser.street = user.street,
@@ -108,9 +111,10 @@ router.get('/hash', (req, res) => {
                     currentUser.email = user.email,
                     currentUser.password = hash,
                     currentUser.phone = user.phone
-                    currentUser.save((err, user) => {
+                    console.log("HELLO?")
+                    currentUser.save((err, User_Profiles) => {
                         if(err) return console.log(err);
-                        console.log('\n' + user.fname + ' ' + user.lname + "'s password is now: " + hash + '.\n');
+                        console.log('\n' + User_Profiles.fname + ' ' + User_Profiles.lname + "'s password is now: " + hash + '.\n');
                     });
                 });
             });
