@@ -30,8 +30,11 @@ const userSchema = mongoose.Schema({
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // const RR = mongoose.model('reviewratings', reviewSchema)
 =======
+=======
+>>>>>>> parent of 50b8595... Stars
 
 const RR = mongoose.model('reviewratings', reviewSchema)
 >>>>>>> parent of 50b8595... Stars
