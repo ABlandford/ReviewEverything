@@ -29,11 +29,17 @@ const userSchema = mongoose.Schema({
 })
 
 
+<<<<<<< HEAD
 // const RR = mongoose.model('reviewratings', reviewSchema)
+=======
+
+const RR = mongoose.model('reviewratings', reviewSchema)
+>>>>>>> parent of 50b8595... Stars
 
 // router.post('/submitReview', function(req, res) {
 //     console.log('\nSubmitting data...\n');
 
+<<<<<<< HEAD
 //     console.log('Review submitted: ' + req.body.review);
 //     console.log('Rating submitted: ' + req.body.rating);
 //     var r = new RR({review: req.body.review, rating: req.body.rating})
@@ -45,6 +51,19 @@ const userSchema = mongoose.Schema({
 //     })
     
 // });
+=======
+    console.log('Review submitted: ' + req.body.review);
+    console.log('Rating submitted: ' + req.body.rating);
+    var r = new RR({review: req.body.review, rating: req.body.rating})
+    r.save(function(err){
+        if(err)
+            throw err;
+        else  
+            console.log('saved!')
+    })
+
+});
+>>>>>>> parent of 50b8595... Stars
 
 
 // const User = mongoose.model('User_Profiles', userSchema);

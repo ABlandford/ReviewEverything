@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/Users');
+mongoose.connect('mongodb://localhost/data');
 
 let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -33,27 +33,44 @@ const userSchema = mongoose.Schema({
     zip_code: String
 })
 
+<<<<<<< HEAD
 const Review = mongoose.model('reviews', reviewSchema)
+=======
+const RR = mongoose.model('reviews', reviewSchema)
+>>>>>>> parent of 50b8595... Stars
 
-const User = mongoose.model('User_Profiles', userSchema);
+const User = mongoose.model('users', userSchema);
 
-// router.get('/', function(req, res) {
-//     console.log('WE ARE HERE!!!')
-//     User.find((err, User_Profiles) => {
-//         // console.log("BRUH")
-//         // console.log(User_Profiles.city)
-//         if (err) console.log(err);
-//         let userCollection = {};
+router.get('/', function(req, res) {
+    console.log('WE ARE HERE!!!')
+    User.find((err, users) => {
+        // console.log("BRUH")
+        // console.log(User_Profiles.city)
+        if (err) console.log(err);
+        let userCollection = {};
 
-//         User_Profiles.forEach((user) => {
-//             console.log(user);
-//          userCollection[user._id] = user;
-//         });
+        users.forEach((user) => {
+            console.log(user);
+         userCollection[user._id] = user;
+        });
       
-//     res.send(userCollection);
+    res.send(userCollection);
     
-//    });
-// });
+   });
+});
+
+router.post('/submitReview', function(req, res) {
+    console.log('\nSubmitting data...\n');
+    console.log('Review submitted: ' + req.body.review);
+    console.log('Rating submitted: ' + req.body.rating);
+    var r = new RR({review: req.body.review, rating: req.body.rating})
+    r.save(function(err){
+        if(err)
+            throw err;
+        else  
+            console.log('saved!')
+    })
+});
 
 router.post('/submitReview', function(req, res) {
     console.log('\nSubmitting data...\n');
@@ -110,9 +127,9 @@ router.post('/login', function(req, res) {
 
 router.get('/hash', (req, res) => {
     console.log(req.body.message)
-    User.find((err, User_Profiles) => {
+    User.find((err, users) => {
         if (err) console.log(err);
-        User_Profiles.forEach((user) => {
+        users.forEach((user) => {
             bcrypt.hash(user.password, saltRounds).then((hash) => {
                 User.findById(user._id, (err, currentUser) => {
                     if (err) return console.log(err);
@@ -125,8 +142,13 @@ router.get('/hash', (req, res) => {
                     currentUser.email = user.email,
                     currentUser.password = hash,
                     currentUser.phone = user.phone
+<<<<<<< HEAD
                     console.log("HELLO?")
                     currentUser.save((err, User_Profiles) => {
+=======
+
+                    currentUser.save((err, user) => {
+>>>>>>> parent of 50b8595... Stars
                         if(err) return console.log(err);
                         console.log('\n' + User_Profiles.fname + ' ' + User_Profiles.lname + "'s password is now: " + hash + '.\n');
                     });
@@ -139,3 +161,4 @@ router.get('/hash', (req, res) => {
 });
 
 module.exports = router;
+
