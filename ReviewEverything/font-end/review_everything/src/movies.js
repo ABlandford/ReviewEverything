@@ -18,8 +18,7 @@ export default class movies extends Component{
             this.setState ( {
                 
                 ans: json.results,
-                
-                  
+                       
             });
             
         });

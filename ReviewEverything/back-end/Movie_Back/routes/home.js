@@ -2,50 +2,48 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/Users');
+// mongoose.Promise = global.Promise;
+// mongoose.connect('mongodb://localhost:27017/Users');
 
-let mdb = mongoose.connection;
-mdb.on('error', console.error.bind(console, 'connection error:'));
-mdb.once('open', (callback) => {
+// let mdb = mongoose.connection;
+// mdb.on('error', console.error.bind(console, 'connection error:'));
+// mdb.once('open', (callback) => {
 
-});
+// });
 
-const reviewSchema = mongoose.Schema({
-    review: String,
-    rating: Number
-})
+// const reviewSchema = mongoose.Schema({
+//     review: String,
+//     rating: Number
+// })
 
-const userSchema = mongoose.Schema({
-    city: String,
-    email: String,
-    fname: String,
-    lname: String,
-    password: String,
-    phone: String,
-    state: String,
-    street: String,
-    zip_code: String
-})
+// const userSchema = mongoose.Schema({
+//     city: String,
+//     email: String,
+//     fname: String,
+//     lname: String,
+//     password: String,
+//     phone: String,
+//     state: String,
+//     street: String,
+//     zip_code: String
+// })
 
+// const RR = mongoose.model('reviewratings', reviewSchema)
 
+// router.post('/submitReview', function(req, res) {
+//     console.log('\nSubmitting data...\n');
 
-const RR = mongoose.model('reviewratings', reviewSchema)
+//     console.log('Review submitted: ' + req.body.review);
+//     console.log('Rating submitted: ' + req.body.rating);
+//     var r = new RR({review: req.body.review, rating: req.body.rating})
+//     r.save(function(err){
+//         if(err)
+//             throw err;
+//         else  
+//             console.log('saved!')
+//     })
 
-router.post('/submitReview', function(req, res) {
-    console.log('\nSubmitting data...\n');
-
-    console.log('Review submitted: ' + req.body.review);
-    console.log('Rating submitted: ' + req.body.rating);
-    var r = new RR({review: req.body.review, rating: req.body.rating})
-    r.save(function(err){
-        if(err)
-            throw err;
-        else  
-            console.log('saved!')
-    })
-
-});
+// });
 
 
 // const User = mongoose.model('User_Profiles', userSchema);
