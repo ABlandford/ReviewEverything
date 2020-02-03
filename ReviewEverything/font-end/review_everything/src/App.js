@@ -198,28 +198,9 @@ class Login extends React.Component {
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
     this.state = { apiResponse: "", valueReview: "", valueRating: 0, email: "", pasword: "" };
-    // this.submitReview = this.submitReview.bind(this);
-    // this.changeRating = this.changeRating.bind(this);
-    // this.changeReview = this.changeReview.bind(this);
-    // this.emailUpdate = this.emailUpdate.bind(this);
-    // this.passcodeUpdate = this.passcodeUpdate.bind(this);
-    this.checkLogin = this.checkLogin.bind(this);
   // this.hashPasswords = this.hashPasswords.bind(this);
   }
 
-  // hashPasswords(event) {
-  //   event.preventDefault();
-    
-  //   fetch('http://localhost:9000/test/hash', {
-  //     method: 'GET',
-  //   })
-  //     .then(response => response.text())
-  //     .then(text => {
-  //       console.log(text);
-  //     })
-  // }
-
-  
   emailUpdate(event) {
     this.setState({email : event.target.value})
   }
