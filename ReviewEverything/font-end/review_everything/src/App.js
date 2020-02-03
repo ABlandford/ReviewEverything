@@ -123,11 +123,8 @@
 // export default App;
 
 import React, { Component, useImperativeHandle } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, useHistory, Redirect } from 'react-router-dom';
 import './App.css';
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
 
 const App = () => {
 
@@ -238,7 +235,6 @@ class Login extends React.Component {
         if(json.status === true) {
           console.log('Login status: ' + json.status);
           console.log(json.user);
-          cookies.set('currentUser', JSON.stringify(json.user), {path: '/'});
           this.setState({ redirect: '/home' })
         } else {
           console.log('Login status: ' +  json.status);
@@ -248,7 +244,9 @@ class Login extends React.Component {
         }
       })
   }
-    
+  
+  
+  
   render() {
     if(this.state.redirect) { 
       return <Redirect to={ this.state.redirect }/> 
@@ -275,11 +273,10 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { valueReview: "", valueRating: 0, loggedin: true, user: {} };
+    this.state = { valueReview: "", valueRating: 0 };
     this.submitReview = this.submitReview.bind(this);
     this.changeRating = this.changeRating.bind(this);
     this.changeReview = this.changeReview.bind(this);
-    this.logout = this.logout.bind(this);
   }
 
   changeReview(event) {
@@ -293,7 +290,7 @@ class Home extends React.Component {
   submitReview(event) {
     event.preventDefault();
 
-    const data = { userId: this.state.user.userId, userfname: this.state.user.fname, userlname: this.state.user.lname, review: this.state.valueReview, rating: this.state.valueRating }
+    const data = { review: this.state.valueReview, rating: this.state.valueRating }
     
     fetch('http://localhost:9000/test/submitReview', {
       method: 'POST',
@@ -304,24 +301,11 @@ class Home extends React.Component {
     });
   }
   
-  logout() {
-    cookies.remove('currentUser');
-    this.setState({ loggedin: false })
-  }
-  
-  componentDidMount() {
-    let currentUser = cookies.get('currentUser');
-    this.setState({ user: { fname: currentUser.fname, lname: currentUser.lname, userId: currentUser._id } });
-  }
-  
   render() {
-    if(this.state.loggedin === false) {
-      return <Redirect to='/'/>
-    }
     return(
       <div>
         <h1>Home</h1>
-          <p>Welcome home {this.state.user.fname}!</p>
+          <p>Welcome home user!</p>
         <section>
           <p>REVIEW OUR MOVIES!!!</p>
           <p>¯\_(ツ)_/¯</p>
@@ -330,11 +314,6 @@ class Home extends React.Component {
               <label>What do rate movie? </label><input type='number' value={this.state.valueRating} onChange={this.changeRating}></input><br/>
               <input type='submit' value='Submit'></input>
             </form>
-        </section>
-        <section>
-          <button onClick = {() => {
-            this.logout();
-          }}>Logout</button>
         </section>
       </div>
     );

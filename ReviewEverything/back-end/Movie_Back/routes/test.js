@@ -13,7 +13,8 @@ mdb.once('open', (callback) => {
 });
 
 const reviewSchema = mongoose.Schema({
-    rating: Number,
+    user_id: String,
+    username: String,
     review: String,
     userfname: String, 
     userlname: String, 
@@ -32,7 +33,8 @@ const peopleSchema = mongoose.Schema({
     phone: String  
 })
 
-const Review = mongoose.model('reviewratings', reviewSchema)
+const RR = mongoose.model('reviews', reviewSchema)
+
 
 const User2 = mongoose.model('users', peopleSchema)
     
@@ -54,12 +56,12 @@ router.post('/submitReview', function(req, res) {
     console.log('\nSubmitting data...\n');
     console.log('Review submitted: ' + req.body.review);
     console.log('Rating submitted: ' + req.body.rating);
-    var r = new Review({ user_id: req.body.userId, userfname: req.body.userfname, userlname: req.body.userlname, review: req.body.review, rating: req.body.rating})
+    var r = new RR({review: req.body.review, rating: req.body.rating})
     r.save(function(err){
         if(err)
             throw err;
         else  
-            console.log(r.userfname + "'s review saved!");
+            console.log('saved!')
     })
 });
 
