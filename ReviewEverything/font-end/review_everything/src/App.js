@@ -192,31 +192,31 @@ class Login extends React.Component {
   
   constructor(props) {
     super(props);
-    // this.state = { email: "", pasword: "", redirect: null };
+    this.state = { email: "", pasword: "", redirect: null };
     this.emailUpdate = this.emailUpdate.bind(this);
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
     this.state = { apiResponse: "", valueReview: "", valueRating: 0, email: "", pasword: "" };
-  // this.submitReview = this.submitReview.bind(this);
-  // this.changeRating = this.changeRating.bind(this);
-  // this.changeReview = this.changeReview.bind(this);
-  // this.emailUpdate = this.emailUpdate.bind(this);
-  // this.passcodeUpdate = this.passcodeUpdate.bind(this);
-  // this.checkLogin = this.checkLogin.bind(this);
-  this.hashPasswords = this.hashPasswords.bind(this);
+  this.submitReview = this.submitReview.bind(this);
+  this.changeRating = this.changeRating.bind(this);
+  this.changeReview = this.changeReview.bind(this);
+  this.emailUpdate = this.emailUpdate.bind(this);
+  this.passcodeUpdate = this.passcodeUpdate.bind(this);
+  this.checkLogin = this.checkLogin.bind(this);
+  // this.hashPasswords = this.hashPasswords.bind(this);
   }
 
-  hashPasswords(event) {
-    event.preventDefault();
+  // hashPasswords(event) {
+  //   event.preventDefault();
     
-    fetch('http://localhost:9000/test/hash', {
-      method: 'GET',
-    })
-      .then(response => response.text())
-      .then(text => {
-        console.log(text);
-      })
-  }
+  //   fetch('http://localhost:9000/test/hash', {
+  //     method: 'GET',
+  //   })
+  //     .then(response => response.text())
+  //     .then(text => {
+  //       console.log(text);
+  //     })
+  // }
 
   
   emailUpdate(event) {
@@ -279,9 +279,9 @@ class Login extends React.Component {
             <label>Password: </label><input type='password' value={this.state.password} onChange={this.passcodeUpdate}></input><br/>
             <input type='submit' value='Log In'></input>
           </form>
-          <form onSubmit={this.hashPasswords}>
+          {/* <form onSubmit={this.hashPasswords}>
            <input type='submit' value='Hash Passwords'/>
-         </form>
+         </form> */}
       </div>
     );
   }
@@ -354,8 +354,6 @@ class Home extends React.Component {
             this.logout();
           }}>Logout</button>
         </section>
-         
-     
       </div>
     );
   }

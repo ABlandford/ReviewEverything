@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/Users');
+mongoose.connect('mongodb://localhost:27017/Peeps');
 
 let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -34,13 +34,12 @@ const peopleSchema = mongoose.Schema({
 
 const Review = mongoose.model('reviewratings', reviewSchema)
 
-const User2 = mongoose.model('people', peopleSchema)
+const User2 = mongoose.model('users', peopleSchema)
     
 router.get('/', function(req, res) {
     User2.find((err, users) => {
         if (err) console.log(err);
         let userCollection = {};
-        
         users.forEach((user) => {
             console.log('WE ARE HERE!!!')
             console.log(user);
@@ -99,39 +98,38 @@ router.post('/login', function(req, res) {
     }
 });
 
-router.get('/hash', (req, res) => {
-    User2.find((err, users) => {
-        if (err) console.log(err);
-        console.log("!!!")
-        users.forEach((user) => {
-            console.log("???")
-            console.log(user.fname + " " + user.lname);
-            bcrypt.hash(user.password, saltRounds).then((hash) => {
-                User2.findById(user._id, (err, currentUser) => {
-                    if (err) return console.log(err);
-                    currentUser.fname = user.fname,
-                    currentUser.lname = user.lname,
-                    currentUser.street = user.street,
-                    currentUser.city = user.city,
-                    currentUser.state = user.state,
-                    currentUser.zip_code = user.zip_code,
-                    currentUser.email = user.email,
-                    currentUser.password = hash,
-                    currentUser.phone = user.phone
+// router.get('/hash', (req, res) => {
+//     User2.find((err, users) => {
+//         if (err) console.log(err);
+//         console.log("!!!")
+//         users.forEach((user) => {
+//             console.log("???")
+//             console.log(user.fname + " " + user.lname);
+//             bcrypt.hash(user.password, saltRounds).then((hash) => {
+//                 User2.findById(user._id, (err, currentUser) => {
+//                     if (err) return console.log(err);
+//                     currentUser.fname = user.fname,
+//                     currentUser.lname = user.lname,
+//                     currentUser.street = user.street,
+//                     currentUser.city = user.city,
+//                     currentUser.state = user.state,
+//                     currentUser.zip_code = user.zip_code,
+//                     currentUser.email = user.email,
+//                     currentUser.password = hash,
+//                     currentUser.phone = user.phone
 
-                    currentUser.save((err, user) => {
+//                     currentUser.save((err, user) => {
 
-                        if(err) return console.log(err);
-                    });
-                    console.log('\n' + currentUser.fname + ' ' + currentUser.lname + "'s password is now: " + hash + '.\n');
-                });
-            });
-        });
-        let message = 'The deed is done!!';
-        res.send(message);
-   });
-});
-
+//                         if(err) return console.log(err);
+//                     });
+//                     console.log('\n' + currentUser.fname + ' ' + currentUser.lname + "'s password is now: " + hash + '.\n');
+//                 });
+//             });
+//         });
+//         let message = 'The deed is done!!';
+//         res.send(message);
+//    });
+// });
 
 // const User = mongoose.model('User_Profiles', userSchema);
 
