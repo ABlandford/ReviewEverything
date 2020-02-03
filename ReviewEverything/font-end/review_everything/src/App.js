@@ -130,7 +130,7 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 const App = () => {
-  
+
   // constructor(props) {
   //   super(props);
   //   this.state = { apiResponse: "" };
@@ -147,6 +147,7 @@ const App = () => {
   //       this.setState({ apiResponse: text });
   //     })
   // }
+
   
   // componentWillMount() {
   //   this.callAPI();
@@ -160,8 +161,8 @@ const App = () => {
   //     .then(response => response.text())
   //     .then(text => {
   //       console.log(text);
-  //     })
-  // }
+  //    })
+  //  }
 
   return (
     // <div className="App">
@@ -197,12 +198,12 @@ class Login extends React.Component {
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
     this.state = { apiResponse: "", valueReview: "", valueRating: 0, email: "", pasword: "" };
-  this.submitReview = this.submitReview.bind(this);
-  this.changeRating = this.changeRating.bind(this);
-  this.changeReview = this.changeReview.bind(this);
-  this.emailUpdate = this.emailUpdate.bind(this);
-  this.passcodeUpdate = this.passcodeUpdate.bind(this);
-  this.checkLogin = this.checkLogin.bind(this);
+    // this.submitReview = this.submitReview.bind(this);
+    // this.changeRating = this.changeRating.bind(this);
+    // this.changeReview = this.changeReview.bind(this);
+    // this.emailUpdate = this.emailUpdate.bind(this);
+    // this.passcodeUpdate = this.passcodeUpdate.bind(this);
+    this.checkLogin = this.checkLogin.bind(this);
   // this.hashPasswords = this.hashPasswords.bind(this);
   }
 
