@@ -16,6 +16,7 @@ const reviewSchema = mongoose.Schema({
     user_id: String,
     username: String,
     review: String,
+    rating: String, 
     userfname: String, 
     userlname: String, 
     user_id: String
@@ -33,7 +34,7 @@ const peopleSchema = mongoose.Schema({
     phone: String  
 })
 
-const RR = mongoose.model('reviews', reviewSchema)
+const RR = mongoose.model('reviewratings', reviewSchema)
 
 
 const User2 = mongoose.model('users', peopleSchema)

@@ -124,6 +124,7 @@
 
 import React, { Component, useImperativeHandle } from 'react';
 import { BrowserRouter as Router, Switch, Route, useHistory, Redirect } from 'react-router-dom';
+import StarRatingComponent from 'react-star-rating-component';
 import './App.css';
 
 const App = () => {
@@ -286,6 +287,10 @@ class Home extends React.Component {
   changeRating(event) {
     this.setState({valueRating : event.target.value})
   }
+
+    onStarClick(nextValue, prevValue, name) {
+    this.setState({valueRating: nextValue});
+  }
   
   submitReview(event) {
     event.preventDefault();
@@ -299,7 +304,18 @@ class Home extends React.Component {
       },
       body: JSON.stringify(data),
     });
+
+    // fetch("http://localhost:9000/test", {
+    //   method: 'GET'
+    // })
+    //   .then(response => response.text())
+    //   .then(text => {
+    //     console.log(text);
+    //     this.setState({ apiResponse: text });
+    //   })
   }
+
+  
   
   render() {
     return(
@@ -311,7 +327,15 @@ class Home extends React.Component {
           <p>¯\_(ツ)_/¯</p>
             <form onSubmit={this.submitReview}>
               <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
-              <label>What do rate movie? </label><input type='number' value={this.state.valueRating} onChange={this.changeRating}></input><br/>
+              
+              <StarRatingComponent 
+                  name="starSystem" 
+                  id="stars"
+                  value={this.state.valueRating}
+                  starCount={5}
+                  onStarClick={this.onStarClick.bind(this)}
+                  onChange = {this.changeRating}
+            />
               <input type='submit' value='Submit'></input>
             </form>
         </section>
