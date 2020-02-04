@@ -10,16 +10,19 @@ mongoose.connect('mongodb://localhost/data');
 let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
 mdb.once('open', (callback) => {
-
 });
 
 const reviewSchema = mongoose.Schema({
-    user_id: String,
-    userfname: String,
-    userlname: String,
+    username: String,
     review: String,
-    rating: Number
+    rating: String, 
+    userfname: String, 
+    userlname: String, 
+    userId: String, 
+    movieId: Number, 
+    email: String,
 })
+
 
 const userSchema = mongoose.Schema({
     fname: String,
@@ -33,25 +36,22 @@ const userSchema = mongoose.Schema({
     phone: String
 })
 
-const Review = mongoose.model('reviews', reviewSchema)
+const RR = mongoose.model('reviewratings', reviewSchema)
 
-const User = mongoose.model('users', userSchema);
 
+const User = mongoose.model('users', userSchema)
+    
 router.get('/', function(req, res) {
-    console.log('WE ARE HERE!!!')
     User.find((err, users) => {
-        // console.log("BRUH")
-        // console.log(User_Profiles.city)
         if (err) console.log(err);
         let userCollection = {};
-
         users.forEach((user) => {
-            console.log(user);
+            // console.log('WE ARE HERE!!!')
+            // console.log(user);
          userCollection[user._id] = user;
         });
       
     res.send(userCollection);
-    
    });
 });
 
@@ -59,27 +59,26 @@ router.post('/submitReview', function(req, res) {
     console.log('\nSubmitting data...\n');
     console.log('Review submitted: ' + req.body.review);
     console.log('Rating submitted: ' + req.body.rating);
-    var r = new Review({ user_id: req.body.userId, userfname: req.body.userfname, userlname: req.body.userlname, review: req.body.review, rating: req.body.rating})
+    console.log('Review username ' + req.body.email);
+    console.log("Review UserId " + req.body.userId)
+    var r = new RR({review: req.body.review, rating: req.body.rating, username: req.body.email, movieId: req.body.movieId, userId: req.body.userId})
     r.save(function(err){
         if(err)
             throw err;
         else  
-            console.log(r.userfname + "'s review saved!");
+            console.log('saved!')
     })
 });
 
 router.post('/login', function(req, res) {
-    // if(req.body.email != null && req.body.password != null) {
-    //     status = true
-    // } else {
-    //     status = false
-    // }
     console.log('\nChecking data...\n');
     console.log('Email submitted: ' + req.body.email);
     console.log('Password submitted(unhashed): ' + req.body.password);
+    console.log(req.body.message)
+   
     if(req.body.email != null && req.body.password != null) {
         let status = false;
-        User.findOne({'email': req.body.email}, function(err, user) {
+        User2.findOne({'email': req.body.email}, function(err, user) {
             if(!user) {
                 let statusMessage = 'The EMAIL you entered was incorrect.'
                 res.send({status, statusMessage});
@@ -132,13 +131,14 @@ router.post('/signup', function(req, res) {
 });
 
 // router.get('/hash', (req, res) => {
-//     console.log(req.body.message)
-//     User.find((err, users) => {
+//     User2.find((err, users) => {
 //         if (err) console.log(err);
+//         console.log("!!!")
 //         users.forEach((user) => {
-//         console.log("Hashing password of " + user.fname + " " + user.lname);
+//             console.log("???")
+//             console.log(user.fname + " " + user.lname);
 //             bcrypt.hash(user.password, saltRounds).then((hash) => {
-//                 User.findById(user._id, (err, currentUser) => {
+//                 User2.findById(user._id, (err, currentUser) => {
 //                     if (err) return console.log(err);
 //                     currentUser.fname = user.fname,
 //                     currentUser.lname = user.lname,
@@ -151,16 +151,36 @@ router.post('/signup', function(req, res) {
 //                     currentUser.phone = user.phone
 
 //                     currentUser.save((err, user) => {
+
 //                         if(err) return console.log(err);
 //                     });
 //                     console.log('\n' + currentUser.fname + ' ' + currentUser.lname + "'s password is now: " + hash + '.\n');
 //                 });
 //             });
 //         });
-//         let message = 'The deed is done.';
+//         let message = 'The deed is done!!';
 //         res.send(message);
 //    });
 // });
 
-module.exports = router;
+// const User = mongoose.model('User_Profiles', userSchema);
 
+// router.get('/', function(req, res) {
+// //     console.log('WE ARE HERE!!!')
+//     User.find((err, User_Profiles) => {
+//         console.log("BRUH")
+//         console.log(User_Profiles.city)
+//         if (err) console.log(err);
+//         let userCollection = {};
+  
+//           User_Profiles.forEach((user) => {
+//               console.log(user);
+//            userCollection[user._id] = user;
+//           });
+          
+//       res.send(userCollection);
+        
+//     });
+//  });
+
+module.exports = router;
