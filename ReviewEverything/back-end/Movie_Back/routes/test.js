@@ -13,13 +13,14 @@ mdb.once('open', (callback) => {
 });
 
 const reviewSchema = mongoose.Schema({
-    user_id: String,
     username: String,
     review: String,
     rating: String, 
     userfname: String, 
     userlname: String, 
-    user_id: String
+    userId: String, 
+    movieId: Number, 
+    email: String,
 })
 
 const peopleSchema = mongoose.Schema({
@@ -44,8 +45,8 @@ router.get('/', function(req, res) {
         if (err) console.log(err);
         let userCollection = {};
         users.forEach((user) => {
-            console.log('WE ARE HERE!!!')
-            console.log(user);
+            // console.log('WE ARE HERE!!!')
+            // console.log(user);
          userCollection[user._id] = user;
         });
       
@@ -57,7 +58,9 @@ router.post('/submitReview', function(req, res) {
     console.log('\nSubmitting data...\n');
     console.log('Review submitted: ' + req.body.review);
     console.log('Rating submitted: ' + req.body.rating);
-    var r = new RR({review: req.body.review, rating: req.body.rating})
+    console.log('Review username ' + req.body.email);
+    console.log("Review UserId " + req.body.userId)
+    var r = new RR({review: req.body.review, rating: req.body.rating, username: req.body.email, movieId: req.body.movieId, userId: req.body.userId})
     r.save(function(err){
         if(err)
             throw err;
@@ -83,7 +86,7 @@ router.post('/login', function(req, res) {
                 bcrypt.hash(req.body.password, saltRounds).then((hash) => {
                     console.log("\nHashed password: " + hash + ".\n");
                 })
-                bcrypt.compare(req.body.password, User2.password).then((res2) => {
+                bcrypt.compare(req.body.password, user.password).then((res2) => {
                     if(res2 == true) {
                         status = !status;
                         res.send({status, user});
