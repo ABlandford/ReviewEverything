@@ -22,15 +22,15 @@ const reviewSchema = mongoose.Schema({
 })
 
 const userSchema = mongoose.Schema({
-    city: String,
-    email: String,
     fname: String,
     lname: String,
-    password: String,
-    phone: String,
-    state: String,
     street: String,
-    zip_code: String
+    city: String,
+    state: String,
+    zip_code: String,
+    email: String,
+    password: String,
+    phone: String
 })
 
 const Review = mongoose.model('reviews', reviewSchema)
@@ -106,11 +106,37 @@ router.post('/login', function(req, res) {
     }
 });
 
+router.post('/signup', function(req, res) {
+    console.log('Checking data...');
+    console.log('Information submitted: ' + req.body);
+    bcrypt.hash(req.body.password, saltRounds).then((hash) => {
+        const newUser = new User({
+            fname: req.body.fname,
+            lname: req.body.lname,
+            street: req.body.street,
+            city: req.body.street,
+            state: req.body.state,
+            zip_code: req.body.zip_code,
+            email: req.body.email,
+            password: hash,
+            phone: req.body.phone
+        })
+
+        newUser.save((err, user) => {
+            if (err) return console.log(err);
+            console.log(user.fname + ' added!')
+        });
+
+        return res.send(newUser)
+    });
+});
+
 // router.get('/hash', (req, res) => {
 //     console.log(req.body.message)
 //     User.find((err, users) => {
 //         if (err) console.log(err);
 //         users.forEach((user) => {
+//         console.log("Hashing password of " + user.fname + " " + user.lname);
 //             bcrypt.hash(user.password, saltRounds).then((hash) => {
 //                 User.findById(user._id, (err, currentUser) => {
 //                     if (err) return console.log(err);
@@ -126,8 +152,8 @@ router.post('/login', function(req, res) {
 
 //                     currentUser.save((err, user) => {
 //                         if(err) return console.log(err);
-//                         console.log('\n' + user.fname + ' ' + user.lname + "'s password is now: " + hash + '.\n');
 //                     });
+//                     console.log('\n' + currentUser.fname + ' ' + currentUser.lname + "'s password is now: " + hash + '.\n');
 //                 });
 //             });
 //         });

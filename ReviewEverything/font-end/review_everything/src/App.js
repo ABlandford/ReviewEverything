@@ -51,6 +51,9 @@ const App = () => {
         <Route path='/home'>
           <Home/>
         </Route>
+        <Route path='/signup'>
+          <SignUp/>
+        </Route>
       </Switch>
     </Router>
         
@@ -73,6 +76,13 @@ class Login extends React.Component {
     this.emailUpdate = this.emailUpdate.bind(this);
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
+    this.redirectToSignUp = this.redirectToSignUp.bind(this);
+  }
+  
+  redirectToSignUp(event) {
+    event.preventDefault();
+
+    this.setState({ redirect: '/signup' });
   }
   
   emailUpdate(event) {
@@ -85,7 +95,6 @@ class Login extends React.Component {
   
   checkLogin(event) {
     event.preventDefault();
-    // let history = useHistory();
 
     const data = { email: this.state.email, password: this.state.password }
     
@@ -124,12 +133,15 @@ class Login extends React.Component {
             <label>Password: </label><input type='password' value={this.state.password} onChange={this.passcodeUpdate}></input><br/>
             <input type='submit' value='Log In'></input>
           </form>
+          <section>
+            <form onSubmit={ this.redirectToSignUp }>
+              <input type='submit' value='Sign Up'></input>
+            </form>
+          </section>
       </div>
     );
   }
 }
-
-// export default Login;
 
 class Home extends React.Component {
 
@@ -201,4 +213,98 @@ class Home extends React.Component {
   }
 }
 
-// export default Home;
+class SignUp extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { fname: '', lname: '', street: '', city: '', stateVal: '', zip: '', email: '', password: '', phone: '', redirect: '' };
+    this.changeFName = this.changeFName.bind(this);
+    this.changeLName = this.changeLName.bind(this);
+    this.changeStreet = this.changeStreet.bind(this);
+    this.changeCity = this.changeCity.bind(this);
+    this.changeState = this.changeState.bind(this);
+    this.changeZip = this.changeZip.bind(this);
+    this.changeEmail = this.changeEmail.bind(this);
+    this.changePassword = this.changePassword.bind(this);
+    this.changePhone = this.changePhone.bind(this);
+    this.submitInfo = this.submitInfo.bind(this);
+  }
+  
+  changeFName(event) {
+    this.setState({fname : event.target.value})
+  }
+
+  changeLName(event) {
+    this.setState({lname : event.target.value})
+  }
+
+  changeStreet(event) {
+    this.setState({street : event.target.value})
+  }
+
+  changeCity(event) {
+    this.setState({city : event.target.value})
+  }
+
+  changeState(event) {
+    this.setState({stateVal : event.target.value})
+  }
+
+  changeZip(event) {
+    this.setState({zip : event.target.value})
+  }
+
+  changeEmail(event) {
+    this.setState({email : event.target.value})
+  }
+
+  changePassword(event) {
+    this.setState({password : event.target.value})
+  }
+
+  changePhone(event) {
+    this.setState({phone : event.target.value})
+  }
+  
+  submitInfo(event) {
+    event.preventDefault();
+
+    const data = { fname: this.state.fname, lname: this.state.lname, street: this.state.street, city: this.state.city, state: this.state.stateVal, zip_code: this.state.zip, email: this.state.email, password: this.state.password, phone: this.state.phone };
+  
+    fetch('http://localhost:9000/test/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        cookies.set('currentUser', JSON.stringify(json.newUser), {path: '/'})
+        this.setState({redirect: '/home'})
+      })
+  }
+  
+  render() {
+    if(this.state.redirect) {
+      return <Redirect to={ this.state.redirect }/>
+    }
+    return(
+      <div>
+        <form onSubmit={ this.submitInfo }>
+          <label>First Name: <input type='text' value={this.state.fname} onChange={ this.changeFName }></input></label><br/>
+          <label>Last Name: <input type='text' value={this.state.lname} onChange={ this.changeLName }></input></label><br/>
+          <label>Street Address: <input type='text' value={this.state.street} onChange={ this.changeStreet }></input></label><br/>
+          <label>City: <input type='text' value={this.state.city} onChange={ this.changeCity }></input></label><br/>
+          <label>State: <input type='text' value={this.state.stateVal} onChange={ this.changeState }></input></label><br/>
+          <label>Zipcode: <input type='text' value={this.state.zip} onChange={ this.changeZip }></input></label><br/>
+          <label>Email: <input type='text' value={this.state.email} onChange={ this.changeEmail }></input></label><br/>
+          <label>Password: <input type='text' value={this.state.password} onChange={ this.changePassword }></input></label><br/>
+          <label>Phone Number: <input type='text' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
+          <input type='submit' value='Sign Up'/>
+        </form>
+      </div>
+    )
+  }
+}
