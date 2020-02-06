@@ -1,15 +1,12 @@
 import React, { Component, useImperativeHandle } from 'react';
-import { BrowserRouter as Router, Switch, Route, useHistory, Redirect, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
-
-
 import './App.css';
 import Cookies from 'universal-cookie'
+
 const cookies = new Cookies();
 
 const App = () => {
-
-
   return (
  
     <Router>
@@ -40,6 +37,15 @@ class Login extends React.Component {
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
     this.redirectToSignUp = this.redirectToSignUp.bind(this);
+    this.editUsernames = this.editUsernames.bind(this);
+  }
+  
+  editUsernames(event) {
+    event.preventDefault();
+
+    fetch('http://localhost:9000/test/addusername', {
+      method: 'GET',
+    });
   }
   
   redirectToSignUp(event) {
@@ -61,18 +67,6 @@ class Login extends React.Component {
   checkLogin(event) {
     event.preventDefault();
     const data = { email: this.state.email, password: this.state.password }
-    
-   
-    // fetch("http://localhost:9000/test", {
-    //   method: 'GET'
-    // })
-    //   .then(response => response.text())
-    //   .then(text => {
-    //     // console.log(text);
-    //     console.log(data)
-    //     this.setState({ apiResponse: text });
-    //   })
-
 
     fetch('http://localhost:9000/test/login', {
       method: 'POST',
@@ -115,9 +109,9 @@ class Login extends React.Component {
               <input type='submit' value='Sign Up'></input>
             </form>
           </section>
-          {/* <form onSubmit={this.hashPasswords}>
-           <input type='submit' value='Hash Passwords'/>
-         </form> */}
+          <form onSubmit={this.editUsernames}>
+            <input type='submit' value='Edit Usernames'/>
+          </form>
       </div>
     );
   }
@@ -160,7 +154,7 @@ class Home extends React.Component {
     console.log(this.state.genre)
   }
 
-    onStarClick(nextValue, prevValue, name) {
+  onStarClick(nextValue, prevValue, name) {
     this.setState({valueRating: nextValue});
   }
   
@@ -246,12 +240,11 @@ class Home extends React.Component {
     return(
       <div>
         <h1>Home</h1>
-          <p>Welcome home user!</p>
           <p>Welcome home {this.state.user.fname}!</p>
         <section>
         <h4>Search by Title</h4>
           <form onSubmit={this.getData}>
-            <label>Search</label><input placeholder="Search for Movies" onChange={this.changeSearch} value={this.state.search}></input>
+            <label>Search: </label><input placeholder="Search for Movies" onChange={this.changeSearch} value={this.state.search}></input>
             <h1>{this.state.searchTitle}</h1>
             <img src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
             <p>{this.state.searchDescription}</p>
@@ -287,7 +280,7 @@ class Home extends React.Component {
                   starCount={5}
                   onStarClick={this.onStarClick.bind(this)}
                   onChange = {this.changeRating}
-            />
+            /><br/>
             <input type='submit' value='Submit'></input>
             </form>
         </section>
@@ -371,7 +364,7 @@ class SignUp extends React.Component {
       .then(response => response.json())
       .then(json => {
         console.log(json);
-        cookies.set('currentUser', JSON.stringify(json.newUser), {path: '/'})
+        cookies.set('currentUser', JSON.stringify(json), {path: '/'})
         this.setState({redirect: '/home'})
       })
   }
@@ -390,7 +383,7 @@ class SignUp extends React.Component {
           <label>State: <input type='text' value={this.state.stateVal} onChange={ this.changeState }></input></label><br/>
           <label>Zipcode: <input type='text' value={this.state.zip} onChange={ this.changeZip }></input></label><br/>
           <label>Email: <input type='text' value={this.state.email} onChange={ this.changeEmail }></input></label><br/>
-          <label>Password: <input type='text' value={this.state.password} onChange={ this.changePassword }></input></label><br/>
+          <label>Password: <input type='password' value={this.state.password} onChange={ this.changePassword }></input></label><br/>
           <label>Phone Number: <input type='text' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
           <input type='submit' value='Sign Up'/>
         </form>
