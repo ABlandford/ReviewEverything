@@ -32,8 +32,8 @@ class Login extends React.Component {
   
   constructor(props) {
     super(props);
-    this.state = { email: "", pasword: "", redirect: null };
-    this.emailUpdate = this.emailUpdate.bind(this);
+    this.state = { username: "", pasword: "", redirect: null };
+    this.usernameUpdate = this.usernameUpdate.bind(this);
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
     this.redirectToSignUp = this.redirectToSignUp.bind(this);
@@ -55,8 +55,8 @@ class Login extends React.Component {
     this.state = { apiResponse: "", valueReview: "", valueRating: 0, email: "", pasword: "", movieId: 0, userId: "", username: ""};
   }
 
-  emailUpdate(event) {
-    this.setState({email : event.target.value})
+  usernameUpdate(event) {
+    this.setState({username : event.target.value})
   }
   
   passcodeUpdate(event) {
@@ -66,7 +66,7 @@ class Login extends React.Component {
   
   checkLogin(event) {
     event.preventDefault();
-    const data = { email: this.state.email, password: this.state.password }
+    const data = { username: this.state.username, password: this.state.password }
 
     fetch('http://localhost:9000/test/login', {
       method: 'POST',
@@ -100,7 +100,7 @@ class Login extends React.Component {
       <div>
         <h1>Sign In</h1>
           <form onSubmit={this.checkLogin}>
-            <label>Email: </label><input type='text' value={this.state.email} onChange={this.emailUpdate}></input><br/>
+            <label>Username: </label><input type='text' value={this.state.username} onChange={this.usernameUpdate}></input><br/>
             <label>Password: </label><input type='password' value={this.state.password} onChange={this.passcodeUpdate}></input><br/>
             <input type='submit' value='Log In'></input>
           </form>
@@ -300,7 +300,8 @@ class SignUp extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { fname: '', lname: '', street: '', city: '', stateVal: '', zip: '', email: '', password: '', phone: '', redirect: '' };
+    this.state = { username: '', fname: '', lname: '', street: '', city: '', stateVal: '', zip: '', email: '', password: '', phone: '', redirect: '' };
+    this.changeUName = this.changeUName.bind(this);
     this.changeFName = this.changeFName.bind(this);
     this.changeLName = this.changeLName.bind(this);
     this.changeStreet = this.changeStreet.bind(this);
@@ -311,6 +312,10 @@ class SignUp extends React.Component {
     this.changePassword = this.changePassword.bind(this);
     this.changePhone = this.changePhone.bind(this);
     this.submitInfo = this.submitInfo.bind(this);
+  }
+  
+  changeUName(event) {
+    this.setState({username : event.target.value})
   }
   
   changeFName(event) {
@@ -352,7 +357,7 @@ class SignUp extends React.Component {
   submitInfo(event) {
     event.preventDefault();
 
-    const data = { fname: this.state.fname, lname: this.state.lname, street: this.state.street, city: this.state.city, state: this.state.stateVal, zip_code: this.state.zip, email: this.state.email, password: this.state.password, phone: this.state.phone };
+    const data = { username: this.state.username, fname: this.state.fname, lname: this.state.lname, street: this.state.street, city: this.state.city, state: this.state.stateVal, zip_code: this.state.zip, email: this.state.email, password: this.state.password, phone: this.state.phone };
   
     fetch('http://localhost:9000/test/signup', {
       method: 'POST',
@@ -376,6 +381,7 @@ class SignUp extends React.Component {
     return(
       <div>
         <form onSubmit={ this.submitInfo }>
+          <label>Username: <input type='text' value={this.state.username} onChange={ this.changeUName }></input></label><br/>
           <label>First Name: <input type='text' value={this.state.fname} onChange={ this.changeFName }></input></label><br/>
           <label>Last Name: <input type='text' value={this.state.lname} onChange={ this.changeLName }></input></label><br/>
           <label>Street Address: <input type='text' value={this.state.street} onChange={ this.changeStreet }></input></label><br/>
