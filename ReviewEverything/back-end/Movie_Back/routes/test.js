@@ -70,14 +70,14 @@ router.post('/submitReview', function(req, res) {
 
 router.post('/login', function(req, res) {
     console.log('\nChecking data...\n');
-    console.log('Email submitted: ' + req.body.email);
+    console.log('Username submitted: ' + req.body.username);
     console.log('Password submitted(unhashed): ' + req.body.password);
    
-    if(req.body.email != null && req.body.password != null) {
+    if(req.body.username != null && req.body.password != null) {
         let status = false;
-        User.findOne({'email': req.body.email}, function(err, user) {
+        User.findOne({'username': req.body.username}, function(err, user) {
             if(!user) {
-                let statusMessage = 'The EMAIL you entered was incorrect.'
+                let statusMessage = 'The USERNAME you entered was incorrect.'
                 res.send({status, statusMessage});
             }
             else if(user) {
@@ -107,6 +107,7 @@ router.post('/signup', function(req, res) {
     console.log('Information submitted: ' + req.body);
     bcrypt.hash(req.body.password, saltRounds).then((hash) => {
         const newUser = new User({
+            username: req.body.username,
             fname: req.body.fname,
             lname: req.body.lname,
             street: req.body.street,
@@ -120,7 +121,7 @@ router.post('/signup', function(req, res) {
 
         newUser.save((err, user) => {
             if (err) return console.log(err);
-            console.log(user.fname + ' added!')
+            console.log(user.username + ' added!');
         });
 
         return res.send(newUser)
