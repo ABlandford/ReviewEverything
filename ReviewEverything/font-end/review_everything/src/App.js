@@ -1,14 +1,12 @@
-import React, { Component, useImperativeHandle } from 'react';
-import { BrowserRouter as Router, Switch, Route, useHistory, Redirect, Link } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
-
 
 import './App.css';
 import Cookies from 'universal-cookie'
 const cookies = new Cookies();
 
 const App = () => {
-
 
   return (
  
@@ -100,20 +98,15 @@ class Login extends React.Component {
             <label>Password: </label><input type='password' value={this.state.password} onChange={this.passcodeUpdate}></input><br/>
             <input type='submit' value='Log In'></input>
           </form>
-          {/* <form onSubmit={this.hashPasswords}>
-           <input type='submit' value='Hash Passwords'/>
-         </form> */}
       </div>
     );
   }
 }
 
-// export default Login;
-
 class Home extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props); 
     this.state = { valueReview: "", valueRating: 0, loggedin: true, user: {}, searchTitle: "", searchDescription: "", searchImage: "", search: "", actor: "", searchId: 0, email:"", userId: "", username:"", genre: 28, };
     this.submitReview = this.submitReview.bind(this);
     this.changeRating = this.changeRating.bind(this);
@@ -137,7 +130,6 @@ class Home extends React.Component {
     this.setState({search : event.target.value})
   }
 
-    
   changeActor(event) {
     this.setState({actor : event.target.value})
   }
@@ -187,38 +179,12 @@ class Home extends React.Component {
  });
         
     });
-    console.log(this.state.search+"*****")
-  }
-
- 
-  getDataActor(event){
-    event.preventDefault(); 
-  
-    let url = `https://api.themoviedb.org/3/search/person?api_key=c4bf14506f6431c453952fcfa9057242&query=${this.state.actor}`;
-
-    fetch(url, {
-        method: 'GET'
-    })
-
-    .then(response => response.json())
-    .then(json => {
-        this.setState ( {
-            searchTitle: json.results[0].title,
-            searchDescription: json.results[0].overview, 
-            searchImage: json.results[0].poster_path, 
-            searchId: json.results[0].id, 
-            username: this.state.email,
-            userId: this.state.userId, 
- });
-        
-    });
-    console.log(this.state.actor+"*****")
   }
 
   logout() {
     cookies.remove('currentUser');
     this.setState({ loggedin: false })
-    if(this.state.loggedin == false){
+    if(this.state.loggedin === false){
       this.setState({redirect: "/"})
       return <Redirect to={ this.state.redirect }/>
     }
@@ -240,41 +206,21 @@ class Home extends React.Component {
           <form onSubmit={this.getData}>
             <label>Search</label><input placeholder="Search for Movies" onChange={this.changeSearch} value={this.state.search}></input>
             <h1>{this.state.searchTitle}</h1>
-            <img src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
+            <img alt="" src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
             <p>{this.state.searchDescription}</p>
             <input type='submit' value='Submit'></input>
-          <renderReviews/>
-          </form>
-{/* 
-          <h4>Search by Actor</h4>
-          <form onSubmit={this.getDataActor}>
-            <label>Search</label><input placeholder="Search for Movies" onChange={this.changeActor} value={this.state.actor}></input>
-            <input type='submit' value='Submit'></input>
           </form>
 
-        <h4>Search by Genre</h4>
-        <form onSubmit={this.getData} >
-          <select 
-              class="dropDown"
-              value={this.state.genre}
-              onChange={this.changeGenre} 
-              ><option value={27}>Horror</option>
-              <option value={10749}>Romance</option>
-              <option value={35}>Action</option>
-          </select>
-          <input type='submit' value='Submit'></input>
-        </form> */}
-
-            <form onSubmit={this.submitReview}>
-              <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
-            <StarRatingComponent 
-                  name="starSystem" 
-                  id="stars"
-                  value={this.state.valueRating}
-                  starCount={5}
-                  onStarClick={this.onStarClick.bind(this)}
-                  onChange = {this.changeRating}
-            />
+          <form onSubmit={this.submitReview}>
+            <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
+          <StarRatingComponent 
+                name="starSystem" 
+                id="stars"
+                value={this.state.valueRating}
+                starCount={5}
+                onStarClick={this.onStarClick.bind(this)}
+                onChange = {this.changeRating}
+          />
             <input type='submit' value='Submit'></input>
             </form>
         </section>
