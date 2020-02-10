@@ -37,22 +37,21 @@ class Login extends React.Component {
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
     this.redirectToSignUp = this.redirectToSignUp.bind(this);
-    this.editUsernames = this.editUsernames.bind(this);
+    // this.editUsernames = this.editUsernames.bind(this);
   }
   
-  editUsernames(event) {
-    event.preventDefault();
+  // editUsernames(event) {
+  //   event.preventDefault();
 
-    fetch('http://localhost:9000/test/addusername', {
-      method: 'GET',
-    });
-  }
+  //   fetch('http://localhost:9000/test/addusername', {
+  //     method: 'GET',
+  //   });
+  // }
   
   redirectToSignUp(event) {
     event.preventDefault();
 
     this.setState({ redirect: '/signup' });
-    this.state = { apiResponse: "", valueReview: "", valueRating: 0, email: "", pasword: "", movieId: 0, userId: "", username: ""};
   }
 
   usernameUpdate(event) {
@@ -62,7 +61,6 @@ class Login extends React.Component {
   passcodeUpdate(event) {
     this.setState({password : event.target.value})
   }
-
   
   checkLogin(event) {
     event.preventDefault();
@@ -109,9 +107,9 @@ class Login extends React.Component {
               <input type='submit' value='Sign Up'></input>
             </form>
           </section>
-          <form onSubmit={this.editUsernames}>
+          {/* <form onSubmit={this.editUsernames}>
             <input type='submit' value='Edit Usernames'/>
-          </form>
+          </form> */}
       </div>
     );
   }
@@ -225,7 +223,7 @@ class Home extends React.Component {
   logout() {
     cookies.remove('currentUser');
     this.setState({ loggedin: false })
-    if(this.state.loggedin == false){
+    if(this.state.loggedin === false){
       this.setState({redirect: "/"})
       return <Redirect to={ this.state.redirect }/>
     }
@@ -300,7 +298,7 @@ class SignUp extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { username: '', fname: '', lname: '', street: '', city: '', stateVal: '', zip: '', email: '', password: '', phone: '', redirect: '' };
+    this.state = { username: '', fname: '', lname: '', street: '', city: '', stateVal: 'UT', zip: '', email: '', password: '', phone: '', redirect: '' };
     this.changeUName = this.changeUName.bind(this);
     this.changeFName = this.changeFName.bind(this);
     this.changeLName = this.changeLName.bind(this);
@@ -368,9 +366,14 @@ class SignUp extends React.Component {
     })
       .then(response => response.json())
       .then(json => {
-        console.log(json);
-        cookies.set('currentUser', JSON.stringify(json), {path: '/'})
-        this.setState({redirect: '/home'})
+        if (json.error_check === true) {
+          console.log(json.message);
+          alert(json.message);
+        }
+        else {
+          cookies.set('currentUser', JSON.stringify(json.user), {path: '/'});
+          this.setState({redirect: '/home'});
+        }
       })
   }
   
@@ -380,19 +383,77 @@ class SignUp extends React.Component {
     }
     return(
       <div>
-        <form onSubmit={ this.submitInfo }>
-          <label>Username: <input type='text' value={this.state.username} onChange={ this.changeUName }></input></label><br/>
-          <label>First Name: <input type='text' value={this.state.fname} onChange={ this.changeFName }></input></label><br/>
-          <label>Last Name: <input type='text' value={this.state.lname} onChange={ this.changeLName }></input></label><br/>
-          <label>Street Address: <input type='text' value={this.state.street} onChange={ this.changeStreet }></input></label><br/>
-          <label>City: <input type='text' value={this.state.city} onChange={ this.changeCity }></input></label><br/>
-          <label>State: <input type='text' value={this.state.stateVal} onChange={ this.changeState }></input></label><br/>
-          <label>Zipcode: <input type='text' value={this.state.zip} onChange={ this.changeZip }></input></label><br/>
-          <label>Email: <input type='text' value={this.state.email} onChange={ this.changeEmail }></input></label><br/>
-          <label>Password: <input type='password' value={this.state.password} onChange={ this.changePassword }></input></label><br/>
-          <label>Phone Number: <input type='text' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
-          <input type='submit' value='Sign Up'/>
-        </form>
+        <section>
+          <h1>Sign Up</h1>
+        </section>
+        <section>
+          <form onSubmit={ this.submitInfo }>
+            <label>Username: <input type='text' placeholder='Username here...' value={this.state.username} onChange={ this.changeUName }></input></label><br/>
+            <label>First Name: <input type='text' placeholder='First name here...' value={this.state.fname} onChange={ this.changeFName }></input></label><br/>
+            <label>Last Name: <input type='text' placeholder='Last name here...' value={this.state.lname} onChange={ this.changeLName }></input></label><br/>
+            <label>Street Address: <input type='text' placeholder='Street address here...' value={this.state.street} onChange={ this.changeStreet }></input></label><br/>
+            <label>City: <input type='text' placeholder='City here...' value={this.state.city} onChange={ this.changeCity }></input></label><br/>
+            <label>State: <select value={this.state.stateVal} onChange={ this.changeState }>
+                <option value='AL'>Alabama(AL)</option>
+                <option value='AK'>Alaska(AK)</option>
+                <option value='AZ'>Arizona(AZ)</option>
+                <option value='AR'>Arkansas(AR)</option>
+                <option value='CA'>California(CA)</option>
+                <option value='CO'>Colorado(CO)</option>
+                <option value='CT'>Connecticut(CT)</option>
+                <option value='DE'>Delaware(DE)</option>
+                <option value='FL'>Florida(FL)</option>
+                <option value='GA'>Georgia(GA)</option>
+                <option value='HI'>Hawaii(HI)</option>
+                <option value='ID'>Idaho(ID)</option>
+                <option value='IL'>Illinois(IL)</option>
+                <option value='IN'>Indiana(IN)</option>
+                <option value='IA'>Iowa(IA)</option>
+                <option value='KS'>Kansas(KS)</option>
+                <option value='KY'>Kentucky(KY)</option>
+                <option value='LA'>Louisiana(LA)</option>
+                <option value='ME'>Maine(ME)</option>
+                <option value='MD'>Maryland(MD)</option>
+                <option value='MA'>Massachusetts(MA)</option>
+                <option value='MI'>Michigan(MI)</option>
+                <option value='MN'>Minnesota(MN)</option>
+                <option value='MS'>Mississippi(MS)</option>
+                <option value='MO'>Missouri(MO)</option>
+                <option value='MT'>Montana(MT)</option>
+                <option value='NE'>Nebraska(NE)</option>
+                <option value='NV'>Nevada(NV)</option>
+                <option value='NH'>New Hampshire(NH)</option>
+                <option value='NJ'>New Jersey(NJ)</option>
+                <option value='NM'>New Mexico(NM)</option>
+                <option value='NY'>New York(NY)</option>
+                <option value='NC'>North Carolina(NC)</option>
+                <option value='ND'>North Dakota(ND)</option>
+                <option value='OH'>Ohio(OH)</option>
+                <option value='OK'>Oklahoma(OK)</option>
+                <option value='OR'>Oregon(OR)</option>
+                <option value='PA'>Pennsylvania(PA)</option>
+                <option value='RI'>Rhode Island(RI)</option>
+                <option value='SC'>South Carolina(SC)</option>
+                <option value='SD'>South Dakota(SD)</option>
+                <option value='TN'>Tennessee(TN)</option>
+                <option value='TX'>Texas(TX)</option>
+                <option value='UT'>Utah(UT)</option>
+                <option value='VT'>Vermont(VT)</option>
+                <option value='VA'>Virgina(VA)</option>
+                <option value='WA'>Washington(WA)</option>
+                <option value='WV'>West Virgina(WV)</option>
+                <option value='WI'>Wisconson(WI)</option>
+                <option value='WY'>Wyoming(WY)</option>
+              </select>
+            </label><br/>
+            <label>Zipcode: <input type='text' placeholder='Zip here...' value={this.state.zip} onChange={ this.changeZip }></input></label><br/>
+            <label>Email: <input type='text' placeholder='Email here...' value={this.state.email} onChange={ this.changeEmail }></input></label><br/>
+            <label>Password: <input type='password' placeholder='Super secret password...' value={this.state.password} onChange={ this.changePassword }></input></label><br/>
+            <label>Phone Number: <input type='text' placeholder='Phone number here...' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
+            <br/><input type='submit' value='Sign Up'/>
+          </form>
+
+        </section>
       </div>
     )
   }
