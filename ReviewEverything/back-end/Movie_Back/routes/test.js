@@ -34,7 +34,8 @@ const userSchema = mongoose.Schema({
     zip_code: String,
     email: String,
     password: String,
-    phone: String
+    phone: String, 
+    admin: Boolean
 })
 
 const RR = mongoose.model('reviewratings', reviewSchema)
@@ -104,69 +105,222 @@ router.post('/login', function(req, res) {
 
 router.post('/signup', function(req, res) {
     console.log('Checking data...');
-    console.log('Information submitted: ' + req.body);
-    bcrypt.hash(req.body.password, saltRounds).then((hash) => {
-        const newUser = new User({
-            username: req.body.username,
-            fname: req.body.fname,
-            lname: req.body.lname,
-            street: req.body.street,
-            city: req.body.city,
-            state: req.body.state,
-            zip_code: req.body.zip_code,
-            email: req.body.email,
-            password: hash,
-            phone: req.body.phone
-        })
+    let errors = false;
+    let error_message = "";
+    let name_check = /[a-z]{2,}/i;
+    let street_check = /[0-9]+\s[a-z]+/i;
+    let zip_check = /^([\d]{5})(\-[\d]{4})?$/;
+    let phone_check = /^(1?\([0-9]{3}\)( |)|(1-|1)?[0-9]{3}-?)[0-9]{3}-?[0-9]{4}$/;
+    if(!req.body.username) {
+        errors = true;
+        error_message += "The USERNAME you entered is invalid. A username is required for use on this website.\n";
+    }
+    if(!name_check.test(req.body.fname) || !req.body.fname) {
+        errors = true;
+        error_message += "The FIRST NAME you entered is invalid. Are you sure you don't have a first name?\n";
+    }
+    if(!name_check.test(req.body.lname) || !req.body.lname) {
+        errors = true;
+        error_message += "The LAST NAME you entered is invalid. Do you have a last name?\n";
+    }
+    if(!name_check.test(req.body.city) || !req.body.city) {
+        errors = true;
+        error_message += "The CITY you entered is invalid. A small village counts as a city in our case.\n";
+    }
+    if(!street_check.test(req.body.street)) {
+        errors = true;
+        error_message += "The STREET you entered is invalid. Please make sure you entered a street number as well as street name.\n";
+    }
+    if(!zip_check.test(req.body.zip_code)) {
+        errors = true;
+        error_message += "The ZIPCODE you entered is invalid. Please input a valid zip code.\n";
+    }
+    if(!req.body.email) {
+        errors = true;
+        error_message += "The EMAIL you entered is invalid or doesn't exist. Please enter an email.\n";
+    }
+    if(!req.body.password) {
+        errors = true;
+        error_message += "The PASSWORD you entered seems to be empty. We need a password to secure your account.\n";
+    }
+    if(!phone_check.test(req.body.phone)) {
+        errors = true;
+        error_message += "The PHONE NUMBER you entered is invalid. Please enter a valid US phone number.\n";;
+    }
+    if(errors) {
+        res.send({ error_check: errors, message: error_message });
+    }
+    else {
+        bcrypt.hash(req.body.password, saltRounds).then((hash) => {
+            const newUser = new User({
+                username: req.body.username,
+                fname: req.body.fname,
+                lname: req.body.lname,
+                street: req.body.street,
+                city: req.body.city,
+                state: req.body.state,
+                zip_code: req.body.zip_code,
+                email: req.body.email,
+                password: hash,
+                phone: req.body.phone
+            })
+            
+            newUser.save((err, user) => {
+                if (err) return console.log(err);
+                console.log(user.username + ' added!');
+            });
 
-        newUser.save((err, user) => {
-            if (err) return console.log(err);
-            console.log(user.username + ' added!');
+            return res.send({error_check: errors, user: newUser})
         });
-
-        return res.send(newUser)
-    });
+    }
 });
 
-router.get('/addusername', (req, res) => {
-    User.find((err, users) => {
-        if (err) console.log(err);
-        users.forEach((user) => {
-            const username = user.fname + user.lname.slice(0,1);
-            User.findById(user._id, (err, currentUser) => {
-                if (err) return console.log(err);
-                currentUser.username = username,
-                currentUser.fname = user.fname,
-                currentUser.lname = user.lname,
-                currentUser.street = user.street,
-                currentUser.city = user.city,
-                currentUser.state = user.state,
-                currentUser.zip_code = user.zip_code,
-                currentUser.email = user.email,
-                currentUser.password = user.password,
-                currentUser.phone = user.phone
-
-                currentUser.save((err, user) => {
-                    if(err) return console.log(err);
-                    console.log(user.username + ' saved!');
-                });
+router.put('/editAccount', function(req, res) {
+    console.log("Checking data...");
+    console.log(req.body.userId);
+    let errors = false;
+    let error_message = "";
+    let name_check = /[a-z]{2,}/i;
+    let street_check = /[0-9]+\s[a-z]+/i;
+    let zip_check = /^([\d]{5})(\-[\d]{4})?$/;
+    let phone_check = /^(1?\([0-9]{3}\)( |)|(1-|1)?[0-9]{3}-?)[0-9]{3}-?[0-9]{4}$/;
+    if(!req.body.username) {
+        errors = true;
+        error_message += "The USERNAME you entered is invalid. A username is required for use on this website.\n";
+    }
+    if(!name_check.test(req.body.fname) || !req.body.fname) {
+        errors = true;
+        error_message += "The FIRST NAME you entered is invalid. Are you sure you don't have a first name?\n";
+    }
+    if(!name_check.test(req.body.lname) || !req.body.lname) {
+        errors = true;
+        error_message += "The LAST NAME you entered is invalid. Do you have a last name?\n";
+    }
+    if(!name_check.test(req.body.city) || !req.body.city) {
+        errors = true;
+        error_message += "The CITY you entered is invalid. A small village counts as a city in our case.\n";
+    }
+    if(!street_check.test(req.body.street)) {
+        errors = true;
+        error_message += "The STREET you entered is invalid. Please make sure you entered a street number as well as street name.\n";
+    }
+    if(!zip_check.test(req.body.zip_code)) {
+        errors = true;
+        error_message += "The ZIPCODE you entered is invalid. Please input a valid zip code.\n";
+    }
+    if(!req.body.email) {
+        errors = true;
+        error_message += "The EMAIL you entered is invalid or doesn't exist. Please enter an email.\n";
+    }
+    if(!phone_check.test(req.body.phone)) {
+        errors = true;
+        error_message += "The PHONE NUMBER you entered is invalid. Please enter a valid US phone number.\n";;
+    }
+    if(errors) {
+        res.send({ error_check: errors, message: error_message });
+    }
+    else {
+        User.findById(req.body.userId, (err, user) => {
+            if(err) return console.log(err);
+            user.username = req.body.username,
+            user.fname = req.body.fname,
+            user.lname = req.body.lname,
+            user.street = req.body.street,
+            user.city = req.body.city,
+            user.state = req.body.state,
+            user.zip_code = req.body.zip_code,
+            user.email = req.body.email,
+            user.phone = req.body.phone
+    
+            user.save((err, savedUser) => {
+                if(err) return console.log(err)
+                console.log(savedUser.username + ' updated!');
+                return res.send({ error_check: errors, user: savedUser });
             });
-         });
-        let message = 'Users now have usernames.'
-        res.send(message);
-    });
+        });
+    }
 });
 
 router.get('/getReviews', (req, res) => {
-    RR.find((err, movieId) => { 
+    let searchNum = 0
+    RR.find((err, reviews) => {
+        let rev; 
         if (err) console.log(err);
-        let reviewCollection = {};
-        movieId.forEach((user) => { 
-            reviewCollection[user._id] = user;
-        }); 
-    res.send(reviewCollection);
+        reviews.forEach((r) => {
+            console.log(r.movieId)
+            rev = reviews.filter(r => r.movieId == r.movieId)
+        })
+    res.send(rev);
    });
 });
+
+router.delete('/delUsers', function (req, res) {
+    User.findOneAndDelete(req.body.username, function (err, user) {
+      console.log(req.body.username)
+      if (err) return res.status(500).send("There was a problem deleting the user.");
+      res.status(200).send("User: "+" was deleted.");
+    //   console.log(req.body.userId)
+    });
+  });
+
+//  router.get('/addAdmin', (req, res) => {
+//     User.find((err, users) => {
+//                 if (err) console.log(err);
+//                 users.forEach((user) => {
+//                     const admin = false; 
+//                     User.findById(user._id, (err, currentUser) => {
+//                         if (err) return console.log(err);
+//                         currentUser.admin = admin,
+//                         currentUser.username = user.username,
+//                         currentUser.fname = user.fname,
+//                         currentUser.lname = user.lname,
+//                         currentUser.street = user.street,
+//                         currentUser.city = user.city,
+//                         currentUser.state = user.state,
+//                         currentUser.zip_code = user.zip_code,
+//                         currentUser.email = user.email,
+//                         currentUser.password = user.password,
+//                         currentUser.phone = user.phone
+        
+//                         currentUser.save((err, user) => {
+//                             if(err) return console.log(err);
+//                             console.log(user.admin + ' saved!');
+//                         });
+//                     });
+//                 });
+//                 let message = 'Users now have admin access.'
+//                 res.send(message);
+//             });
+//         });
+
+// router.get('/addusername', (req, res) => {
+//     User.find((err, users) => {
+//         if (err) console.log(err);
+//         users.forEach((user) => {
+//             const username = user.fname + user.lname.slice(0,1);
+//             User.findById(user._id, (err, currentUser) => {
+//                 if (err) return console.log(err);
+//                 currentUser.username = username,
+//                 currentUser.fname = user.fname,
+//                 currentUser.lname = user.lname,
+//                 currentUser.street = user.street,
+//                 currentUser.city = user.city,
+//                 currentUser.state = user.state,
+//                 currentUser.zip_code = user.zip_code,
+//                 currentUser.email = user.email,
+//                 currentUser.password = user.password,
+//                 currentUser.phone = user.phone
+
+//                 currentUser.save((err, user) => {
+//                     if(err) return console.log(err);
+//                     console.log(user.username + ' saved!');
+//                 });
+//             });
+//         });
+//         let message = 'Users now have usernames.'
+//         res.send(message);
+//     });
+// });
 
 // router.get('/hash', (req, res) => {
 //     User2.find((err, users) => {
