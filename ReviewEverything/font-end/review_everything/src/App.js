@@ -23,6 +23,9 @@ const App = () => {
         <Route path='/edit'>
           <Edit/>
         </Route>
+        <Route path='/delUsers'>
+          <Del/>
+        </Route>
       </Switch>
     </Router>
 
@@ -40,13 +43,13 @@ class Login extends React.Component {
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
     this.redirectToSignUp = this.redirectToSignUp.bind(this);
-    // this.editUsernames = this.editUsernames.bind(this);
+    // this.addAdmin = this.addAdmin.bind(this);
   }
   
-  // editUsernames(event) {
+  // addAdmin(event) {
   //   event.preventDefault();
 
-  //   fetch('http://localhost:9000/test/addusername', {
+  //   fetch('http://localhost:9000/test/addAdmin', {
   //     method: 'GET',
   //   });
   // }
@@ -110,8 +113,8 @@ class Login extends React.Component {
               <input type='submit' value='Sign Up'></input>
             </form>
           </section>
-          {/* <form onSubmit={this.editUsernames}>
-            <input type='submit' value='Edit Usernames'/>
+          {/* <form onSubmit={this.addAdmin}>
+            <input type='submit' value='Add Admin'/>
           </form> */}
       </div>
     );
@@ -283,8 +286,8 @@ class Edit extends React.Component {
 class Home extends React.Component {
 
   constructor(props) {
-    super(props);
-    this.state = { valueReview: "", valueRating: 0, loggedin: true, user: {}, searchTitle: "", searchDescription: "", searchImage: "", search: "", actor: "", searchId: 0, email:"", userId: "", username:"", genre: 28, };
+    super(props); 
+    this.state = { valueReview: "", admin: false, valueRating: 0, loggedin: true, user: {}, searchTitle: "", searchDescription: "", searchImage: "", search: "", actor: "", searchId: 0, email:"", userId: "", username:"", genre: 28, reviewValue:"", specificR: {} };
     this.submitReview = this.submitReview.bind(this);
     this.changeRating = this.changeRating.bind(this);
     this.changeReview = this.changeReview.bind(this);
@@ -293,21 +296,21 @@ class Home extends React.Component {
     this.changeGenre = this.changeGenre.bind(this); 
     this.getData = this.getData.bind(this);
     this.logout = this.logout.bind(this);
+    // this.getReviews = this.getReviews.bind(this);
   }
 
   changeReview(event) {
-    this.setState({valueReview : event.target.value, username: this.state.email, userId: this.state.userId})
+    this.setState({valueReview : event.target.value, username: this.state.username, userId: this.state.userId})
   }
 
   changeRating(event) {
-    this.setState({valueRating : event.target.value, username: this.state.email, userId: this.state.userId})
+    this.setState({valueRating : event.target.value, username: this.state.username, userId: this.state.userId})
   }
   
   changeSearch(event) {
     this.setState({search : event.target.value})
   }
 
-    
   changeActor(event) {
     this.setState({actor : event.target.value})
   }
@@ -324,7 +327,7 @@ class Home extends React.Component {
   submitReview(event) {
     event.preventDefault();
 
-    const data = { userId: this.state.user.userId, userfname: this.state.user.fname, userlname: this.state.user.lname, review: this.state.valueReview, rating: this.state.valueRating, movieId: this.state.searchId, email: this.state.email, username: this.state.user.email }
+    const data = { userId: this.state.user.userId, userfname: this.state.user.fname, userlname: this.state.user.lname, review: this.state.valueReview, rating: this.state.valueRating, movieId: this.state.searchId, email: this.state.email, username: this.state.user.username }
     
     fetch('http://localhost:9000/test/submitReview', {
       method: 'POST',
@@ -336,11 +339,33 @@ class Home extends React.Component {
 
   }
 
+  // getReviews(event) {
+  //   event.preventDefault();
+
+  //   const data= { RatinguserId: this.state.userId, reviewValue: this.state.rating, ratingValue: this.state.valueRating, movieId: this.state.searchId, Rateusername: this.state.username }
+  //   console.log(data.movieId)
+  //   this.setState({movieId : data.movieId})
+  //   fetch('http://localhost:9000/test/getReviews', {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //   .then(response => response.json())
+  //   .then(json => {
+  //     if (json.error_check === true) {
+  //       console.log(json.message);
+  //       alert(json.message);
+  //     }
+  //   })
+  // }
+
   getData(event){
     event.preventDefault(); 
-  
     let url = `https://api.themoviedb.org/3/search/movie?api_key=c4bf14506f6431c453952fcfa9057242&query=${this.state.search}&with_genres=${this.state.genre}`;
 
+    
     fetch(url, {
         method: 'GET'
     })
@@ -351,38 +376,14 @@ class Home extends React.Component {
             searchTitle: json.results[0].title,
             searchDescription: json.results[0].overview, 
             searchImage: json.results[0].poster_path, 
-            searchId: json.results[0].id, 
-            username: this.state.email,
+            searchId: json.results[0].id,
+            searchM : json.results[0].id,
+            username: this.state.username,
             userId: this.state.userId
  });
         
     });
-    console.log(this.state.search+"*****")
-  }
-
- 
-  getDataActor(event){
-    event.preventDefault(); 
-  
-    let url = `https://api.themoviedb.org/3/search/person?api_key=c4bf14506f6431c453952fcfa9057242&query=${this.state.actor}`;
-
-    fetch(url, {
-        method: 'GET'
-    })
-
-    .then(response => response.json())
-    .then(json => {
-        this.setState ( {
-            searchTitle: json.results[0].title,
-            searchDescription: json.results[0].overview, 
-            searchImage: json.results[0].poster_path, 
-            searchId: json.results[0].id, 
-            username: this.state.email,
-            userId: this.state.userId, 
- });
-        
-    });
-    console.log(this.state.actor+"*****")
+   
   }
 
   logout() {
@@ -397,15 +398,68 @@ class Home extends React.Component {
   editAccount() {
     this.setState({redirect: "/edit"})
   }
+
+  delUsers(){
+    this.setState({redirect:"/delUsers"})
+  }
   
   componentDidMount() {
     let currentUser = cookies.get('currentUser');
-    this.setState({ user: { username: currentUser.username, userId: currentUser._id } });
+    this.setState({ user: { fname: currentUser.fname, lname: currentUser.lname, userId: currentUser._id, username: currentUser.username, admin: currentUser.admin } });
+    console.log(this.state.user.admin)
+    this.setState({admin: this.state.user.admin})
   }
 
   render() {
     if(this.state.redirect) {
       return <Redirect to={ this.state.redirect }/>
+    }
+    if(this.state.user.admin == true){
+      return <div>
+      <h1>Home</h1>
+        <p>Welcome home {this.state.user.username}!</p>
+      <section>
+      <h4>Search by Title</h4>
+        <form onSubmit={this.getData}>
+          <label>Search: </label><input placeholder="Search for Movies" onChange={this.changeSearch} value={this.state.search}></input>
+          <h1>{this.state.searchTitle}</h1>
+          <img alt="" src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
+          <p>{this.state.searchDescription}</p>
+          <input type='submit' value='Submit'></input>
+        </form>
+
+          <form onSubmit={this.submitReview}>
+            <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
+          <StarRatingComponent 
+                name="starSystem" 
+                id="stars"
+                value={this.state.valueRating}
+                starCount={5}
+                onStarClick={this.onStarClick.bind(this)}
+                onChange = {this.changeRating}
+          /><br/>
+          <input type='submit' value='Submit'></input>
+          </form>
+      </section>
+      <section>
+      <Link to={'/'}>
+        <button onClick = {() => {
+          this.logout();
+        }}>Logout</button>
+        </Link>
+        <h1>{this.state.matchReview}</h1>
+      </section>
+      <section>
+        <button onClick = {() => {
+          this.editAccount();
+        }}>Edit Account</button>
+      </section>
+      <button onClick={this.getReviews}>See Reviews</button>
+      <button onClick = {() => {
+            this.delUsers();
+          }}>Admin Feature</button>
+      <h1>{this.state.reviewValue}</h1>
+    </div>
     }
     return(
       <div>
@@ -416,30 +470,10 @@ class Home extends React.Component {
           <form onSubmit={this.getData}>
             <label>Search: </label><input placeholder="Search for Movies" onChange={this.changeSearch} value={this.state.search}></input>
             <h1>{this.state.searchTitle}</h1>
-            <img src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
+            <img alt="" src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
             <p>{this.state.searchDescription}</p>
             <input type='submit' value='Submit'></input>
-          <renderReviews/>
           </form>
-{/* 
-          <h4>Search by Actor</h4>
-          <form onSubmit={this.getDataActor}>
-            <label>Search</label><input placeholder="Search for Movies" onChange={this.changeActor} value={this.state.actor}></input>
-            <input type='submit' value='Submit'></input>
-          </form>
-
-        <h4>Search by Genre</h4>
-        <form onSubmit={this.getData} >
-          <select 
-              class="dropDown"
-              value={this.state.genre}
-              onChange={this.changeGenre} 
-              ><option value={27}>Horror</option>
-              <option value={10749}>Romance</option>
-              <option value={35}>Action</option>
-          </select>
-          <input type='submit' value='Submit'></input>
-        </form> */}
 
             <form onSubmit={this.submitReview}>
               <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
@@ -460,12 +494,15 @@ class Home extends React.Component {
             this.logout();
           }}>Logout</button>
           </Link>
+          <h1>{this.state.matchReview}</h1>
         </section>
         <section>
           <button onClick = {() => {
             this.editAccount();
           }}>Edit Account</button>
         </section>
+        <button onClick={this.getReviews}>See Reviews</button>
+        <h1>{this.state.reviewValue}</h1>
       </div>
     );
   }
@@ -630,6 +667,47 @@ class SignUp extends React.Component {
             <br/><input type='submit' value='Sign Up'/>
           </form>
         </section>
+      </div>
+    )
+  }
+}
+
+class Del extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { redirect: null, username: ''};
+    this.delUser = this.delUser.bind(this)
+    this.changeId = this.changeId.bind(this)
+  }
+
+  changeId(event) {
+    this.setState({username : event.target.value})
+  }
+  
+  delUser(event){
+    event.preventDefault();
+    const data = { username: this.state.username}
+    console.log(data.username)
+    fetch('http://localhost:9000/test/delUsers', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }) 
+    
+}
+  render() {
+    if(this.state.redirect) {
+      return <Redirect to={ this.state.redirect }/>
+    }
+    return(
+      <div>
+        <h3>Which user would you want to delete?</h3>
+        <form onSubmit={ this.delUser }>
+        <label>Input User's Username  </label><input type='text'  placeholder='Delete Account' value={this.state.username} onChange={this.changeId}></input>
+        <br></br><br/><input type='submit'/>
+        </form>
       </div>
     )
   }

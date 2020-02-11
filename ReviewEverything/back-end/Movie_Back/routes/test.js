@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/data');
+mongoose.connect('mongodb://localhost/Peeps');
 
 let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -34,10 +34,11 @@ const userSchema = mongoose.Schema({
     zip_code: String,
     email: String,
     password: String,
-    phone: String
+    phone: String, 
+    admin: Boolean
 })
 
-const RR = mongoose.model('reviews', reviewSchema)
+const RR = mongoose.model('reviewratings', reviewSchema)
 
 const User = mongoose.model('users', userSchema)
     
@@ -57,9 +58,9 @@ router.post('/submitReview', function(req, res) {
     console.log('\nSubmitting data...\n');
     console.log('Review submitted: ' + req.body.review);
     console.log('Rating submitted: ' + req.body.rating);
-    console.log('Review username ' + req.body.email);
+    console.log('Review username ' + req.body.username);
     console.log("Review UserId " + req.body.userId)
-    var r = new RR({review: req.body.review, rating: req.body.rating, username: req.body.email, movieId: req.body.movieId, userId: req.body.userId})
+    var r = new RR({review: req.body.review, rating: req.body.rating, username: req.body.username, movieId: req.body.movieId, userId: req.body.userId})
     r.save(function(err){
         if(err)
             throw err;
@@ -240,6 +241,58 @@ router.put('/editAccount', function(req, res) {
     }
 });
 
+router.get('/getReviews', (req, res) => {
+    let searchNum = 0
+    RR.find((err, reviews) => {
+        let rev; 
+        if (err) console.log(err);
+        reviews.forEach((r) => {
+            console.log(r.movieId)
+            rev = reviews.filter(r => r.movieId == r.movieId)
+        })
+    res.send(rev);
+   });
+});
+
+router.delete('/delUsers', function (req, res) {
+    User.findOneAndDelete(req.body.username, function (err, user) {
+      console.log(req.body.username)
+      if (err) return res.status(500).send("There was a problem deleting the user.");
+      res.status(200).send("User: "+" was deleted.");
+    //   console.log(req.body.userId)
+    });
+  });
+
+//  router.get('/addAdmin', (req, res) => {
+//     User.find((err, users) => {
+//                 if (err) console.log(err);
+//                 users.forEach((user) => {
+//                     const admin = false; 
+//                     User.findById(user._id, (err, currentUser) => {
+//                         if (err) return console.log(err);
+//                         currentUser.admin = admin,
+//                         currentUser.username = user.username,
+//                         currentUser.fname = user.fname,
+//                         currentUser.lname = user.lname,
+//                         currentUser.street = user.street,
+//                         currentUser.city = user.city,
+//                         currentUser.state = user.state,
+//                         currentUser.zip_code = user.zip_code,
+//                         currentUser.email = user.email,
+//                         currentUser.password = user.password,
+//                         currentUser.phone = user.phone
+        
+//                         currentUser.save((err, user) => {
+//                             if(err) return console.log(err);
+//                             console.log(user.admin + ' saved!');
+//                         });
+//                     });
+//                 });
+//                 let message = 'Users now have admin access.'
+//                 res.send(message);
+//             });
+//         });
+
 // router.get('/addusername', (req, res) => {
 //     User.find((err, users) => {
 //         if (err) console.log(err);
@@ -288,9 +341,9 @@ router.put('/editAccount', function(req, res) {
 //                     currentUser.email = user.email,
 //                     currentUser.password = hash,
 //                     currentUser.phone = user.phone
-
+//
 //                     currentUser.save((err, user) => {
-
+//
 //                         if(err) return console.log(err);
 //                     });
 //                     console.log('\n' + currentUser.fname + ' ' + currentUser.lname + "'s password is now: " + hash + '.\n');
