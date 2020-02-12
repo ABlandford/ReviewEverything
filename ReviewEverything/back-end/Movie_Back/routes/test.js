@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Peeps');
+mongoose.connect('mongodb://localhost/data');
 
 let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -263,35 +263,35 @@ router.delete('/delUsers', function (req, res) {
     });
   });
 
-//  router.get('/addAdmin', (req, res) => {
-//     User.find((err, users) => {
-//                 if (err) console.log(err);
-//                 users.forEach((user) => {
-//                     const admin = false; 
-//                     User.findById(user._id, (err, currentUser) => {
-//                         if (err) return console.log(err);
-//                         currentUser.admin = admin,
-//                         currentUser.username = user.username,
-//                         currentUser.fname = user.fname,
-//                         currentUser.lname = user.lname,
-//                         currentUser.street = user.street,
-//                         currentUser.city = user.city,
-//                         currentUser.state = user.state,
-//                         currentUser.zip_code = user.zip_code,
-//                         currentUser.email = user.email,
-//                         currentUser.password = user.password,
-//                         currentUser.phone = user.phone
+ router.get('/addAdmin', (req, res) => {
+    User.find((err, users) => {
+                if (err) console.log(err);
+                users.forEach((user) => {
+                    const admin = false; 
+                    User.findById(user._id, (err, currentUser) => {
+                        if (err) return console.log(err);
+                        currentUser.admin = admin,
+                        currentUser.username = user.username,
+                        currentUser.fname = user.fname,
+                        currentUser.lname = user.lname,
+                        currentUser.street = user.street,
+                        currentUser.city = user.city,
+                        currentUser.state = user.state,
+                        currentUser.zip_code = user.zip_code,
+                        currentUser.email = user.email,
+                        currentUser.password = user.password,
+                        currentUser.phone = user.phone
         
-//                         currentUser.save((err, user) => {
-//                             if(err) return console.log(err);
-//                             console.log(user.admin + ' saved!');
-//                         });
-//                     });
-//                 });
-//                 let message = 'Users now have admin access.'
-//                 res.send(message);
-//             });
-//         });
+                        currentUser.save((err, user) => {
+                            if(err) return console.log(err);
+                            console.log(user.admin + ' saved!');
+                        });
+                    });
+                });
+                let message = 'Users now have admin access.'
+                res.send(message);
+            });
+        });
 
 // router.get('/addusername', (req, res) => {
 //     User.find((err, users) => {
