@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/data');
+mongoose.connect('mongodb://localhost/Peeps');
 
 let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));

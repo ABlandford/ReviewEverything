@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import './App.css';
 import { Redirect, Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import StarRatingComponent from 'react-star-rating-component';
-
+import Rating from 'react-rating';
+import star from './images/fullstar.png';
+import empty from './images/transparent_star.png';
 const cookies = new Cookies();
 
 export default class Home extends Component {
@@ -12,7 +13,6 @@ export default class Home extends Component {
     super(props); 
     this.state = { valueReview: "", admin: false, valueRating: 0, loggedin: true, user: {}, searchTitle: "", searchDescription: "", searchImage: "", search: "", actor: "", searchId: 0, email:"", userId: "", username:"", genre: 28, reviewValue:"", specificR: {} };
     this.submitReview = this.submitReview.bind(this);
-    this.changeRating = this.changeRating.bind(this);
     this.changeReview = this.changeReview.bind(this);
     this.changeSearch = this.changeSearch.bind(this);
     this.changeActor = this.changeActor.bind(this); 
@@ -26,10 +26,6 @@ export default class Home extends Component {
     this.setState({valueReview : event.target.value, username: this.state.username, userId: this.state.userId})
   }
 
-  changeRating(event) {
-    this.setState({valueRating : event.target.value, username: this.state.username, userId: this.state.userId})
-  }
-  
   changeSearch(event) {
     this.setState({search : event.target.value})
   }
@@ -49,7 +45,6 @@ export default class Home extends Component {
   
   submitReview(event) {
     event.preventDefault();
-
     const data = { userId: this.state.user.userId, userfname: this.state.user.fname, userlname: this.state.user.lname, review: this.state.valueReview, rating: this.state.valueRating, movieId: this.state.searchId, email: this.state.email, username: this.state.user.username }
     
     fetch('http://localhost:9000/test/submitReview', {
@@ -133,6 +128,8 @@ export default class Home extends Component {
     this.setState({admin: this.state.user.admin})
   }
 
+
+
   render() {
     if(this.state.redirect) {
       return <Redirect to={ this.state.redirect }/>
@@ -153,14 +150,7 @@ export default class Home extends Component {
 
           <form onSubmit={this.submitReview}>
             <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
-          <StarRatingComponent 
-                name="starSystem" 
-                id="stars"
-                value={this.state.valueRating}
-                starCount={5}
-                onStarClick={this.onStarClick.bind(this)}
-                onChange = {this.changeRating}
-          /><br/>
+          <Rating initialRating={this.state.valueRating} name="valueRating" onClick={ (rating) => this.setState({valueRating: rating})} fullSymbol={<img src={star} style={{height: 50, width: 50}} className='fullstar' alt='filled star' />} emptySymbol={<img src={empty} style={{height: 50, width: 50}} className='halfstar' alt='filled star' />} fractions={2}/>
           <input type='submit' value='Submit'></input>
           </form>
       </section>
@@ -200,14 +190,7 @@ export default class Home extends Component {
 
             <form onSubmit={this.submitReview}>
               <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
-            <StarRatingComponent 
-                  name="starSystem" 
-                  id="stars"
-                  value={this.state.valueRating}
-                  starCount={5}
-                  onStarClick={this.onStarClick.bind(this)}
-                  onChange = {this.changeRating}
-            /><br/>
+              <Rating initialRating={this.state.valueRating} name="valueRating" onClick={ (rating) => this.setState({valueRating: rating})} fullSymbol={<img src={star} style={{height: 50, width: 50}} className='fullstar' alt='filled star' />} emptySymbol={<img src={empty} style={{height: 50, width: 50}} className='halfstar' alt='filled star' />} fractions={2}/><br/>
             <input type='submit' value='Submit'></input>
             </form>
         </section>
