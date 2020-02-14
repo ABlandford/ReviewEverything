@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/data');
+mongoose.connect('mongodb://localhost/Peeps');
 
 let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -162,7 +162,8 @@ router.post('/signup', function(req, res) {
                 zip_code: req.body.zip_code,
                 email: req.body.email,
                 password: hash,
-                phone: req.body.phone
+                phone: req.body.phone,
+                admin: req.body.admin,
             })
             
             newUser.save((err, user) => {
@@ -230,7 +231,7 @@ router.put('/editAccount', function(req, res) {
             user.state = req.body.state,
             user.zip_code = req.body.zip_code,
             user.email = req.body.email,
-            user.phone = req.body.phone
+            user.phone = req.body.phone,
     
             user.save((err, savedUser) => {
                 if(err) return console.log(err)
