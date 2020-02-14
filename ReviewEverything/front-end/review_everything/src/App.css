@@ -46,3 +46,134 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+.login-display {
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+	margin: auto;
+	text-align: center;
+}
+
+.login-header {
+	font-size: 46px;
+	padding: 50px;
+	font-family: 'Handwriting';
+	color: #FFCB00;
+	background-color: #034514;
+	text-align: center;
+}
+
+.login-form {
+	flex: 1 1 auto;
+	font-size: 30px;
+	padding: 70px;
+	background-color: #00132E;
+	color: #00C786;
+	font-family: 'minimal';
+	height: 475px;
+}
+
+.login-input {
+	margin-top: 17px;
+	margin-bottom: 17px;
+	font-size: 18px;
+	color: #00132E;
+}
+
+.login-submit, .tosignup-submit {
+	border: 3px inset #00C786;
+	background-color: #00136E;
+	color: #00C786;
+	font-family: 'fancy_bold';
+	font-size: 20px;
+	padding: 5px;
+	margin-top: 2.5px;
+	margin-bottom: 7px;
+}
+
+.signup-display {
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+	margin: auto;
+	text-align: center;
+}
+
+.signup-display .signup-header-container {
+	flex: 0 1 auto;
+}
+
+.signup-header {
+	font-size: 46px;
+	padding: 50px;
+	font-family: 'Handwriting';
+	color: #00C786;
+	background-color: #00132E;
+	text-align: center;
+}
+
+.signup-form {
+	flex: 1 1 auto;
+	font-size: 30px;
+	padding: 30px;
+	background-color: #034514;
+	color: #FFCB00;
+	font-family: 'minimal';
+	height: 660px;
+}
+
+.signup-input {
+	margin-top: 12px;
+	margin-bottom: 12px;
+	font-size: 18px;
+	color: #00132E;
+}
+
+.signup-submit, .tologin-submit {
+	border: 3px inset #FFCB00;
+	background-color: #034514;
+	color: #FFCB00;
+	font-family: 'fancy_bold';
+	font-size: 20px;
+	padding: 5px;
+	margin-bottom: 7px;
+}
+
+.signup-submit:hover, .login-submit:hover {
+	background-color: #FFCB00;
+	color: #00132E;
+	border-color: #00132E;
+}
+
+.tologin-submit:hover {
+	color: #00C786;
+	background-color: #00132E;
+	border-color: #00C786;
+}
+
+.tosignup-submit:hover {
+	color: #FFCB00;
+	background-color: #034514;
+	border-color: #FFCB00;
+}
+
+@font-face {
+	font-family: 'Handwriting';
+	src: url('./handwriting-draft_free-version.ttf');
+}
+
+@font-face {
+	font-family: 'minimal';
+	src: url('./minimal.otf');
+}
+
+@font-face {
+	font-family: 'fancy';
+	src: url('./Champagne-Limousines.ttf');
+}
+
+@font-face {
+	font-family: 'fancy_bold';
+	src: url('./Champagne & Limousines Bold.ttf')
+}

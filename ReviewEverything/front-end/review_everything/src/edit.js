@@ -20,8 +20,13 @@ export default class Edit extends Component {
     this.changeEmail = this.changeEmail.bind(this);
     this.changePhone = this.changePhone.bind(this);
     this.updateInfo = this.updateInfo.bind(this);
+    this.goHome = this.goHome.bind(this);
   }
 
+  goHome() {
+    this.setState({ redirect: '/home' })
+  }
+  
   changeUName(event) {
     this.setState({username : event.target.value})
   }
@@ -161,6 +166,11 @@ export default class Edit extends Component {
             <label>Phone Number: <input type='text' placeholder='Phone number here...' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
             <br/><input type='submit' value='Update Account'/>
           </form>
+        </section>
+        <section>
+          <button onClick = {() => {
+            this.goHome();
+          }}>Home</button>
         </section>
       </div>
     );
