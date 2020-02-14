@@ -72,18 +72,20 @@ export default class Login extends Component {
       return <Redirect to={ this.state.redirect }/> 
     }
     return(
-      <div>
-        <h1>Sign In</h1>
+      <div class='login-display'>
+        <div class='login-header-container'>
+          <h1 class='login-header'>Login</h1>
+        </div>
+        <div class='login-form'>
           <form onSubmit={this.checkLogin}>
-            <label>Username: </label><input type='text' value={this.state.username} onChange={this.usernameUpdate}></input><br/>
-            <label>Password: </label><input type='password' value={this.state.password} onChange={this.passcodeUpdate}></input><br/>
-            <input type='submit' value='Log In'></input>
+            <label>Username: <input class='login-input' type='text' value={this.state.username} onChange={this.usernameUpdate}></input></label><br/>
+            <label>Password: <input class='login-input' type='password' value={this.state.password} onChange={this.passcodeUpdate}></input></label><br/>
+            <input class='login-submit' type='submit' value='Log In'></input>
           </form>
-          <section>
-            <form onSubmit={ this.redirectToSignUp }>
-              <input type='submit' value='Sign Up'></input>
-            </form>
-          </section>
+          <form onSubmit={ this.redirectToSignUp }>
+            <input class='tosignup-submit' type='submit' value='Sign Up'></input>
+          </form>
+        </div>
           {/* <form onSubmit={this.addAdmin}>
             <input type='submit' value='Add Admin'/>
           </form> */}

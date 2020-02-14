@@ -6,10 +6,15 @@ export default class Del extends Component {
   constructor(props) {
     super(props);
     this.state = { redirect: null, username: ''};
-    this.delUser = this.delUser.bind(this)
-    this.changeId = this.changeId.bind(this)
+    this.delUser = this.delUser.bind(this);
+    this.changeId = this.changeId.bind(this);
+    this.goHome = this.goHome.bind(this);
   }
 
+  goHome() {
+    this.setState({ redirect: '/home' });
+  }
+  
   changeId(event) {
     this.setState({username : event.target.value})
   }
@@ -33,11 +38,18 @@ export default class Del extends Component {
     }
     return(
       <div>
-        <h3>Which user would you want to delete?</h3>
-        <form onSubmit={ this.delUser }>
-        <label>Input User's Username  </label><input type='text'  placeholder='Delete Account' value={this.state.username} onChange={this.changeId}></input>
-        <br></br><br/><input type='submit'/>
-        </form>
+        <section>
+          <h3>Which user would you want to delete?</h3>
+          <form onSubmit={ this.delUser }>
+          <label>Input User's Username:  </label><input type='text'  placeholder='Delete Account' value={this.state.username} onChange={this.changeId}></input>
+          <br></br><br/><input type='submit'/>
+          </form>
+        </section>
+        <section>
+          <button onClick={() => {
+            this.goHome();
+          }}>Home</button>
+        </section>
       </div>
     )
   }
