@@ -3,7 +3,7 @@ import './App.css';
 import { Redirect, Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import StarRatingComponent from 'react-star-rating-component';
-
+//random comment
 const cookies = new Cookies();
 
 export default class Home extends Component {
