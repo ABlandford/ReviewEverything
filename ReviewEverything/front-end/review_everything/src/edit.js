@@ -100,15 +100,23 @@ export default class Edit extends Component {
       return <Redirect to={ this.state.redirect }/>
     }
     return(
-      <div>
-        <section>
+      <div className='edit-display'>
+        <div className='edit-header'>
+          <h1>Edit Your Account</h1>
+        </div>
+        <nav className='edit-nav'>
+          <button className='edit-link' onClick={() => {
+            this.goHome();
+          }}>Home</button>
+        </nav>
+        <div className='edit-form'>
           <form onSubmit={ this.updateInfo }>
-            <label>Username: <input type='text' placeholder='Username here...' value={this.state.username} onChange={ this.changeUName }></input></label><br/>
-            <label>First Name: <input type='text' placeholder='First name here...' value={this.state.fname} onChange={ this.changeFName }></input></label><br/>
-            <label>Last Name: <input type='text' placeholder='Last name here...' value={this.state.lname} onChange={ this.changeLName }></input></label><br/>
-            <label>Street Address: <input type='text' placeholder='Street address here...' value={this.state.street} onChange={ this.changeStreet }></input></label><br/>
-            <label>City: <input type='text' placeholder='City here...' value={this.state.city} onChange={ this.changeCity }></input></label><br/>
-            <label>State: <select value={this.state.stateVal} onChange={ this.changeState }>
+            <label>Username: <input className='edit-input' type='text' placeholder='Username here...' value={this.state.username} onChange={ this.changeUName }></input></label><br/>
+            <label>First Name: <input className='edit-input' type='text' placeholder='First name here...' value={this.state.fname} onChange={ this.changeFName }></input></label><br/>
+            <label>Last Name: <input className='edit-input' type='text' placeholder='Last name here...' value={this.state.lname} onChange={ this.changeLName }></input></label><br/>
+            <label>Street Address: <input className='edit-input' type='text' placeholder='Street address here...' value={this.state.street} onChange={ this.changeStreet }></input></label><br/>
+            <label>City: <input className='edit-input' type='text' placeholder='City here...' value={this.state.city} onChange={ this.changeCity }></input></label><br/>
+            <label>State: <select className='edit-input' value={this.state.stateVal} onChange={ this.changeState }>
                 <option value='AL'>Alabama(AL)</option>
                 <option value='AK'>Alaska(AK)</option>
                 <option value='AZ'>Arizona(AZ)</option>
@@ -161,17 +169,12 @@ export default class Edit extends Component {
                 <option value='WY'>Wyoming(WY)</option>
               </select>
             </label><br/>
-            <label>Zipcode: <input type='text' placeholder='Zip here...' value={this.state.zip} onChange={ this.changeZip }></input></label><br/>
-            <label>Email: <input type='text' placeholder='Email here...' value={this.state.email} onChange={ this.changeEmail }></input></label><br/>
-            <label>Phone Number: <input type='text' placeholder='Phone number here...' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
-            <br/><input type='submit' value='Update Account'/>
+            <label>Zipcode: <input className='edit-input' type='text' placeholder='Zip here...' value={this.state.zip} onChange={ this.changeZip }></input></label><br/>
+            <label>Email: <input className='edit-input' type='text' placeholder='Email here...' value={this.state.email} onChange={ this.changeEmail }></input></label><br/>
+            <label>Phone Number: <input className='edit-input' type='text' placeholder='Phone number here...' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
+            <br/><input className='edit-submit' type='submit' value='Update Account'/>
           </form>
-        </section>
-        <section>
-          <button onClick = {() => {
-            this.goHome();
-          }}>Home</button>
-        </section>
+        </div>
       </div>
     );
   }
