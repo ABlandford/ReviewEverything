@@ -22,6 +22,7 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	background-color: #00132E;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -176,4 +177,14 @@ table {
 @font-face {
 	font-family: 'fancy_bold';
 	src: url('./Champagne & Limousines Bold.ttf')
+}
+
+
+@media screen and (max-width: 550px){
+	html{
+		flex: 1;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
 }

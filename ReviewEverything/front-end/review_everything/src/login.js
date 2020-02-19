@@ -78,8 +78,8 @@ export default class Login extends Component {
         </div>
         <div class='login-form'>
           <form onSubmit={this.checkLogin}>
-            <label>Username: <input class='login-input' type='text' value={this.state.username} onChange={this.usernameUpdate}></input></label><br/>
-            <label>Password: <input class='login-input' type='password' value={this.state.password} onChange={this.passcodeUpdate}></input></label><br/>
+            <label id="userLabel">Username: <input class='login-input' type='text' value={this.state.username} onChange={this.usernameUpdate}></input></label><br/>
+            <label id="passLabel">Password: <input class='login-input' type='password' value={this.state.password} onChange={this.passcodeUpdate}></input></label><br/>
             <input class='login-submit' type='submit' value='Log In'></input>
           </form>
           <form onSubmit={ this.redirectToSignUp }>
