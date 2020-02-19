@@ -163,7 +163,7 @@ router.post('/signup', function(req, res) {
                 email: req.body.email,
                 password: hash,
                 phone: req.body.phone,
-                admin: req.body.admin,
+                admin: false,
             })
             
             newUser.save((err, user) => {
