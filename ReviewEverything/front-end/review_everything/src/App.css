@@ -47,7 +47,7 @@ table {
 	border-spacing: 0;
 }
 
-.login-display, .signup-display, .home-display {
+.login-display, .signup-display, .home-display, .edit-display, .delete-display {
 	display: flex;
 	flex-flow: column;
 	height: 100%;
@@ -317,6 +317,141 @@ table {
 	background-color: #00132E;
 	color: #00C786;
 	border-color: #00C786;
+}
+
+.edit-header {
+	font-family: 'Handwriting';
+	padding: 50px;
+	font-size: 38px;
+	background-color: #00402A;
+	color: #00C786;
+}
+
+.edit-nav {
+	background-color: #00132E;
+	padding: 20px;
+}
+
+.edit-link {
+	border-width: 0px;
+	color: #FFCB00;
+	background-color: #00132E;
+	font-size: 22px;
+	margin-left: 70px;
+	margin-right: 70px;
+	font-family: 'fancy_bold';
+	border-left: 2px solid #FFCB00;
+	border-right: 2px solid #FFCB00;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+.edit-link:hover {
+	color: #00C786;
+	text-decoration: underline;
+	border-left-color: #00C786;
+	border-right-color: #00C786;
+}
+
+.edit-form {
+	flex: 1 1 auto;
+	font-size: 30px;
+	padding: 30px;
+	background-color: #00136E;
+	color: #00C786;
+	font-family: 'minimal';
+	height: 560px;
+}
+
+.edit-input {
+	margin-top: 12px;
+	margin-bottom: 12px;
+	font-size: 18px;
+	color: #00132E;
+}
+
+.edit-submit {
+	border: 3px inset #00C786;
+	background-color: #00132E;
+	color: #00C786;
+	font-family: 'fancy_bold';
+	font-size: 20px;
+	padding: 5px;
+	margin-bottom: 7px;
+}
+
+.edit-submit:hover {
+	border-color: #00132E;
+	color: #00132E;
+	background-color: #00C786;
+}
+
+.delete-header {
+	background-color: #00132E;
+	color: #00C786;
+	font-family: 'afterglow';
+	font-size: 34px;
+	padding: 30px;
+}
+
+.delete-form {
+	display: flex;
+	background-color: #00402A;
+	color: #00C786;
+	height: 666px;
+	font-family: 'fancy_bold';
+	font-size: 24px;
+	flex-flow: column;
+}
+
+.delete-input {
+	margin-top: 150px;
+	margin-bottom: 60px;
+	margin-left: 3px;
+	width: 240px;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 16px;
+}
+
+.delete-submit {
+	border: inset 3px #00C786;
+	font-size: 21px;
+	background-color: #00132E;
+	color: #00C786;
+	padding: 5px;
+	font-family: 'fancy_bold';
+}
+
+.delete-submit:hover {
+	background-color: #00C786;
+	color: #00132E;
+	border-color: #00132E;
+}
+
+.d-link-container {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin-bottom: 150px;
+}
+
+.delete-link {
+	border-width: 0px;
+	background-color: #00402A;
+	color: #00C786;
+	font-family: 'Handwriting';
+	font-size: 28px;
+	border-left: 5px #00C786 solid;
+	border-right: 5px #00C786 solid;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.delete-link:hover {
+	color: #FFCB00;
+	border-color: #FFCB00;
 }
 
 @font-face {

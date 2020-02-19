@@ -54,19 +54,21 @@ export default class Del extends Component {
       return <Redirect to={ this.state.redirect }/>
     }
     return(
-      <div>
-        <section>
-          <h3>Which user would you want to delete?</h3>
+      <div className='delete-display'>
+        <div className='delete-header'>
+          <h3>Who has been naughty?</h3>
+        </div>
+        <div className='delete-form'>
           <form onSubmit={ this.delUser }>
-          <label>Input User's Username:  </label><input type='text'  placeholder='Delete Account' value={this.state.username} onChange={this.changeId}></input>
-          <br></br><br/><input type='submit'/>
+          <label>User's Username: <input className='delete-input' type='text'  placeholder='Input Username of User to Delete' value={this.state.username} onChange={this.changeId}></input></label>
+          <br/><input className='delete-submit' type='submit' value='Delete User'/>
           </form>
-        </section>
-        <section>
-          <button onClick={() => {
-            this.goHome();
-          }}>Home</button>
-        </section>
+          <div className='d-link-container'>
+            <button className='delete-link' onClick={() => {
+              this.goHome();
+            }}>Home</button>
+          </div>
+        </div>
       </div>
     )
   }
