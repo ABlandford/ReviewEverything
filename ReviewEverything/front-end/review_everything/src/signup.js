@@ -93,23 +93,31 @@ export default class SignUp extends Component {
       })
   }
   
+  componentDidMount() {
+    if(!cookies.get('currentUser')) {
+      console.log('No cookie exists. Login or signup to create your cookie.');
+    } else {
+      this.setState({ redirect: '/home' });
+    }
+  }
+  
   render() {
     if(this.state.redirect) {
       return <Redirect to={ this.state.redirect }/>
     }
     return(
-      <div class='signup-display'>
-        <div class='signup-header'>
+      <div className='signup-display'>
+        <div className='signup-header'>
           <h1>Sign Up</h1>
         </div>
-        <div class='signup-form'>
+        <div className='signup-form'>
           <form onSubmit={ this.submitInfo }>
-            <label>Username: <input class='signup-input' type='text' placeholder='Username here...' value={this.state.username} onChange={ this.changeUName }></input></label><br/>
-            <label>First Name: <input class='signup-input' type='text' placeholder='First name here...' value={this.state.fname} onChange={ this.changeFName }></input></label><br/>
-            <label>Last Name: <input class='signup-input' type='text' placeholder='Last name here...' value={this.state.lname} onChange={ this.changeLName }></input></label><br/>
-            <label>Street Address: <input class='signup-input' type='text' placeholder='Street address here...' value={this.state.street} onChange={ this.changeStreet }></input></label><br/>
-            <label>City: <input class='signup-input' type='text' placeholder='City here...' value={this.state.city} onChange={ this.changeCity }></input></label><br/>
-            <label>State: <select class='signup-input' value={this.state.stateVal} onChange={ this.changeState }>
+            <label>Username: <input className='signup-input' type='text' placeholder='Username here...' value={this.state.username} onChange={ this.changeUName }></input></label><br/>
+            <label>First Name: <input className='signup-input' type='text' placeholder='First name here...' value={this.state.fname} onChange={ this.changeFName }></input></label><br/>
+            <label>Last Name: <input className='signup-input' type='text' placeholder='Last name here...' value={this.state.lname} onChange={ this.changeLName }></input></label><br/>
+            <label>Street Address: <input className='signup-input' type='text' placeholder='Street address here...' value={this.state.street} onChange={ this.changeStreet }></input></label><br/>
+            <label>City: <input className='signup-input' type='text' placeholder='City here...' value={this.state.city} onChange={ this.changeCity }></input></label><br/>
+            <label>State: <select className='signup-input' value={this.state.stateVal} onChange={ this.changeState }>
                 <option value='AL'>Alabama(AL)</option>
                 <option value='AK'>Alaska(AK)</option>
                 <option value='AZ'>Arizona(AZ)</option>
@@ -162,13 +170,13 @@ export default class SignUp extends Component {
                 <option value='WY'>Wyoming(WY)</option>
               </select>
             </label><br/>
-            <label>Zipcode: <input class='signup-input' type='text' placeholder='Zip here...' value={this.state.zip} onChange={ this.changeZip }></input></label><br/>
-            <label>Email: <input class='signup-input' type='text' placeholder='Email here...' value={this.state.email} onChange={ this.changeEmail }></input></label><br/>
-            <label>Password: <input class='signup-input' type='password' placeholder='Super secret password...' value={this.state.password} onChange={ this.changePassword }></input></label><br/>
-            <label>Phone Number: <input class='signup-input' type='text' placeholder='Phone number here...' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
-            <br/><input class='signup-submit' type='submit' value='Sign Up'/>
+            <label>Zipcode: <input className='signup-input' type='text' placeholder='Zip here...' value={this.state.zip} onChange={ this.changeZip }></input></label><br/>
+            <label>Email: <input className='signup-input' type='text' placeholder='Email here...' value={this.state.email} onChange={ this.changeEmail }></input></label><br/>
+            <label>Password: <input className='signup-input' type='password' placeholder='Super secret password...' value={this.state.password} onChange={ this.changePassword }></input></label><br/>
+            <label>Phone Number: <input className='signup-input' type='text' placeholder='Phone number here...' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
+            <br/><input className='signup-submit' type='submit' value='Sign Up'/>
           </form>
-          <button class='tologin-submit' onClick={() => {
+          <button className='tologin-submit' onClick={() => {
             this.login();
           }}>Return to Login</button>
         </div>

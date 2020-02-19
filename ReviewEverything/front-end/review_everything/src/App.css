@@ -47,7 +47,7 @@ table {
 	border-spacing: 0;
 }
 
-.login-display {
+.login-display, .signup-display, .home-display {
 	display: flex;
 	flex-flow: column;
 	height: 100%;
@@ -60,7 +60,7 @@ table {
 	padding: 50px;
 	font-family: 'Handwriting';
 	color: #FFCB00;
-	background-color: #034514;
+	background-color: #00402A;
 	text-align: center;
 }
 
@@ -117,7 +117,7 @@ table {
 	flex: 1 1 auto;
 	font-size: 30px;
 	padding: 30px;
-	background-color: #034514;
+	background-color: #00402A;
 	color: #FFCB00;
 	font-family: 'minimal';
 	height: 660px;
@@ -132,7 +132,7 @@ table {
 
 .signup-submit, .tologin-submit {
 	border: 3px inset #FFCB00;
-	background-color: #034514;
+	background-color: #00402A;
 	color: #FFCB00;
 	font-family: 'fancy_bold';
 	font-size: 20px;
@@ -154,8 +154,169 @@ table {
 
 .tosignup-submit:hover {
 	color: #FFCB00;
-	background-color: #034514;
+	background-color: #00402A;
 	border-color: #FFCB00;
+}
+
+.welcome {
+	display: flex;
+	font-family: 'Handwriting';
+	font-size: 38px;
+	padding: 30px;
+	color: #00132E;
+	background-color: #00C786;
+	flex-flow: row;
+	text-align: center;
+}
+
+.home-nav {
+	background-color: #00132E;
+	padding: 20px;
+}
+
+.nav-link {
+	border-width: 0px;
+	color: #00C786;
+	background-color: #00132E;
+	font-size: 22px;
+	margin-left: 70px;
+	margin-right: 70px;
+	font-family: 'fancy_bold';
+	border-left: 2px solid #00C786;
+	border-right: 2px solid #00C786;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+.nav-link:hover {
+	color: #FFCB00;
+	text-decoration: underline;
+	border-left-color: #FFCB00;
+	border-right-color: #FFCB00;
+}
+
+.welcome-message {
+	display: block;
+	margin-left: 430px;
+}
+
+.logout-container {
+	display: block;
+	float: right;
+	margin-left: auto;
+}
+
+.logout-link {
+	background-color: #00C786;
+	border-width: 0px;
+	color: #00132E;
+	font-family: 'fancy';
+	font-size: 20px;
+}
+
+.logout-link:hover {
+	font-family: 'fancy_bold';
+	color: #00402A;
+	text-decoration: underline;
+}
+
+.body-container {
+	background-color: #00402A;
+	color: #FFCB00;
+}
+
+.body-title {
+	font-family: 'Handwriting';
+	font-size: 32px;
+	margin: 30px;
+}
+
+.search-label {
+	font-family: 'fancy';
+	font-size: 24px;
+}
+
+.title-search {
+	margin: 10px;
+	margin-left: 3px;
+	color: #00132E;
+	border: 2px inset #00132E;
+	padding: 5px;
+}
+
+.result-title {
+	font-family: 'afterglow';
+	font-size: 36px;
+	margin: 10px;
+	text-decoration: overline underline;
+	color: #00C786;
+}
+
+.result-image {
+	min-width: 250px;
+	min-height: 250px;
+	margin: 15px;
+	margin-top: 7px;
+}
+
+.result-description {
+	margin: 20px;
+	margin-left: 350px;
+	margin-right: 350px;
+	color: #00C786;
+	font-family: 'zeit';
+	font-size: 18px;
+}
+
+.submit-search {
+	margin: 20px;
+	border: 3px inset #00C786;
+	background-color: #00132E;
+	color: #00C786;
+	padding: 5px;
+	font-family: 'fancy_bold';
+	font-size: 20px;
+}
+
+.submit-search:hover {
+	background-color: #FFCB00;
+	color: #00132E;
+	border-color: #00132E;
+}
+
+.review-label {
+	font-family: 'afterglow';
+	font-size: 22px;
+	margin: 10px;
+}
+
+.review-text {
+	width: 700px;
+	height: 100px;
+	margin: 10px;
+	border: 5px #FFCB00 inset;
+	padding: 10px
+}
+
+.rating-container {
+	margin: 10px;
+	margin-bottom: 20px;
+}
+
+.submit-review-btn {
+	margin: 20px;
+	border: 3px inset #00132E;
+	background-color: #FFCB00;
+	color: #00132E;
+	padding: 5px;
+	font-family: 'fancy_bold';
+	font-size: 20px;
+}
+
+.submit-review-btn:hover {
+	background-color: #00132E;
+	color: #00C786;
+	border-color: #00C786;
 }
 
 @font-face {
@@ -176,4 +337,14 @@ table {
 @font-face {
 	font-family: 'fancy_bold';
 	src: url('./Champagne & Limousines Bold.ttf')
+}
+
+@font-face {
+	font-family: 'afterglow';
+	src: url('./Afterglow-Regular.ttf');
+}
+
+@font-face {
+	font-family: 'zeit';
+	src: url('./Zeit-Light.otf');
 }

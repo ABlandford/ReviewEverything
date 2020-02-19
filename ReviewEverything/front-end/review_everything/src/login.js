@@ -66,24 +66,31 @@ export default class Login extends Component {
       })
   }
   
+  componentDidMount() {
+    if(!cookies.get('currentUser')) {
+      console.log('No cookie exists. Login or signup to create your cookie.');
+    } else {
+      this.setState({ redirect: '/home' });
+    }
+  }
   
   render() {
     if(this.state.redirect) { 
       return <Redirect to={ this.state.redirect }/> 
     }
     return(
-      <div class='login-display'>
-        <div class='login-header-container'>
-          <h1 class='login-header'>Login</h1>
+      <div className='login-display'>
+        <div className='login-header-container'>
+          <h1 className='login-header'>Login</h1>
         </div>
-        <div class='login-form'>
+        <div className='login-form'>
           <form onSubmit={this.checkLogin}>
-            <label>Username: <input class='login-input' type='text' value={this.state.username} onChange={this.usernameUpdate}></input></label><br/>
-            <label>Password: <input class='login-input' type='password' value={this.state.password} onChange={this.passcodeUpdate}></input></label><br/>
-            <input class='login-submit' type='submit' value='Log In'></input>
+            <label>Username: <input className='login-input' type='text' value={this.state.username} onChange={this.usernameUpdate}></input></label><br/>
+            <label>Password: <input className='login-input' type='password' value={this.state.password} onChange={this.passcodeUpdate}></input></label><br/>
+            <input className='login-submit' type='submit' value='Log In'></input>
           </form>
           <form onSubmit={ this.redirectToSignUp }>
-            <input class='tosignup-submit' type='submit' value='Sign Up'></input>
+            <input className='tosignup-submit' type='submit' value='Sign Up'></input>
           </form>
         </div>
           {/* <form onSubmit={this.addAdmin}>

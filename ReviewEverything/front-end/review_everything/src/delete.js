@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import './App.css';
 import { Redirect } from 'react-router-dom';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 export default class Del extends Component {
   constructor(props) {
@@ -31,7 +34,21 @@ export default class Del extends Component {
       body: JSON.stringify(data),
     }) 
     
-}
+  }
+
+  componentDidMount() {
+    if(!cookies.get('currentUser')) {
+      this.setState({ redirect: '/' });
+    } else {
+      let currentUser = cookies.get('currentUser');
+      if(currentUser.admin === false || !currentUser) {
+        this.setState({ redirect: '/home' });
+      } else {
+        console.log('Admin confirmed.');
+      }
+    }
+  }
+  
   render() {
     if(this.state.redirect) {
       return <Redirect to={ this.state.redirect }/>
