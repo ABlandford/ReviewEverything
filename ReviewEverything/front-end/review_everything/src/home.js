@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import Rating from 'react-rating';
 import star from './images/fullstar.png';
@@ -47,16 +47,18 @@ export default class Home extends Component {
   submitReview(event) {
     event.preventDefault();
 
-    const data = { userId: this.state.user.userId, userfname: this.state.user.fname, userlname: this.state.user.lname, review: this.state.valueReview, rating: this.state.valueRating, movieId: this.state.searchId, email: this.state.email, username: this.state.user.username }
-    
-    fetch('http://localhost:9000/test/submitReview', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
+    if(!this.state.valueReview || !this.state.searchId) {
+      alert('Some data fields appear to not have any information. Did you make sure to search a movie and then type in your review?')
+    } else {
+      const data = { userId: this.state.user.userId, review: this.state.valueReview, rating: this.state.valueRating, movieId: this.state.searchId, username: this.state.user.username }
+      fetch('http://localhost:9000/test/submitReview', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+    }
   }
 
   // getReviews(event) {
@@ -84,12 +86,10 @@ export default class Home extends Component {
   getData(event){
     event.preventDefault(); 
     let url = `https://api.themoviedb.org/3/search/movie?api_key=c4bf14506f6431c453952fcfa9057242&query=${this.state.search}&with_genres=${this.state.genre}`;
-
     
     fetch(url, {
         method: 'GET'
     })
-
     .then(response => response.json())
     .then(json => {
         this.setState ( {
@@ -100,19 +100,14 @@ export default class Home extends Component {
             searchM : json.results[0].id,
             username: this.state.username,
             userId: this.state.userId
- });
-        
-    });
-   
+      });        
+    });   
   }
 
   logout() {
     cookies.remove('currentUser');
     this.setState({ loggedin: false })
-    if(this.state.loggedin === false){
-      this.setState({redirect: "/"})
-      return <Redirect to={ this.state.redirect }/>
-    }
+    this.setState({redirect: "/"})
   }
 
   editAccount() {
@@ -124,92 +119,109 @@ export default class Home extends Component {
   }
   
   componentDidMount() {
-    let currentUser = cookies.get('currentUser');
-    this.setState({ user: { fname: currentUser.fname, lname: currentUser.lname, userId: currentUser._id, username: currentUser.username, admin: currentUser.admin } });
-    console.log(this.state.user.admin)
-    this.setState({admin: this.state.user.admin})
+    if(!cookies.get('currentUser')) {
+      this.setState({ redirect: '/' })
+    } else {
+      let currentUser = cookies.get('currentUser');
+      this.setState({ user: { fname: currentUser.fname, lname: currentUser.lname, userId: currentUser._id, username: currentUser.username, admin: currentUser.admin } });
+      this.setState({admin: this.state.user.admin})
+    }
   }
 
   render() {
     if(this.state.redirect) {
       return <Redirect to={ this.state.redirect }/>
     }
-    if(this.state.user.admin === true){
-      return <div>
-      <h1>Home</h1>
-        <p>Welcome home {this.state.user.username}!</p>
-      <section>
-      <h4>Search by Title</h4>
-        <form onSubmit={this.getData}>
-          <label>Search: </label><input placeholder="Search for Movies" onChange={this.changeSearch} value={this.state.search}></input>
-          <h1>{this.state.searchTitle}</h1>
-          <img alt="" src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
-          <p>{this.state.searchDescription}</p>
-          <input type='submit' value='Submit'></input>
-        </form>
-
-          <form onSubmit={this.submitReview}>
-            <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
-            <Rating initialRating={this.state.valueRating} name="valueRating" onClick={ (rating) => this.setState({valueRating: rating})} fullSymbol={<img src={star} style={{height: 50, width: 50}} className='fullstar' alt='filled star' />} emptySymbol={<img src={empty} style={{height: 50, width: 50}} className='halfstar' alt='filled star' />} fractions={2}/><br/>
-          <input type='submit' value='Submit'></input>
-          </form>
-      </section>
-      <section>
-      <Link to={'/'}>
-        <button onClick = {() => {
-          this.logout();
-        }}>Logout</button>
-        </Link>
-        <h1>{this.state.matchReview}</h1>
-      </section>
-      <section>
-        <button onClick = {() => {
-          this.editAccount();
-        }}>Edit Account</button>
-      </section>
-      <button onClick={this.getReviews}>See Reviews</button>
-      <button onClick = {() => {
-            this.delUsers();
-          }}>Admin Feature</button>
-      <h1>{this.state.reviewValue}</h1>
-    </div>
-    }
-    return(
-      <div>
-        <h1>Home</h1>
-          <p>Welcome home {this.state.user.username}!</p>
-        <section>
-        <h4>Search by Title</h4>
-          <form onSubmit={this.getData}>
-            <label>Search: </label><input placeholder="Search for Movies" onChange={this.changeSearch} value={this.state.search}></input>
-            <h1>{this.state.searchTitle}</h1>
-            <img alt="" src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
-            <p>{this.state.searchDescription}</p>
-            <input type='submit' value='Submit'></input>
-          </form>
-
-            <form onSubmit={this.submitReview}>
-              <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
-              <Rating initialRating={this.state.valueRating} name="valueRating" onClick={ (rating) => this.setState({valueRating: rating})} fullSymbol={<img src={star} style={{height: 50, width: 50}} className='fullstar' alt='filled star' />} emptySymbol={<img src={empty} style={{height: 50, width: 50}} className='halfstar' alt='filled star' />} fractions={2}/><br/>
-            <input type='submit' value='Submit'></input>
+    if(this.state.user.admin === true) {
+      return( 
+        <div className='home-display'>
+          <div className='welcome'>
+            <section className='welcome-message'>
+              <p>Welcome home {this.state.user.username}!</p>
+            </section>
+            <section className='logout-container'>
+              <button className='logout-link' onClick = {() => {
+                this.logout();
+              }}>Logout</button>
+            </section>
+          </div>
+          <nav className='home-nav'>
+            <button className='nav-link' onClick = {() => {
+              this.editAccount();
+            }}>Edit Account</button>
+            {/* <button className='nav-link' onClick={() => {
+              this.getReviews();
+            }}>See Reviews</button> */}
+            <button className='nav-link' onClick = {() => {
+              this.delUsers();
+            }}>Delete a User</button>
+          </nav>
+          <div className='body-container'>
+            <div className='body-title'>
+              <h4>Search by Title</h4>
+            </div>
+            <form onSubmit={this.getData}>
+              <label className='search-label'>Search: <input className='title-search' placeholder="Enter movie title" onChange={this.changeSearch} value={this.state.search}></input></label>
+              <h1 className='result-title'>{this.state.searchTitle}</h1>
+              <img className='result-image' alt="" src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
+              <p className='result-description'>{this.state.searchDescription}</p>
+              <input className='submit-search' type='submit' value='Search for Movie'></input>
             </form>
-        </section>
-        <section>
-        <Link to={'/'}>
-          <button onClick = {() => {
-            this.logout();
-          }}>Logout</button>
-          </Link>
-          <h1>{this.state.matchReview}</h1>
-        </section>
-        <section>
-          <button onClick = {() => {
-            this.editAccount();
-          }}>Edit Account</button>
-        </section>
-        <button onClick={this.getReviews}>See Reviews</button>
-        <h1>{this.state.reviewValue}</h1>
-      </div>
-    );
+            <form onSubmit={this.submitReview}>
+              <section className='review-label'>
+                <label>What do think of movie?</label><br/>
+              </section>
+              <input className='review-text' placeholder='Please type your review of the movie you searched here' type='text' value={this.state.valueReview} onChange={this.changeReview}/><br/>
+              <section className='rating-container'>
+                <Rating initialRating={this.state.valueRating} name="valueRating" onClick={ (rating) => this.setState({valueRating: rating})} fullSymbol={<img src={star} style={{height: 50, width: 50}} className='fullstar' alt='filled star' />} emptySymbol={<img src={empty} style={{height: 50, width: 50}} className='halfstar' alt='filled star' />} fractions={2}/><br/>
+              </section>
+              <input className='submit-review-btn' type='submit' value='Submit Your Review'></input>
+            </form>
+          </div>
+          <div>
+            <h1>{this.state.matchReview}</h1>
+          </div>
+          <h1>{this.state.reviewValue}</h1>
+        </div>
+      );
+    } else {
+      return(
+        <div>
+          <h1>Home</h1>
+            <p>Welcome home {this.state.user.username}!</p>
+          <section>
+          <h4>Search by Title</h4>
+            <form onSubmit={this.getData}>
+              <label>Search: </label><input placeholder="Search for Movies" onChange={this.changeSearch} value={this.state.search}></input>
+              <h1>{this.state.searchTitle}</h1>
+              <img alt="" src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
+              <p>{this.state.searchDescription}</p>
+              <input type='submit' value='Submit'></input>
+            </form>
+  
+              <form onSubmit={this.submitReview}>
+                <label>What do think of movie? </label><input type='text' value={this.state.valueReview} onChange={this.changeReview}></input><br/>
+                <Rating initialRating={this.state.valueRating} name="valueRating" onClick={ (rating) => this.setState({valueRating: rating})} fullSymbol={<img src={star} style={{height: 50, width: 50}} className='fullstar' alt='filled star' />} emptySymbol={<img src={empty} style={{height: 50, width: 50}} className='halfstar' alt='filled star' />} fractions={2}/><br/>
+              <input type='submit' value='Submit'></input>
+              </form>
+          </section>
+          <section>
+            <button onClick = {() => {
+              this.logout();
+            }}>Logout</button>
+            <h1>{this.state.matchReview}</h1>
+          </section>
+          <section>
+            <button onClick = {() => {
+              this.editAccount();
+            }}>Edit Account</button>
+          </section>
+          {/* <button onClick={() => {
+            this.getReviews();
+          }}>See Reviews</button> */}
+          <h1>{this.state.reviewValue}</h1>
+        </div>
+      );
+    }
   }
 }
