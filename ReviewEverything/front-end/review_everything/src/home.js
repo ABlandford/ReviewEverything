@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './App.css';
 import { Redirect, Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import StarRatingComponent from 'react-star-rating-component';
 import Rating from 'react-rating';
 import star from './images/fullstar.png';
 import empty from './images/transparent_star.png';
@@ -21,7 +20,6 @@ export default class Home extends Component {
     this.changeGenre = this.changeGenre.bind(this); 
     this.getData = this.getData.bind(this);
     this.logout = this.logout.bind(this);
-    // this.getReviews = this.getReviews.bind(this);
   }
 
   changeReview(event) {

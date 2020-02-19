@@ -260,7 +260,7 @@ router.delete('/delUsers', function (req, res) {
       console.log(req.body.username)
       if (err) return res.status(500).send("There was a problem deleting the user.");
       res.status(200).send("User: "+" was deleted.");
-    //   console.log(req.body.userId)
+      console.log(req.body.userId)
     });
   });
 
