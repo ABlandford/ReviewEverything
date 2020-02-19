@@ -137,7 +137,7 @@ export default class Home extends Component {
         <div className='home-display'>
           <div className='welcome'>
             <section className='welcome-message'>
-              <p>Welcome home {this.state.user.username}!</p>
+              <p>Welcome {this.state.user.username}!</p>
             </section>
             <section className='logout-container'>
               <button className='logout-link' onClick = {() => {
@@ -171,7 +171,7 @@ export default class Home extends Component {
               <section className='review-label'>
                 <label>What do think of movie?</label><br/>
               </section>
-              <input className='review-text' placeholder='Please type your review of the movie you searched here' type='text' value={this.state.valueReview} onChange={this.changeReview}/><br/>
+              <input className='review-text' placeholder='Please type your review of the movie' type='text' value={this.state.valueReview} onChange={this.changeReview}/><br/>
               <section className='rating-container'>
                 <Rating initialRating={this.state.valueRating} name="valueRating" onClick={ (rating) => this.setState({valueRating: rating})} fullSymbol={<img src={star} style={{height: 50, width: 50}} className='fullstar' alt='filled star' />} emptySymbol={<img src={empty} style={{height: 50, width: 50}} className='halfstar' alt='filled star' />} fractions={2}/><br/>
               </section>
@@ -189,7 +189,7 @@ export default class Home extends Component {
         <div className='home-display'>
           <div className='welcome'>
             <section className='welcome-message'>
-              <p>Welcome home {this.state.user.username}!</p>
+              <p>Welcome {this.state.user.username}!</p>
             </section>
             <section className='logout-container'>
               <button className='logout-link' onClick = {() => {

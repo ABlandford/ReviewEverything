@@ -59,8 +59,8 @@ export default class Del extends Component {
           <h3>Who has been naughty?</h3>
         </div>
         <div className='delete-form'>
-          <form onSubmit={ this.delUser }>
-          <label>User's Username: <input className='delete-input' type='text'  placeholder='Input Username of User to Delete' value={this.state.username} onChange={this.changeId}></input></label>
+          <form onSubmit={ this.delUser } className='t'>
+          <input className='delete-input' type='text'  placeholder='Input Username of User to Delete' value={this.state.username} onChange={this.changeId}></input>
           <br/><input className='delete-submit' type='submit' value='Delete User'/>
           </form>
           <div className='d-link-container'>

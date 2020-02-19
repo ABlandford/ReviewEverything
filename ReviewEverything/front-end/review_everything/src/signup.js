@@ -111,7 +111,7 @@ export default class SignUp extends Component {
           <h1>Sign Up</h1>
         </div>
         <div className='signup-form'>
-          <form onSubmit={ this.submitInfo }>
+          <form onSubmit={ this.submitInfo } className="f">
             <label>Username: <input className='signup-input' type='text' placeholder='Username here...' value={this.state.username} onChange={ this.changeUName }></input></label><br/>
             <label>First Name: <input className='signup-input' type='text' placeholder='First name here...' value={this.state.fname} onChange={ this.changeFName }></input></label><br/>
             <label>Last Name: <input className='signup-input' type='text' placeholder='Last name here...' value={this.state.lname} onChange={ this.changeLName }></input></label><br/>
