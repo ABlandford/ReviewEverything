@@ -189,7 +189,7 @@ export default class Home extends Component {
         <div className='home-display'>
           <div className='welcome'>
             <section className='welcome-message'>
-              <p>Welcome {this.state.user.username}!</p>
+              <p>Welcome home {this.state.user.username}!</p>
             </section>
             <section className='logout-container'>
               <button className='logout-link' onClick = {() => {

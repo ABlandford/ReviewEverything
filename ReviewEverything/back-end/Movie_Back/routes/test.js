@@ -91,7 +91,8 @@ router.post('/login', function(req, res) {
                         res.send({status, user});
                     } else {
                         let statusMessage = 'The PASSWORD you entered was incorrect.'
-                        res.send({status, statusMessage})
+                        let passwordFail = true;
+                        res.send({status, statusMessage, passwordFail});
                     }
                 });
             }
@@ -113,39 +114,39 @@ router.post('/signup', function(req, res) {
     let phone_check = /^(1?\([0-9]{3}\)( |)|(1-|1)?[0-9]{3}-?)[0-9]{3}-?[0-9]{4}$/;
     if(!req.body.username) {
         errors = true;
-        error_message += "The USERNAME you entered is invalid. A username is required for use on this website.\n";
+        error_message += "\nThe USERNAME you entered is invalid. A username is required for use on this website.\n";
     }
     if(!name_check.test(req.body.fname) || !req.body.fname) {
         errors = true;
-        error_message += "The FIRST NAME you entered is invalid. Are you sure you don't have a first name?\n";
+        error_message += "\nThe FIRST NAME you entered is invalid. Are you sure you don't have a first name?\n";
     }
     if(!name_check.test(req.body.lname) || !req.body.lname) {
         errors = true;
-        error_message += "The LAST NAME you entered is invalid. Do you have a last name?\n";
+        error_message += "\nThe LAST NAME you entered is invalid. Do you have a last name?\n";
     }
     if(!name_check.test(req.body.city) || !req.body.city) {
         errors = true;
-        error_message += "The CITY you entered is invalid. A small village counts as a city in our case.\n";
+        error_message += "\nThe CITY you entered is invalid. A small village counts as a city in our case.\n";
     }
     if(!street_check.test(req.body.street)) {
         errors = true;
-        error_message += "The STREET you entered is invalid. Please make sure you entered a street number as well as street name.\n";
+        error_message += "\nThe STREET you entered is invalid. Please make sure you entered a street number as well as street name.\n";
     }
     if(!zip_check.test(req.body.zip_code)) {
         errors = true;
-        error_message += "The ZIPCODE you entered is invalid. Please input a valid zip code.\n";
+        error_message += "\nThe ZIPCODE you entered is invalid. Please input a valid zip code.\n";
     }
     if(!req.body.email) {
         errors = true;
-        error_message += "The EMAIL you entered is invalid or doesn't exist. Please enter an email.\n";
+        error_message += "\nThe EMAIL you entered is invalid or doesn't exist. Please enter an email.\n";
     }
     if(!req.body.password) {
         errors = true;
-        error_message += "The PASSWORD you entered seems to be empty. We need a password to secure your account.\n";
+        error_message += "\nThe PASSWORD you entered seems to be empty. We need a password to secure your account.\n";
     }
     if(!phone_check.test(req.body.phone)) {
         errors = true;
-        error_message += "The PHONE NUMBER you entered is invalid. Please enter a valid US phone number.\n";;
+        error_message += "\nThe PHONE NUMBER you entered is invalid. Please enter a valid US phone number.\n";;
     }
     if(errors) {
         res.send({ error_check: errors, message: error_message });
