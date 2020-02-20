@@ -9,7 +9,7 @@ export default class Login extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { username: "", password: "", redirect: null };
+    this.state = { username: "", password: "", redirect: null, fails: 0 };
     this.usernameUpdate = this.usernameUpdate.bind(this);
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
@@ -61,7 +61,17 @@ export default class Login extends Component {
           console.log('Login status: ' +  json.status);
           console.log('The information you entered was incorrect. See status message below.');
           console.log(json.statusMessage);
-          alert(json.statusMessage); 
+          if(json.passwordFail) {
+            let numbFails = this.state.fails;
+            numbFails++;
+            console.log('numbFails: ' + numbFails);
+            this.setState({ fails: numbFails });
+            console.log('State of fails: ' + this.state.fails);
+          }
+          alert(json.statusMessage);
+        }
+        if(this.state.fails === 10) {
+          alert('WARNING!!!\n\n You have reached 10 attempts at inputing the correct password.');
         }
       })
   }
