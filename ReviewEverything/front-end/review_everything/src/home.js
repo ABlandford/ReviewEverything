@@ -26,7 +26,7 @@ export default class Home extends Component {
   changeReview(event) {
     this.setState({valueReview : event.target.value, username: this.state.username, userId: this.state.userId})
   }
-  
+
   changeSearch(event) {
     this.setState({search : event.target.value})
   }
@@ -43,7 +43,7 @@ export default class Home extends Component {
   onStarClick(nextValue, prevValue, name) {
     this.setState({valueRating: nextValue});
   }
-  
+
   submitReview(event) {
     event.preventDefault();
 
@@ -61,30 +61,9 @@ export default class Home extends Component {
     }
   }
 
-  // getReviews(event) {
-  //   event.preventDefault();
-
-  //   const data= { RatinguserId: this.state.userId, reviewValue: this.state.rating, ratingValue: this.state.valueRating, movieId: this.state.searchId, Rateusername: this.state.username }
-  //   console.log(data.movieId)
-  //   this.setState({movieId : data.movieId})
-  //   fetch('http://localhost:9000/test/getReviews', {
-  //     method: 'PUT',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //   .then(response => response.json())
-  //   .then(json => {
-  //     if (json.error_check === true) {
-  //       console.log(json.message);
-  //       alert(json.message);
-  //     }
-  //   })
-  // }
-
   getData(event){
     event.preventDefault(); 
+
     let url = `https://api.themoviedb.org/3/search/movie?api_key=c4bf14506f6431c453952fcfa9057242&query=${this.state.search}&with_genres=${this.state.genre}`;
     
     fetch(url, {
@@ -160,14 +139,14 @@ export default class Home extends Component {
             <div className='body-title'>
               <h4>Search by Title</h4>
             </div>
-            <form onSubmit={this.getData}>
+            <form onSubmit={this.getData} id='reviewSub'>
               <label className='search-label'>Search: <input className='title-search' placeholder="Enter movie title" onChange={this.changeSearch} value={this.state.search}></input></label>
               <h1 className='result-title'>{this.state.searchTitle}</h1>
               <img className='result-image' alt="" src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
               <p className='result-description'>{this.state.searchDescription}</p>
               <input className='submit-search' type='submit' value='Search for Movie'></input>
             </form>
-            <form onSubmit={this.submitReview}>
+            <form onSubmit={this.submitReview} id='reviewForm'>
               <section className='review-label'>
                 <label>What do think of movie?</label><br/>
               </section>
@@ -177,9 +156,6 @@ export default class Home extends Component {
               </section>
               <input className='submit-review-btn' type='submit' value='Submit Your Review'></input>
             </form>
-          </div>
-          <div>
-            <h1>{this.state.matchReview}</h1>
           </div>
           <h1>{this.state.reviewValue}</h1>
         </div>
@@ -227,9 +203,7 @@ export default class Home extends Component {
               <input className='submit-review-btn' type='submit' value='Submit Your Review'></input>
             </form>
           </div>
-          <div>
-            <h1>{this.state.matchReview}</h1>
-          </div>
+  
           <h1>{this.state.reviewValue}</h1>
         </div>
       );

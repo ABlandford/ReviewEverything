@@ -455,6 +455,11 @@ table {
 	border-color: #FFCB00;
 }
 
+#forgotLink{
+	color: #ffffff;
+	font-size: 17px; 
+}
+
 @font-face {
 	font-family: 'Handwriting';
 	src: url('./handwriting-draft_free-version.ttf');
@@ -586,5 +591,11 @@ table {
 		padding-left: 5px;
 		padding-right: 5px;
 		font-size: 16px;
+	}
+
+	.result-description{
+		width: 92%;
+		margin-left: 12px;
+		text-align: center;
 	}
 }

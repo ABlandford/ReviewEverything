@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/data');
+mongoose.connect('mongodb://localhost/Peeps');
 
 let mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -22,7 +22,6 @@ const reviewSchema = mongoose.Schema({
     movieId: Number, 
     email: String,
 })
-
 
 const userSchema = mongoose.Schema({
     username: String,
@@ -293,6 +292,18 @@ router.delete('/delUsers', function (req, res) {
                 res.send(message);
             });
         });
+
+router.get('/forgot', function(req, res){
+    console.log("YO")
+    User.find((err, users) => {
+        if (err) console.log(err);
+        let userCollection = {};
+        users.forEach((user) => {
+            userCollection[user._id] = user;
+        });   
+    res.send(userCollection);
+   });
+})
 
 // router.get('/addusername', (req, res) => {
 //     User.find((err, users) => {

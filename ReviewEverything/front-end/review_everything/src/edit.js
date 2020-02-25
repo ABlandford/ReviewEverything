@@ -91,8 +91,12 @@ export default class Edit extends Component {
   }
   
   componentDidMount() {
-    let currentUser = cookies.get('currentUser');
-    this.setState({ userId: currentUser._id, username: currentUser.username, fname: currentUser.fname, lname: currentUser.lname, street: currentUser.street, city: currentUser.city, stateVal: currentUser.state, zip: currentUser.zip_code, email: currentUser.email, phone: currentUser.phone });
+    if(!cookies.get('currentUser')) {
+      this.setState({ redirect: '/' });
+    } else {
+      let currentUser = cookies.get('currentUser');
+      this.setState({ userId: currentUser._id, username: currentUser.username, fname: currentUser.fname, lname: currentUser.lname, street: currentUser.street, city: currentUser.city, stateVal: currentUser.state, zip: currentUser.zip_code, email: currentUser.email, phone: currentUser.phone });
+    }
   }
 
   render() {

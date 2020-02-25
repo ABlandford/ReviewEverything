@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -14,6 +14,7 @@ export default class Login extends Component {
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
     this.redirectToSignUp = this.redirectToSignUp.bind(this);
+    this.forgot = this.forgot.bind(this); 
     // this.addAdmin = this.addAdmin.bind(this);
   }
   
@@ -37,6 +38,10 @@ export default class Login extends Component {
   
   passcodeUpdate(event) {
     this.setState({password : event.target.value})
+  }
+
+  forgot(){
+    this.setState({ redirect: '/forgot' });
   }
   
   checkLogin(event) {
@@ -92,6 +97,12 @@ export default class Login extends Component {
           <form onSubmit={ this.redirectToSignUp }>
             <input className='tosignup-submit' type='submit' value='Sign Up'></input>
           </form>
+ 
+        
+          <button className='' onClick = {() => {
+                    this.forgot();
+              }}>Forgot Password?</button>
+          
         </div>
           {/* <form onSubmit={this.addAdmin}>
             <input type='submit' value='Add Admin'/>
