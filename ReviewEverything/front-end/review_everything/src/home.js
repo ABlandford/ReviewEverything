@@ -20,6 +20,7 @@ export default class Home extends Component {
     this.changeGenre = this.changeGenre.bind(this); 
     this.getData = this.getData.bind(this);
     this.logout = this.logout.bind(this);
+    this.seeReviews = this.seeReviews.bind(this);
     // this.getReviews = this.getReviews.bind(this);
   }
 
@@ -50,38 +51,24 @@ export default class Home extends Component {
     if(!this.state.valueReview || !this.state.searchId) {
       alert('Some data fields appear to not have any information. Did you make sure to search a movie and then type in your review?')
     } else {
-      const data = { userId: this.state.user.userId, review: this.state.valueReview, rating: this.state.valueRating, movieId: this.state.searchId, username: this.state.user.username }
+      const data = { userId: this.state.user.userId, review: this.state.valueReview, rating: this.state.valueRating, movieId: this.state.searchId, username: this.state.user.username, movieTitle: this.state.searchTitle }
       fetch('http://localhost:9000/test/submitReview', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(json => {
+        if(json.error === true) {
+          alert(json.errorMessage);
+        } else {
+          alert('Your information was submitted! Here is what you sent in.\n\nMovie Title: ' + this.state.searchTitle + '\nYour Rating: ' + this.state.valueRating + '\nYour Review: ' + this.state.valueReview);
+        }
       });
     }
   }
-
-  // getReviews(event) {
-  //   event.preventDefault();
-
-  //   const data= { RatinguserId: this.state.userId, reviewValue: this.state.rating, ratingValue: this.state.valueRating, movieId: this.state.searchId, Rateusername: this.state.username }
-  //   console.log(data.movieId)
-  //   this.setState({movieId : data.movieId})
-  //   fetch('http://localhost:9000/test/getReviews', {
-  //     method: 'PUT',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //   .then(response => response.json())
-  //   .then(json => {
-  //     if (json.error_check === true) {
-  //       console.log(json.message);
-  //       alert(json.message);
-  //     }
-  //   })
-  // }
 
   getData(event){
     event.preventDefault(); 
@@ -110,6 +97,10 @@ export default class Home extends Component {
     this.setState({redirect: "/"})
   }
 
+  seeReviews() {
+    this.setState({ redirect: '/userReviews' });
+  }
+  
   editAccount() {
     this.setState({redirect: "/edit"})
   }
@@ -149,9 +140,9 @@ export default class Home extends Component {
             <button className='nav-link' onClick = {() => {
               this.editAccount();
             }}>Edit Account</button>
-            {/* <button className='nav-link' onClick={() => {
-              this.getReviews();
-            }}>See Reviews</button> */}
+            <button className='nav-link' onClick={() => {
+              this.seeReviews();
+            }}>See Your Reviews</button>
             <button className='nav-link' onClick = {() => {
               this.delUsers();
             }}>Delete a User</button>
@@ -201,9 +192,9 @@ export default class Home extends Component {
             <button className='nav-link' onClick = {() => {
               this.editAccount();
             }}>Edit Account</button>
-            {/* <button className='nav-link' onClick={() => {
-              this.getReviews();
-            }}>See Reviews</button> */}
+            <button className='nav-link' onClick={() => {
+              this.seeReviews();
+            }}>See Your Reviews</button>
           </nav>
           <div className='body-container'>
             <div className='body-title'>

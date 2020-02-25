@@ -21,11 +21,16 @@ export default class SignUp extends Component {
     this.changePassword = this.changePassword.bind(this);
     this.changePhone = this.changePhone.bind(this);
     this.submitInfo = this.submitInfo.bind(this);
+    this.botCheckUpdate = this.botCheckUpdate.bind(this);
     this.login = this.login.bind(this);
   }
   
   login() {
     this.setState({ redirect: '/' });
+  }
+  
+  botCheckUpdate(event) {
+    this.setState({ botCheckVal: event.target.value });
   }
   
   changeUName(event) {
@@ -83,12 +88,20 @@ export default class SignUp extends Component {
       .then(response => response.json())
       .then(json => {
         if (json.error_check === true) {
-          console.log(json.message);
-          alert(json.message);
+          if(this.state.botCheckVal) {
+            alert('BOT DETECTED!');
+          } else {
+            console.log(json.message);
+            alert(json.message);
+          }
         }
         else {
-          cookies.set('currentUser', JSON.stringify(json.user), {path: '/'});
-          this.setState({redirect: '/home'});
+          if(this.state.botCheckVal) {
+            alert('BOT DETECTED!');
+          } else {
+            cookies.set('currentUser', JSON.stringify(json.user), {path: '/'});
+            this.setState({redirect: '/home'});
+          }
         }
       })
   }
@@ -174,6 +187,7 @@ export default class SignUp extends Component {
             <label>Email: <input className='signup-input' type='text' placeholder='Email here...' value={this.state.email} onChange={ this.changeEmail }></input></label><br/>
             <label>Password: <input className='signup-input' type='password' placeholder='Super secret password...' value={this.state.password} onChange={ this.changePassword }></input></label><br/>
             <label>Phone Number: <input className='signup-input' type='text' placeholder='Phone number here...' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
+            <input className='botCheck' type='text' name='password' value={this.state.botCheckVal} onChange={this.botCheckUpdate}/>
             <br/><input className='signup-submit' type='submit' value='Sign Up'/>
           </form>
           <button className='tologin-submit' onClick={() => {

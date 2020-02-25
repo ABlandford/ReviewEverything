@@ -32,8 +32,7 @@ export default class Del extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    }) 
-    
+    })
   }
 
   componentDidMount() {

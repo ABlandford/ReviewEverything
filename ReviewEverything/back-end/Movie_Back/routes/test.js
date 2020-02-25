@@ -16,13 +16,10 @@ const reviewSchema = mongoose.Schema({
     username: String,
     review: String,
     rating: String, 
-    userfname: String, 
-    userlname: String, 
     userId: String, 
-    movieId: Number, 
-    email: String,
+    movieId: Number,
+    movieTitle: String
 })
-
 
 const userSchema = mongoose.Schema({
     username: String,
@@ -59,13 +56,20 @@ router.post('/submitReview', function(req, res) {
     console.log('Review submitted: ' + req.body.review);
     console.log('Rating submitted: ' + req.body.rating);
     console.log('Review username ' + req.body.username);
-    console.log("Review UserId " + req.body.userId)
-    var r = new RR({review: req.body.review, rating: req.body.rating, username: req.body.username, movieId: req.body.movieId, userId: req.body.userId})
-    r.save(function(err){
-        if(err)
-            throw err;
-        else  
-            console.log('saved!')
+    console.log("Review UserId " + req.body.userId);
+    RR.findOne({ 'movieTitle': req.body.movieTitle }, (err, review) => {
+        if(!review) {
+            var r = new RR({review: req.body.review, rating: req.body.rating, username: req.body.username, movieId: req.body.movieId, movieTitle: req.body.movieTitle , userId: req.body.userId})
+            r.save(function(err){
+                if(err)
+                    throw err;
+                else  
+                    console.log('saved!')
+            })
+            res.send({error: false});
+        } else {
+            res.send({error: true, errorMessage: 'You already have a review of this movie. Check your reviews to edit or delete your current review.'});
+        }
     })
 });
 
@@ -243,17 +247,27 @@ router.put('/editAccount', function(req, res) {
     }
 });
 
-router.get('/getReviews', (req, res) => {
-    let searchNum = 0
-    RR.find((err, reviews) => {
-        let rev; 
-        if (err) console.log(err);
-        reviews.forEach((r) => {
-            console.log(r.movieId)
-            rev = reviews.filter(r => r.movieId == r.movieId)
+router.post('/getReviews', (req, res) => {
+    console.log(req.body.username);
+    RR.find({ "username": req.body.username}, (err, reviews) => {
+        if(err) return console.log(err);
+        let reviewCollection = [];
+        reviews.forEach((review) => {
+            console.log(review);
+            reviewCollection.push(review);
         })
-    res.send(rev);
-   });
+    res.send(reviewCollection);
+    })
+//     let searchNum = 0
+//     RR.find((err, reviews) => {
+//         let rev; 
+//         if (err) console.log(err);
+//         reviews.forEach((r) => {
+//             console.log(r.movieId)
+//             rev = reviews.filter(r => r.movieId == r.movieId)
+//         })
+//     res.send(rev);
+//    });
 });
 
 router.delete('/delUsers', function (req, res) {
