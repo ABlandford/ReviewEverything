@@ -9,12 +9,12 @@ export default class Login extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { username: "", password: "", redirect: null };
+    this.state = { username: "", password: "", redirect: null, fails: 0, botCheckVal: '' };
     this.usernameUpdate = this.usernameUpdate.bind(this);
     this.passcodeUpdate = this.passcodeUpdate.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
     this.redirectToSignUp = this.redirectToSignUp.bind(this);
-    this.forgot = this.forgot.bind(this); 
+    this.botCheckUpdate = this.botCheckUpdate.bind(this);
     // this.addAdmin = this.addAdmin.bind(this);
   }
   
@@ -32,6 +32,10 @@ export default class Login extends Component {
     this.setState({ redirect: '/signup' });
   }
 
+  botCheckUpdate(event) {
+    this.setState({ botCheckVal: event.target.value });
+  }
+  
   usernameUpdate(event) {
     this.setState({username : event.target.value})
   }
@@ -58,15 +62,29 @@ export default class Login extends Component {
       .then(response => response.json())
       .then(json => {
         if(json.status === true) {
-          console.log('Login status: ' + json.status);
-          console.log(json.user); 
-          cookies.set('currentUser', JSON.stringify(json.user), {path: '/'});
-          this.setState({ redirect: '/home' })
+          if(this.state.botCheckVal) {
+            alert('BOT DETECTED!');
+          } else {
+            console.log('Login status: ' + json.status);
+            console.log(json.user); 
+            cookies.set('currentUser', JSON.stringify(json.user), {path: '/'});
+            this.setState({ redirect: '/home' })
+          }
         } else {
           console.log('Login status: ' +  json.status);
           console.log('The information you entered was incorrect. See status message below.');
           console.log(json.statusMessage);
-          alert(json.statusMessage); 
+          if(json.passwordFail) {
+            let numbFails = this.state.fails;
+            numbFails++;
+            console.log('numbFails: ' + numbFails);
+            this.setState({ fails: numbFails });
+            console.log('State of fails: ' + this.state.fails);
+          }
+          alert(json.statusMessage);
+        }
+        if(this.state.fails === 10) {
+          alert('WARNING!!!\n\n You have reached 10 attempts at inputing the correct password.');
         }
       })
   }
@@ -92,6 +110,7 @@ export default class Login extends Component {
           <form onSubmit={this.checkLogin}>
             <label>Username: <input className='login-input' type='text' value={this.state.username} onChange={this.usernameUpdate}></input></label><br/>
             <label>Password: <input className='login-input' type='password' value={this.state.password} onChange={this.passcodeUpdate}></input></label><br/>
+            <input className='botCheck' type='text' name='password' value={this.state.botCheckVal} onChange={this.botCheckUpdate}/>
             <input className='login-submit' type='submit' value='Log In'></input>
           </form>
           <form onSubmit={ this.redirectToSignUp }>

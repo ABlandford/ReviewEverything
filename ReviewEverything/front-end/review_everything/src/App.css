@@ -48,6 +48,10 @@ table {
 	border-spacing: 0;
 }
 
+.botCheck {
+	display: none;
+}
+
 .login-display, .signup-display, .home-display, .edit-display, .delete-display {
 	display: flex;
 	flex-flow: column;
