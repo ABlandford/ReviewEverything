@@ -35,6 +35,7 @@ const App = () => {
         </Route>
         <Route path='/editReview'>
           <ReviewEdit/>
+        </Route>
         <Route path='/forgot'>
           <Forgot/>
         </Route>
