@@ -1,43 +1,29 @@
 import React, {Component} from 'react';
 import './App.css';
 import { Redirect, useHistory } from 'react-router-dom';
-import emailjs from 'emailjs-com';
 
-export default class Forgot extends Component {
+
+export default class changePassword extends Component {
     constructor(props) {
         super(props);
         this.state = { redirect: null,  temp_params: "", name: "" };
-        this.sendEmail = this.sendEmail.bind(this);
+        this.sendPass = this.sendPass.bind(this);
         this.emailMethod = this.emailMethod.bind(this); 
         // history = useHistory();
         this.addLocked = this.addLocked.bind(this); 
-        this.setEmail = this.setEmail.bind(this); 
+        this.setPass = this.setPass.bind(this); 
     }
-
-  addLocked(event) {
-    event.preventDefault();
-
-    fetch('http://localhost:9000/test/locked', {
-      method: 'GET',
-    });
-  }
 
     backHome() {
         this.setState({redirect: "/"})
     }
 
-    emailMethod(){
-     
-        emailjs.init("user_NzA1tUX4PMLx4sM7kfzLy");
-     
-    }
-
-    setEmail(event){
+    setPass(event){
       this.setState({temp_params: event.target.value})
     }
   
 
-   sendEmail(event){
+   sendPass(event){
      event.preventDefault(); 
      const data = { email: this.state.temp_params };
      fetch('http://localhost:9000/test/changePassword', {
@@ -50,17 +36,14 @@ export default class Forgot extends Component {
          .then(response => response.json())
              .then(json => {
                  console.log(json.userLog+" #####");
+                 console.log(json.userPass)
                  this.setState({name: json.userLog})
                  console.log(this.state.name)
                  
              })
     console.log(this.state.temp_params+"!!!")
-    emailjs.send("gmail", "revieweverythingtemplate", {"email":this.state.temp_params})
-    .then(function(response) {
-       console.log('SUCCESS!', response.status, response.text);
-    }, function(err) {
-       console.log('FAILED...', err);
-    });
+    
+
 
   }
  
@@ -72,14 +55,9 @@ export default class Forgot extends Component {
 
       return(
         <div>
-          <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-          <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"></script>
-          <script type="text/javascript">
-             {this.emailMethod()}
-          </script>
-            <h1>Reset Password</h1>
-            <form onSubmit={this.sendEmail}>
-            <label>Your Email Address: <input type="email" onChange={this.setEmail}></input></label><br/><br/>
+            <h1>Change Password {this.state.name}</h1>
+            <form onSubmit={this.sendPass}>
+            <label>Your New Password: <input type="text" onChange={this.setPass}></input></label><br/><br/>
             <button type='submit'>Send</button>
             <button className='back' onClick={() => {
                 this.backHome()
