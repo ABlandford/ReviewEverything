@@ -7,6 +7,9 @@ import Del from './delete';
 import Forgot from './forgot'
 import UReview from './uReview';
 import changePassword from './changePass'; 
+import UReview from './uReview';
+import ReviewEdit from './review_edit'
+import Forgot from './forgot'
 import { BrowserRouter as Router, Switch, Route,  } from 'react-router-dom';
 import './App.css';
 
@@ -30,14 +33,14 @@ const App = () => {
         <Route path='/delUsers'>
           <Del/>
         </Route>
-        <Route path='/forgot'>
-          <Forgot/>
-        </Route>
         <Route path='/userReviews'>
           <UReview/>
         </Route>
-        <Route path='/changePassword'>
-          <changePassword/>
+        <Route path='/editReview'>
+          <ReviewEdit/>
+          </Route>
+        <Route path='/forgot'>
+          <Forgot/>
         </Route>
       </Switch>
     </Router>

@@ -5,22 +5,39 @@ import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
-const Review = ({ username, rating, review, movieTitle }) => {
-    return (
-        <section>
-            <h3>Title of Reviewed Movie: { movieTitle }</h3>
-            <p>Rating: { rating }/5</p>
-            <p>Review: "{ review }"</p>
-        </section>
-    )
-}
-
 export default class UReviews extends Component {
 
     constructor(props) {
         super(props);
         this.state = { redirect: '', user: {}, reviews: [] };
         this.goHome = this.goHome.bind(this);
+        this.toEdit = this.toEdit.bind(this);
+        this.deleteReview = this.deleteReview.bind(this);
+    }
+
+    deleteReview(rId) {
+        const data = { reviewId: rId }
+
+        fetch('http://localhost:9000/test/deleteReview', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json.message);
+            window.location.reload(false);
+        })
+    }
+    
+    toEdit(uRating, uReview, mReview, reviewId) {
+        cookies.set('userReview', JSON.stringify(uReview), { path: '/' });
+        cookies.set('userRating', JSON.stringify(uRating), { path: '/' });
+        cookies.set('reviewMovie', JSON.stringify(mReview), { path: '/' });
+        cookies.set('reviewId', JSON.stringify(reviewId), { path: '/' });
+        this.setState({ redirect: '/editReview' });
     }
 
     goHome() {
@@ -53,13 +70,19 @@ export default class UReviews extends Component {
         let reviews_container = [];
         for(let i = 0; i < this.state.reviews.length; i++) {
             reviews_container.push(
-                <Review
-                    key = { i }
-                    username = { this.state.reviews[i].username }
-                    rating = { this.state.reviews[i].rating }
-                    review = { this.state.reviews[i].review }
-                    movieTitle = { this.state.reviews[i].movieTitle }
-                />
+                <section>
+                    <h3>Title of Reviewed Movie: { this.state.reviews[i].movieTitle }</h3>
+                    <p>Rating: { this.state.reviews[i].rating }/5</p>
+                    <p>Review: "{ this.state.reviews[i].review }"</p>
+                    <section>
+                        <button onClick={() => {
+                            this.toEdit(this.state.reviews[i].rating, this.state.reviews[i].review, this.state.reviews[i].movieTitle, this.state.reviews[i]._id)
+                        }}>Edit Review</button>
+                        <button onClick={() => {
+                            this.deleteReview(this.state.reviews[i]._id)
+                        }}>Delete Review</button>
+                    </section>
+                </section>
             )
         }
             
