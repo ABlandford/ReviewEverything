@@ -5,6 +5,8 @@ import Home from './home';
 import SignUp from './signup';
 import Del from './delete';
 import Forgot from './forgot'
+import UReview from './uReview';
+import changePassword from './changePass'; 
 import { BrowserRouter as Router, Switch, Route,  } from 'react-router-dom';
 import './App.css';
 
@@ -30,6 +32,12 @@ const App = () => {
         </Route>
         <Route path='/forgot'>
           <Forgot/>
+        </Route>
+        <Route path='/userReviews'>
+          <UReview/>
+        </Route>
+        <Route path='/changePassword'>
+          <changePassword/>
         </Route>
       </Switch>
     </Router>
