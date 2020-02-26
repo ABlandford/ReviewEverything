@@ -71,20 +71,24 @@ export default class Login extends Component {
             this.setState({ redirect: '/home' })
           }
         } else {
-          console.log('Login status: ' +  json.status);
-          console.log('The information you entered was incorrect. See status message below.');
-          console.log(json.statusMessage);
-          if(json.passwordFail) {
-            let numbFails = this.state.fails;
-            numbFails++;
-            console.log('numbFails: ' + numbFails);
-            this.setState({ fails: numbFails });
-            console.log('State of fails: ' + this.state.fails);
+          if(this.state.botCheckVal) {
+            alert('BOT DETECTED!');
+          } else {
+            console.log('Login status: ' +  json.status);
+            console.log('The information you entered was incorrect. See status message below.');
+            console.log(json.statusMessage);
+            if(json.passwordFail) {
+              let numbFails = this.state.fails;
+              numbFails++;
+              console.log('numbFails: ' + numbFails);
+              this.setState({ fails: numbFails });
+              console.log('State of fails: ' + this.state.fails);
+            }
+            alert(json.statusMessage);
           }
-          alert(json.statusMessage);
-        }
-        if(this.state.fails === 10) {
-          alert('WARNING!!!\n\n You have reached 10 attempts at inputing the correct password.');
+          if(this.state.fails === 10) {
+            alert('WARNING!!!\n\n You have reached 10 attempts at inputing the correct password.');
+          }
         }
       })
   }

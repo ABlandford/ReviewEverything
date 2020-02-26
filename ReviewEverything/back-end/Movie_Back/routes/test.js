@@ -15,12 +15,10 @@ mdb.once('open', (callback) => {
 const reviewSchema = mongoose.Schema({
     username: String,
     review: String,
-    rating: String, 
-    userfname: String, 
-    userlname: String, 
+    rating: Number, 
     userId: String, 
-    movieId: Number, 
-    email: String,
+    movieId: Number,
+    movieTitle: String
 })
 
 const userSchema = mongoose.Schema({
@@ -58,20 +56,27 @@ router.post('/submitReview', function(req, res) {
     console.log('Review submitted: ' + req.body.review);
     console.log('Rating submitted: ' + req.body.rating);
     console.log('Review username ' + req.body.username);
-    console.log("Review UserId " + req.body.userId)
-    var r = new RR({review: req.body.review, rating: req.body.rating, username: req.body.username, movieId: req.body.movieId, userId: req.body.userId})
-    r.save(function(err){
-        if(err)
-            throw err;
-        else  
-            console.log('saved!')
+    console.log("Review UserId " + req.body.userId);
+    RR.findOne({ 'movieTitle': req.body.movieTitle, 'username': req.body.username }, (err, review) => {
+        if(!review) {
+            var r = new RR({review: req.body.review, rating: req.body.rating, username: req.body.username, movieId: req.body.movieId, movieTitle: req.body.movieTitle , userId: req.body.userId})
+            r.save(function(err){
+                if(err)
+                    throw err;
+                else  
+                    console.log('saved!')
+            })
+            res.send({error: false});
+        } else {
+            res.send({error: true, errorMessage: 'You already have a review of this movie. Check your reviews to edit or delete your current review.'});
+        }
     })
 });
 
 router.post('/login', function(req, res) {
     console.log('\nChecking data...\n');
-    console.log('Username submitted: ' + req.body.username);
-    console.log('Password submitted(unhashed): ' + req.body.password);
+    // console.log('Username submitted: ' + req.body.username);
+    // console.log('Password submitted(unhashed): ' + req.body.password);
    
     if(req.body.username != null && req.body.password != null) {
         let status = false;
@@ -176,6 +181,21 @@ router.post('/signup', function(req, res) {
     }
 });
 
+router.put('/editReview', function(req, res) {
+    console.log('Saving your review...');
+    RR.findById(req.body.reviewId, (err, review) => {
+        if(err) return console.log(err)
+        review.review = req.body.newReview,
+        review.rating = req.body.newRating,
+
+        review.save((err, savedReview) => {
+            if(err) return console.log(err)
+            console.log('Review updated for ' + savedReview.movieTitle);
+            return res.send({ success: true });
+        })
+    })
+})
+
 router.put('/editAccount', function(req, res) {
     console.log("Checking data...");
     console.log(req.body.userId);
@@ -242,17 +262,38 @@ router.put('/editAccount', function(req, res) {
     }
 });
 
-router.get('/getReviews', (req, res) => {
-    RR.find((err, reviews) => {
-        let rev; 
-        if (err) console.log(err);
-        reviews.forEach((r) => {
-            console.log(r.movieId)
-            rev = reviews.filter(r => r.movieId == r.movieId)
+router.post('/getReviews', (req, res) => {
+    console.log(req.body.username);
+    RR.find({ "username": req.body.username}, (err, reviews) => {
+        if(err) return console.log(err);
+        let reviewCollection = [];
+        reviews.forEach((review) => {
+            console.log(review);
+            reviewCollection.push(review);
         })
-    res.send(rev);
-   });
+    res.send(reviewCollection);
+    })
 });
+
+router.post('/averageReviews', function(req, res) {
+    console.log("Movie ID submitted: " + req.body.movieId);
+    RR.find({ 'movieId': req.body.movieId }, (err, reviews) => {
+        if(err) return console.log(err);
+        let n = reviews.length;
+        total = 0;
+        reviews.forEach((review) => {
+            console.log('Rating of current index: ' + review.rating);
+            total = total+review.rating;
+        })
+        console.log('Total: ' + total);
+        console.log('Current N: ' + n);
+        let average = total/n;
+
+        console.log('Average: ' + average);
+        
+        res.send({averageRating: average});
+    })
+})
 
 router.delete('/delUsers', function (req, res) {
     User.findOneAndDelete(req.body.username, function (err, user) {
@@ -261,37 +302,44 @@ router.delete('/delUsers', function (req, res) {
       res.status(200).send("User: "+" was deleted.");
     //   console.log(req.body.userId)
     });
-  });
+});
 
- router.get('/addAdmin', (req, res) => {
-    User.find((err, users) => {
-                if (err) console.log(err);
-                users.forEach((user) => {
-                    const admin = false; 
-                    User.findById(user._id, (err, currentUser) => {
-                        if (err) return console.log(err);
-                        currentUser.admin = admin,
-                        currentUser.username = user.username,
-                        currentUser.fname = user.fname,
-                        currentUser.lname = user.lname,
-                        currentUser.street = user.street,
-                        currentUser.city = user.city,
-                        currentUser.state = user.state,
-                        currentUser.zip_code = user.zip_code,
-                        currentUser.email = user.email,
-                        currentUser.password = user.password,
-                        currentUser.phone = user.phone
-        
-                        currentUser.save((err, user) => {
-                            if(err) return console.log(err);
-                            console.log(user.admin + ' saved!');
-                        });
-                    });
-                });
-                let message = 'Users now have admin access.'
-                res.send(message);
-            });
-        });
+router.delete('/deleteReview', function(req, res) {
+    RR.findByIdAndDelete(req.body.reviewId, (err, review) => {
+        if (err) return console.log(err);
+    })
+    res.send({ message: 'Delete completed.' });
+})
+  
+router.get('/addAdmin', (req, res) => {
+   User.find((err, users) => {
+               if (err) console.log(err);
+               users.forEach((user) => {
+                   const admin = false; 
+                   User.findById(user._id, (err, currentUser) => {
+                       if (err) return console.log(err);
+                       currentUser.admin = admin,
+                       currentUser.username = user.username,
+                       currentUser.fname = user.fname,
+                       currentUser.lname = user.lname,
+                       currentUser.street = user.street,
+                       currentUser.city = user.city,
+                       currentUser.state = user.state,
+                       currentUser.zip_code = user.zip_code,
+                       currentUser.email = user.email,
+                       currentUser.password = user.password,
+                       currentUser.phone = user.phone
+       
+                       currentUser.save((err, user) => {
+                           if(err) return console.log(err);
+                           console.log(user.admin + ' saved!');
+                       });
+                   });
+               });
+               let message = 'Users now have admin access.'
+               res.send(message);
+           });
+       });
 
 router.get('/forgot', function(req, res){
     console.log("YO")

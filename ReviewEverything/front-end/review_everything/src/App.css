@@ -52,7 +52,7 @@ table {
 	display: none;
 }
 
-.login-display, .signup-display, .home-display, .edit-display, .delete-display {
+.login-display, .signup-display, .home-display, .edit-display, .delete-display, .review-display {
 	display: flex;
 	flex-flow: column;
 	height: 100%;
