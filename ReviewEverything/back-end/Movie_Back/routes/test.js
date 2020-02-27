@@ -293,7 +293,7 @@ router.post('/averageReviews', function(req, res) {
 
         console.log('Average: ' + average);
         
-        res.send({averageRating: average});
+        res.send({averageRating: average, searchId: req.body.movieId});
     })
 })
 
