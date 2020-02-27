@@ -6,10 +6,8 @@ import SignUp from './signup';
 import Del from './delete';
 import Forgot from './forgot'
 import UReview from './uReview';
-import changePassword from './changePass'; 
-import UReview from './uReview';
-import ReviewEdit from './review_edit'
-import Forgot from './forgot'
+import ChangePassword from './changePass';
+import ReviewEdit from './review_edit';
 import { BrowserRouter as Router, Switch, Route,  } from 'react-router-dom';
 import './App.css';
 

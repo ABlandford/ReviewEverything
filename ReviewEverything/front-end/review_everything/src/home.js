@@ -110,6 +110,10 @@ export default class Home extends Component {
     .then(response => response.json())
     .then(json => {
       if(json.averageRating === null) {
+        this.setState({ averageRating: 0 });
+        this.getAverage();
+      } else if(json.averageRating === this.state.averageRating) {
+        this.setState({ averageRating: 0 });
         this.getAverage();
       } else {
         this.setState({ averageRating: json.averageRating });
@@ -146,6 +150,7 @@ export default class Home extends Component {
   }
 
   render() {
+    // this.getAverage();
     if(this.state.redirect) {
       return <Redirect to={ this.state.redirect }/>
     }
