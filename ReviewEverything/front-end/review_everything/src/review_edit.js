@@ -79,19 +79,21 @@ export default class ReviewEdit extends Component {
             return <Redirect to={ this.state.redirect }/>
         }
         return(
-            <div>
-                <div>
-                    <p>The movie you reviewed: { this.state.movieReviewed }</p>
+            <div className='edit_review_display'>
+                <div className='title-container'>
+                    <label className='movieLabel'>The movie you reviewed: <br/><br/><p className='reviewTitle'>{ this.state.movieReviewed }</p></label>
                 </div>
                 <form onSubmit={ this.saveReview }>
-                    <Rating initialRating={this.state.userRating} name="valueRating" onClick={ (rating) => this.setState({userRating: rating})} fullSymbol={<img src={star} style={{height: 50, width: 50}} className='fullstar' alt='filled star' />} emptySymbol={<img src={empty} style={{height: 50, width: 50}} className='halfstar' alt='filled star' />} fractions={2}/><br/>
-                    <label>Your Review: <input type='text' value={ this.state.userReview } onChange={ this.updateReview }></input></label><br/>
-                    <input type='submit' value='Save Review'/>
+                    <section className='rating-container'>
+                        <Rating initialRating={this.state.userRating} name="valueRating" onClick={ (rating) => this.setState({userRating: rating})} fullSymbol={<img src={star} style={{height: 50, width: 50}} className='fullstar' alt='filled star' />} emptySymbol={<img src={empty} style={{height: 50, width: 50}} className='halfstar' alt='filled star' />} fractions={2}/><br/>
+                    </section>
+                    <label className='new-review-label'>Your Review: <input className='review-text' type='text' value={ this.state.userReview } onChange={ this.updateReview }></input></label><br/>
+                    <input className='submit-review-btn' type='submit' value='Save Review'/>
                 </form>
                 <section>
-                    <button onClick={() => {
+                    <button className='edit-link' onClick={() => {
                         this.toReviews();
-                    }}>Your Reviews</button>
+                    }}>Return to Your Reviews</button>
                 </section>
             </div>
         )

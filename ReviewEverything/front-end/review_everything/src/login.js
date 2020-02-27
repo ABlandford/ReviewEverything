@@ -114,7 +114,7 @@ export default class Login extends Component {
           <form onSubmit={this.checkLogin}>
             <label>Username: <input className='login-input' type='text' value={this.state.username} onChange={this.usernameUpdate}></input></label><br/>
             <label>Password: <input className='login-input' type='password' value={this.state.password} onChange={this.passcodeUpdate}></input></label><br/>
-            <input className='botCheck' type='text' name='password' value={this.state.botCheckVal} onChange={this.botCheckUpdate}/>
+            <input type='hidden' name='password' value={this.state.botCheckVal} onChange={this.botCheckUpdate}/>
             <input className='login-submit' type='submit' value='Log In'></input>
           </form>
           <form onSubmit={ this.redirectToSignUp }>
