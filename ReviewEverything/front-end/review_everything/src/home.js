@@ -12,7 +12,7 @@ export default class Home extends Component {
 
   constructor(props) {
     super(props); 
-    this.state = { valueReview: "", admin: false, valueRating: 0, loggedin: true, user: {}, searchTitle: "", searchDescription: "", searchImage: "", search: "", actor: "", searchId: 0, email:"", userId: "", username:"", genre: 28, reviewValue:"", specificR: {}, averageRating: 0 };
+    this.state = { valueReview: "", admin: false, valueRating: 0, loggedin: true, user: {}, searchTitle: "", searchDescription: "", searchImage: "", search: "", actor: "", searchId: 0, email:"", userId: "", username:"", genre: 28, reviewValue:"", specificR: {}, averageRating: 0, averageText: '' };
     this.submitReview = this.submitReview.bind(this);
     this.changeReview = this.changeReview.bind(this);
     this.changeSearch = this.changeSearch.bind(this);
@@ -22,6 +22,7 @@ export default class Home extends Component {
     this.logout = this.logout.bind(this);
     this.seeReviews = this.seeReviews.bind(this);
     this.getAverage = this.getAverage.bind(this);
+    this.seeAverage = this.seeAverage.bind(this);
     // this.getReviews = this.getReviews.bind(this);
   }
 
@@ -74,25 +75,36 @@ export default class Home extends Component {
   getData(event){
     event.preventDefault(); 
 
-    let url = `https://api.themoviedb.org/3/search/movie?api_key=c4bf14506f6431c453952fcfa9057242&query=${this.state.search}&with_genres=${this.state.genre}`;
+    console.log(this.state.search);
     
-    fetch(url, {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(json => {
-        this.setState ( {
-            searchTitle: json.results[0].title,
-            searchDescription: json.results[0].overview, 
-            searchImage: json.results[0].poster_path, 
-            searchId: json.results[0].id,
-            searchM : json.results[0].id,
-            username: this.state.username,
-            userId: this.state.userId
+    if(this.state.search === null || this.state.search === '') {
+      alert('Your search field is empty. Please enter a movie title to find a movie.');
+    } else {
+      let url = `https://api.themoviedb.org/3/search/movie?api_key=c4bf14506f6431c453952fcfa9057242&query=${this.state.search}&with_genres=${this.state.genre}`;
+      
+      fetch(url, {
+          method: 'GET'
+      })
+      .then(response => response.json())
+      .then(json => {
+        if(json.results[0] === undefined) {
+          alert('The search term you entered is invalid. Please try a different input.')
+        } else {
+          this.setState ( {
+              searchTitle: json.results[0].title,
+              searchDescription: json.results[0].overview, 
+              searchImage: json.results[0].poster_path, 
+              searchId: json.results[0].id,
+              searchM : json.results[0].id,
+              username: this.state.username,
+              userId: this.state.userId,
+              averageRating: 0
+          });
+        }
       });
-    });
-
-    this.getAverage();
+  
+      this.getAverage();
+    }
   }
 
   getAverage() {
@@ -111,10 +123,21 @@ export default class Home extends Component {
     .then(json => {
       if(json.averageRating === null) {
         this.getAverage();
+      } else if(json.averageRating === this.state.averageRating || json.searchId != this.state.searchId) {
+        this.getAverage();
       } else {
         this.setState({ averageRating: json.averageRating });
       }
     })
+  }
+  
+  seeAverage() {
+    if(this.state.search === '' || this.state.search === null) {
+      this.setState({ averageText: '' });
+    } else {
+      let text = "Average Rating of " + this.state.searchTitle + ": " + this.state.averageRating;
+      this.setState({ averageText: text });
+    }
   }
   
   logout() {
@@ -146,6 +169,7 @@ export default class Home extends Component {
   }
 
   render() {
+    // this.getAverage();
     if(this.state.redirect) {
       return <Redirect to={ this.state.redirect }/>
     }
@@ -181,9 +205,12 @@ export default class Home extends Component {
               <label className='search-label'>Search: <input className='title-search' placeholder="Enter movie title" onChange={this.changeSearch} value={this.state.search}></input></label>
               <h1 className='result-title'>{this.state.searchTitle}</h1>
               <img className='result-image' alt="" src={"http://image.tmdb.org/t/p/w185/" + this.state.searchImage}></img>
-              <p>Average Rating of { this.state.searchTitle }: { this.state.averageRating }</p>
+              <p>{ this.state.averageText }</p>
               <p className='result-description'>{this.state.searchDescription}</p>
               <input className='submit-search' type='submit' value='Search for Movie'></input>
+              <button className='submit-search' onClick={() => {
+                this.seeAverage();
+              }}>See Average Rating</button>
             </form>
             <form onSubmit={this.submitReview} id='reviewForm'>
               <section className='review-label'>
@@ -231,6 +258,9 @@ export default class Home extends Component {
               <p>Average Rating of { this.state.searchTitle }: { this.state.averageRating }</p>
               <p className='result-description'>{this.state.searchDescription}</p>
               <input className='submit-search' type='submit' value='Search for Movie'></input>
+              <button className='submit-search' onClick={() => {
+                this.seeAverage();
+              }}>See Average Rating</button>
             </form>
             <form onSubmit={this.submitReview}>
               <section className='review-label'>
