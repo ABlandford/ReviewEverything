@@ -49,6 +49,7 @@ export default class UReviews extends Component {
             this.setState({ redirect: '/' });
         } else {
             let currentUser = cookies.get('currentUser');
+            this.setState({ user: { username: currentUser.username } })
             const data = { username: currentUser.username };
         
             fetch('http://localhost:9000/test/getReviews', {
@@ -70,15 +71,19 @@ export default class UReviews extends Component {
         let reviews_container = [];
         for(let i = 0; i < this.state.reviews.length; i++) {
             reviews_container.push(
-                <section>
-                    <h3>Title of Reviewed Movie: { this.state.reviews[i].movieTitle }</h3>
-                    <p>Rating: { this.state.reviews[i].rating }/5</p>
-                    <p>Review: "{ this.state.reviews[i].review }"</p>
+                <section className='full-review'>
+                    <h3 className='view-review-title'>Title of Reviewed Movie: { this.state.reviews[i].movieTitle }</h3>
+                    <section className='rating-holder'>
+                        <p className='view-rating-label'>Rating: <br/><br/><p className='view-rating'>{ this.state.reviews[i].rating }/5</p></p>
+                    </section>
+                    <section className='review-holder'>
+                        <p className='view-review-label'>Review: <br/><br/><p className='view-review'>"{ this.state.reviews[i].review }"</p></p>
+                    </section>
                     <section>
-                        <button onClick={() => {
+                        <button className='edit-review-btn' onClick={() => {
                             this.toEdit(this.state.reviews[i].rating, this.state.reviews[i].review, this.state.reviews[i].movieTitle, this.state.reviews[i]._id)
                         }}>Edit Review</button>
-                        <button onClick={() => {
+                        <button className='delete-review-btn' onClick={() => {
                             this.deleteReview(this.state.reviews[i]._id)
                         }}>Delete Review</button>
                     </section>
@@ -91,13 +96,17 @@ export default class UReviews extends Component {
         }
         return(
             <div className='review-display'>
-                <h1>Hello. This be the user reviews page.</h1><br/>
+                <div className='user-review-header'>
+                    <h1>Hello { this.state.user.username }! Here are your reviews </h1><br/>
+                </div>
                 <div>
                     { reviews_container }
                 </div>
-                <button onClick={() => {
-                    this.goHome();
-                }}>Home</button>
+                <div className='edit-nav'>
+                    <button className='home-link' onClick={() => {
+                        this.goHome();
+                    }}>Home</button>
+                </div>
             </div>
         )
     }

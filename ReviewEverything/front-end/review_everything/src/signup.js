@@ -187,7 +187,7 @@ export default class SignUp extends Component {
             <label>Email: <input className='signup-input' type='text' placeholder='Email here...' value={this.state.email} onChange={ this.changeEmail }></input></label><br/>
             <label>Password: <input className='signup-input' type='password' placeholder='Super secret password...' value={this.state.password} onChange={ this.changePassword }></input></label><br/>
             <label>Phone Number: <input className='signup-input' type='text' placeholder='Phone number here...' value={this.state.phone} onChange={ this.changePhone }></input></label><br/>
-            <input className='botCheck' type='text' name='password' value={this.state.botCheckVal} onChange={this.botCheckUpdate}/>
+            <input type='hidden' name='password' value={this.state.botCheckVal} onChange={this.botCheckUpdate}/>
             <br/><input className='signup-submit' type='submit' value='Sign Up'/>
           </form>
           <button className='tologin-submit' onClick={() => {
