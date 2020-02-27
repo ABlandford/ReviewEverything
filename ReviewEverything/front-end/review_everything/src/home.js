@@ -75,26 +75,36 @@ export default class Home extends Component {
   getData(event){
     event.preventDefault(); 
 
-    let url = `https://api.themoviedb.org/3/search/movie?api_key=c4bf14506f6431c453952fcfa9057242&query=${this.state.search}&with_genres=${this.state.genre}`;
+    console.log(this.state.search);
     
-    fetch(url, {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(json => {
-        this.setState ( {
-            searchTitle: json.results[0].title,
-            searchDescription: json.results[0].overview, 
-            searchImage: json.results[0].poster_path, 
-            searchId: json.results[0].id,
-            searchM : json.results[0].id,
-            username: this.state.username,
-            userId: this.state.userId,
-            averageRating: 0
+    if(this.state.search === null || this.state.search === '') {
+      alert('Your search field is empty. Please enter a movie title to find a movie.');
+    } else {
+      let url = `https://api.themoviedb.org/3/search/movie?api_key=c4bf14506f6431c453952fcfa9057242&query=${this.state.search}&with_genres=${this.state.genre}`;
+      
+      fetch(url, {
+          method: 'GET'
+      })
+      .then(response => response.json())
+      .then(json => {
+        if(json.results[0] === undefined) {
+          alert('The search term you entered is invalid. Please try a different input.')
+        } else {
+          this.setState ( {
+              searchTitle: json.results[0].title,
+              searchDescription: json.results[0].overview, 
+              searchImage: json.results[0].poster_path, 
+              searchId: json.results[0].id,
+              searchM : json.results[0].id,
+              username: this.state.username,
+              userId: this.state.userId,
+              averageRating: 0
+          });
+        }
       });
-    });
-
-    this.getAverage();
+  
+      this.getAverage();
+    }
   }
 
   getAverage() {
@@ -122,8 +132,12 @@ export default class Home extends Component {
   }
   
   seeAverage() {
-    let text = "Average Rating of " + this.state.searchTitle + ": " + this.state.averageRating;
-    this.setState({ averageText: text });
+    if(this.state.search === '' || this.state.search === null) {
+      this.setState({ averageText: '' });
+    } else {
+      let text = "Average Rating of " + this.state.searchTitle + ": " + this.state.averageRating;
+      this.setState({ averageText: text });
+    }
   }
   
   logout() {
