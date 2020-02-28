@@ -69,6 +69,15 @@ table {
 	text-align: center;
 }
 
+.Password-Forget{
+	font-size: 46px;
+	padding: 50px;
+	font-family: 'Handwriting';
+	color: #FFCB00;
+	background-color: #00132E;
+	text-align: center;
+}
+
 .login-form {
 	flex: 1 1 auto;
 	font-size: 30px;
@@ -76,7 +85,11 @@ table {
 	background-color: #00132E;
 	color: #00C786;
 	font-family: 'minimal';
-	height: 475px;
+	height: 660px;
+}
+
+#back{
+	margin-left: 10px;
 }
 
 .login-input {
