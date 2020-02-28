@@ -470,6 +470,7 @@ router.delete('/deleteReview', function(req, res) {
 //                     console.log(user.locked + ' saved!');
 //                 });
 //             });
+
 router.delete("/deleteReview", function(req, res) {
   RR.findByIdAndDelete(req.body.reviewId, (err, review) => {
     if (err) return console.log(err);
