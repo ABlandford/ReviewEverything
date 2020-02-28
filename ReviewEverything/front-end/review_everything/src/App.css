@@ -171,6 +171,33 @@ table {
 	text-align: center;
 }
 
+.Password-Forget{
+	font-size: 46px;
+	padding: 50px;
+	font-family: 'Handwriting';
+	color: #FFCB00;
+	background-color: #00132E;
+	text-align: center;
+}
+
+.Password-Change{
+	font-size: 46px;
+	padding-bottom: 55px;
+	font-family: 'Handwriting';
+	color: #00C786;
+	background-color: #00132E;
+	text-align: center;
+}
+
+.Password-Changed{
+	font-size: 46px;
+	padding-bottom: 55px;
+	font-family: 'Handwriting';
+	color: #FFCB00;
+	background-color: #00132E;
+	text-align: center;
+}
+
 .login-form {
 	flex: 1 1 auto;
 	font-size: 30px;
@@ -178,7 +205,11 @@ table {
 	background-color: #00132E;
 	color: #00C786;
 	font-family: 'minimal';
-	height: 475px;
+	height: 719px;
+}
+
+#back{
+	margin-left: 10px;
 }
 
 .login-input {
@@ -197,6 +228,32 @@ table {
 	padding: 5px;
 	margin-top: 2.5px;
 	margin-bottom: 7px;
+}
+
+.lab{
+	color: #FFCB00;
+    font-family: monospace;
+    font-size: 23px;
+}
+
+#explain{
+	color: white;
+    font-size: 30px;
+    margin-bottom: 30px;
+    font-style: italic;
+    /* margin-bottom: 10px; */
+    margin-top: -24px;
+}
+
+.forgot-submit {
+	border: 1px inset aliceblue;
+    background-color: #00C786;
+    color: white;
+    font-family: 'fancy_bold';
+    font-size: 16px;
+    padding: 5px;
+    margin-top: 24.5px;
+    margin-bottom: 7px;
 }
 
 .signup-display {
@@ -603,6 +660,10 @@ table {
 		justify-content: center;
 		align-items: center;
 		overflow-x: hidden;
+	}
+
+	.Password-Change{
+		padding-bottom: 36px;
 	}
 	.welcome{
 		right: 0;
