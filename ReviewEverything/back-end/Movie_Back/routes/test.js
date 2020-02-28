@@ -196,7 +196,7 @@ router.put('/editReview', function(req, res) {
             return res.send({ success: true });
         })
     })
-})
+});
 
 router.put('/editAccount', function(req, res) {
     console.log("Checking data...");
@@ -295,7 +295,7 @@ router.post('/averageReviews', function(req, res) {
         
         res.send({averageRating: average, searchId: req.body.movieId});
     })
-})
+});
 
 router.delete('/delUsers', function (req, res) {
     User.findOneAndDelete(req.body.username, function (err, user) {
@@ -308,69 +308,70 @@ router.delete('/delUsers', function (req, res) {
 
  router.get('/addAdmin', (req, res) => {
     User.find((err, users) => {
-                if (err) console.log(err);
-                users.forEach((user) => {
-                    const admin = false; 
-                    User.findById(user._id, (err, currentUser) => {
-                        if (err) return console.log(err);
-                        currentUser.admin = admin,
-                        currentUser.username = user.username,
-                        currentUser.fname = user.fname,
-                        currentUser.lname = user.lname,
-                        currentUser.street = user.street,
-                        currentUser.city = user.city,
-                        currentUser.state = user.state,
-                        currentUser.zip_code = user.zip_code,
-                        currentUser.email = user.email,
-                        currentUser.password = user.password,
-                        currentUser.phone = user.phone
-        
-                        currentUser.save((err, user) => {
-                            if(err) return console.log(err);
-                            console.log(user.admin + ' saved!');
-                        });
-                    });
+        if (err) console.log(err);
+        users.forEach((user) => {
+            const admin = false; 
+            User.findById(user._id, (err, currentUser) => {
+                if (err) return console.log(err);
+                currentUser.admin = admin,
+                currentUser.username = user.username,
+                currentUser.fname = user.fname,
+                currentUser.lname = user.lname,
+                currentUser.street = user.street,
+                currentUser.city = user.city,
+                currentUser.state = user.state,
+                currentUser.zip_code = user.zip_code,
+                currentUser.email = user.email,
+                currentUser.password = user.password,
+                currentUser.phone = user.phone
+
+                currentUser.save((err, user) => {
+                    if(err) return console.log(err);
+                    console.log(user.admin + ' saved!');
                 });
-                let message = 'Users now have admin access.'
-                res.send(message);
             });
+        });
+        let message = 'Users now have admin access.'
+        res.send(message);
+    });
 });
+
 router.delete('/deleteReview', function(req, res) {
     RR.findByIdAndDelete(req.body.reviewId, (err, review) => {
         if (err) return console.log(err);
     })
     res.send({ message: 'Delete completed.' });
-})
+});
   
-router.get('/addAdmin', (req, res) => {
-   User.find((err, users) => {
-               if (err) console.log(err);
-               users.forEach((user) => {
-                   const admin = false; 
-                   User.findById(user._id, (err, currentUser) => {
-                       if (err) return console.log(err);
-                       currentUser.admin = admin,
-                       currentUser.username = user.username,
-                       currentUser.fname = user.fname,
-                       currentUser.lname = user.lname,
-                       currentUser.street = user.street,
-                       currentUser.city = user.city,
-                       currentUser.state = user.state,
-                       currentUser.zip_code = user.zip_code,
-                       currentUser.email = user.email,
-                       currentUser.password = user.password,
-                       currentUser.phone = user.phone
-       
-                       currentUser.save((err, user) => {
-                           if(err) return console.log(err);
-                           console.log(user.admin + ' saved!');
-                       });
-                   });
-               });
-               let message = 'Users now have admin access.'
-               res.send(message);
-           });
-       });
+// router.get('/addAdmin', (req, res) => {
+//    User.find((err, users) => {
+//         if (err) console.log(err);
+//         users.forEach((user) => {
+//             const admin = false; 
+//             User.findById(user._id, (err, currentUser) => {
+//                 if (err) return console.log(err);
+//                 currentUser.admin = admin,
+//                 currentUser.username = user.username,
+//                 currentUser.fname = user.fname,
+//                 currentUser.lname = user.lname,
+//                 currentUser.street = user.street,
+//                 currentUser.city = user.city,
+//                 currentUser.state = user.state,
+//                 currentUser.zip_code = user.zip_code,
+//                 currentUser.email = user.email,
+//                 currentUser.password = user.password,
+//                 currentUser.phone = user.phone
+
+//                 currentUser.save((err, user) => {
+//                     if(err) return console.log(err);
+//                     console.log(user.admin + ' saved!');
+//                 });
+//             });
+//         });
+//         let message = 'Users now have admin access.'
+//         res.send(message);
+//     });
+// });
 
 router.get('/locked', function(req, res){
     User.find((err, users) => {
@@ -401,7 +402,7 @@ router.get('/locked', function(req, res){
         let message = 'Users now have admin access.'
         res.send(message);
     });
-})
+});
 
 router.post('/changePassword', function(req, res){
     console.log(req.body.email)
@@ -412,13 +413,8 @@ router.post('/changePassword', function(req, res){
             console.log(savedUser.password + ' updated!');
             return res.send({ userPass: savedUser, username: user.username });
         });
-    }
-    )}
-)
-
-
-
-
+    })
+});
 
 // router.get('/addusername', (req, res) => {
 //     User.find((err, users) => {

@@ -123,7 +123,7 @@ export default class Home extends Component {
     .then(json => {
       if(json.averageRating === null) {
         this.getAverage();
-      } else if(json.averageRating === this.state.averageRating || json.searchId != this.state.searchId) {
+      } else if(json.averageRating === this.state.averageRating || json.searchId !== this.state.searchId) {
         this.getAverage();
       } else {
         this.setState({ averageRating: json.averageRating });
