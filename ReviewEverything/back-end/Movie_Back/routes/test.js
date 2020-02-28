@@ -120,6 +120,21 @@ router.post("/login", function(req, res) {
   }
 });
 
+router.put('/editReview', function(req, res) {
+    console.log('Saving your review...');
+    RR.findById(req.body.reviewId, (err, review) => {
+        if(err) return console.log(err)
+        review.review = req.body.newReview,
+        review.rating = req.body.newRating,
+
+        review.save((err, savedReview) => {
+            if(err) return console.log(err)
+            console.log('Review updated for ' + savedReview.movieTitle);
+            return res.send({ success: true });
+        })
+    })
+});
+
 router.post("/signup", function(req, res) {
   console.log("Checking data...");
   let errors = false;
@@ -191,6 +206,7 @@ router.post("/signup", function(req, res) {
         admin: false,
         locked: false
       });
+
 
       newUser.save((err, user) => {
         if (err) return console.log(err);
@@ -319,7 +335,7 @@ router.post('/averageReviews', function(req, res) {
         
         res.send({averageRating: average, searchId: req.body.movieId});
     })
-})
+});
 
 
 
@@ -363,6 +379,100 @@ router.get("/addAdmin", (req, res) => {
   });
 });
 
+
+ router.get('/addAdmin', (req, res) => {
+    User.find((err, users) => {
+        if (err) console.log(err);
+        users.forEach((user) => {
+            const admin = false; 
+            User.findById(user._id, (err, currentUser) => {
+                if (err) return console.log(err);
+                currentUser.admin = admin,
+                currentUser.username = user.username,
+                currentUser.fname = user.fname,
+                currentUser.lname = user.lname,
+                currentUser.street = user.street,
+                currentUser.city = user.city,
+                currentUser.state = user.state,
+                currentUser.zip_code = user.zip_code,
+                currentUser.email = user.email,
+                currentUser.password = user.password,
+                currentUser.phone = user.phone
+
+                currentUser.save((err, user) => {
+                    if(err) return console.log(err);
+                    console.log(user.admin + ' saved!');
+                });
+            });
+        });
+        let message = 'Users now have admin access.'
+        res.send(message);
+    });
+});
+
+router.delete('/deleteReview', function(req, res) {
+    RR.findByIdAndDelete(req.body.reviewId, (err, review) => {
+        if (err) return console.log(err);
+    })
+    res.send({ message: 'Delete completed.' });
+});
+  
+// router.get('/addAdmin', (req, res) => {
+//    User.find((err, users) => {
+//         if (err) console.log(err);
+//         users.forEach((user) => {
+//             const admin = false; 
+//             User.findById(user._id, (err, currentUser) => {
+//                 if (err) return console.log(err);
+//                 currentUser.admin = admin,
+//                 currentUser.username = user.username,
+//                 currentUser.fname = user.fname,
+//                 currentUser.lname = user.lname,
+//                 currentUser.street = user.street,
+//                 currentUser.city = user.city,
+//                 currentUser.state = user.state,
+//                 currentUser.zip_code = user.zip_code,
+//                 currentUser.email = user.email,
+//                 currentUser.password = user.password,
+//                 currentUser.phone = user.phone
+
+//                 currentUser.save((err, user) => {
+//                     if(err) return console.log(err);
+//                     console.log(user.admin + ' saved!');
+//                 });
+//             });
+//         });
+//         let message = 'Users now have admin access.'
+//         res.send(message);
+//     });
+// });
+
+router.get('/locked', function(req, res){
+    User.find((err, users) => {
+        if (err) console.log(err);
+        users.forEach((user) => {
+            const locked = false; 
+            User.findById(user._id, (err, currentUser) => {
+                if (err) return console.log(err);
+                currentUser.admin = user.admin,
+                currentUser.username = user.username,
+                currentUser.fname = user.fname,
+                currentUser.lname = user.lname,
+                currentUser.street = user.street,
+                currentUser.city = user.city,
+                currentUser.state = user.state,
+                currentUser.zip_code = user.zip_code,
+                currentUser.email = user.email,
+                currentUser.password = user.password,
+                currentUser.phone = user.phone,
+                currentUser.locked = locked
+
+                currentUser.save((err, user) => {
+                    if(err) return console.log(err);
+                    console.log(user.locked + ' saved!');
+                });
+            });
+
 router.delete("/deleteReview", function(req, res) {
   RR.findByIdAndDelete(req.body.reviewId, (err, review) => {
     if (err) return console.log(err);
@@ -392,9 +502,11 @@ router.get("/addAdmin", (req, res) => {
         currentUser.save((err, user) => {
           if (err) return console.log(err);
           console.log(user.admin + " saved!");
+
         });
       });
     });
+
     let message = "Users now have admin access.";
     res.send(message);
   });
@@ -424,6 +536,8 @@ router.get("/locked", function(req, res) {
           if (err) return console.log(err);
           console.log(user.locked + " saved!");
         });
+    })
+
       });
     });
     let message = "Users now have admin access.";
