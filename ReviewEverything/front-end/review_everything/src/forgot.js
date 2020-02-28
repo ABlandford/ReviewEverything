@@ -100,7 +100,7 @@ export default class Forgot extends Component {
           ></script>
           <script type="text/javascript">{this.emailMethod()}</script>
           <div className="login-header-container">
-            <h1 className="Password-Forget">Forgot Password?</h1>
+            <h1 className="Password-Changed">Forgot Password?</h1>
           </div>
 
           <form onSubmit={this.sendEmail}>

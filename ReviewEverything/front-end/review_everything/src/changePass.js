@@ -103,7 +103,8 @@ export default class changePassword extends Component {
 
   render() {
     return (
-      <div>
+      <div className="login-display">
+      <div className="login-form">
         <script
           type="text/javascript"
           src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
@@ -113,36 +114,38 @@ export default class changePassword extends Component {
           src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"
         ></script>
         <script type="text/javascript">{this.emailMethod()}</script>
-        <h1>Change Password</h1>
+        <h1 className="Password-Change">Change Password</h1>
         <form onSubmit={this.changer}>
-          <p>
+          <h4 id="explain">
             When you submit your email a email will be sent with a code you will
             use to change your password
-          </p>
-          <label>
-            Your email:
-            <input type="text" onChange={this.setHash}></input>
+          </h4>
+          <label className= "lab">
+            YOUR EMAIL:
+            <input  type="text" onChange={this.setHash}></input>
+            <br />
           </label>
           <br />
-          <button type="submit">Send Email</button>
+          <button type="submit" className="login-submit">Send Email</button>
         </form>
         <br />
         <form onSubmit={this.sendPass}>
           <br />
-          <label>
-            Your Code:
-            <input type="text" onChange={this.setInput}></input>
+          <label className= "lab">
+            YOUR CODE: 
+            <input type="text" onChange={this.setInput} style={ {marginRight: 30}}></input>
           </label>
-          <label>
-            Your New Password:
-            <input type="text" onChange={this.setnewPass}></input>
+          <label className= "lab">
+            YOUR NEW PASSWORD: 
+            <input type="text" onChange={this.setnewPass} ></input>
           </label>
           <br />
           <br />
-          <button type="submit">
+          <button type="submit" className="tosignup-submit">
             Change
           </button>
         </form>
+      </div>
       </div>
     );
   }

@@ -301,25 +301,27 @@ router.post("/getReviews", (req, res) => {
   });
 });
 
-router.post("/averageReviews", function(req, res) {
-  console.log("Movie ID submitted: " + req.body.movieId);
-  RR.find({ movieId: req.body.movieId }, (err, reviews) => {
-    if (err) return console.log(err);
-    let n = reviews.length;
-    total = 0;
-    reviews.forEach(review => {
-      console.log("Rating of current index: " + review.rating);
-      total = total + review.rating;
-    });
-    console.log("Total: " + total);
-    console.log("Current N: " + n);
-    let average = total / n;
+router.post('/averageReviews', function(req, res) {
+    console.log("Movie ID submitted: " + req.body.movieId);
+    RR.find({ 'movieId': req.body.movieId }, (err, reviews) => {
+        if(err) return console.log(err);
+        let n = reviews.length;
+        total = 0;
+        reviews.forEach((review) => {
+            console.log('Rating of current index: ' + review.rating);
+            total = total+review.rating;
+        })
+        console.log('Total: ' + total);
+        console.log('Current N: ' + n);
+        let average = total/n;
 
-    console.log("Average: " + average);
+        console.log('Average: ' + average);
+        
+        res.send({averageRating: average, searchId: req.body.movieId});
+    })
+})
 
-    res.send({ averageRating: average });
-  });
-});
+
 
 router.delete("/delUsers", function(req, res) {
   User.findOneAndDelete(req.body.username, function(err, user) {
